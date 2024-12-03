@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:observa_gye_app/env/environment.dart';
 import 'package:observa_gye_app/modules/security/login/page/login_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/models/general_response.dart';
@@ -16,7 +17,7 @@ class InterceptorHttp {
   Future<GeneralResponse> request(
     BuildContext context,
     String method,
-    String urlEndPoint,
+    String endPoint,
     dynamic body, {
     bool showLoading = true,
     Map<String, dynamic>? queryParameters,
@@ -25,62 +26,66 @@ class InterceptorHttp {
     String requestType = "JSON",
     Function(int sentBytes, int totalBytes)? onProgressLoad,
   }) async {
+    final urlService = Environment().config?.serviceUrl ?? "no url";
 
-    var logger = Logger(printer: PrettyPrinter(methodCount: 0, printEmojis : false));
+    String url =
+        "$urlService$endPoint?${Uri(queryParameters: queryParameters).query}";
 
-    String url = "$urlEndPoint?${Uri(queryParameters: queryParameters).query}";
+    GlobalHelper.logger.t('URL $method: $url');
+    body != null
+        ? GlobalHelper.logger.log(Level.warning, 'body: ${json.encode(body)}')
+        : null;
+    queryParameters != null
+        ? GlobalHelper.logger.log(
+            Level.warning, 'queryParameters: ${json.encode(queryParameters)}')
+        : null;
 
-    logger.t('URL: $url');
-    body != null ?  logger.log(Level.warning, 'body: ${json.encode(body)}') : null;
-    queryParameters != null ? logger.log(Level.trace, 'queryParameters: ${json.encode(queryParameters)}') : null;
-
-    GeneralResponse generalResponse = GeneralResponse(data: null, message: "", error: true);
+    GeneralResponse generalResponse =
+        GeneralResponse(data: null, message: "", error: true);
 
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
-    final keyLoading = GlobalHelper.genKey();
-    final keyError = GlobalHelper.genKey();
+    // final sp = Provider.of<StudentProvider>(context, listen: false);
+    GlobalKey<State<StatefulWidget>> keyLoading = GlobalHelper.genKey();
+    // final keyLoading = GlobalHelper.genKey();
+    // final keyError = GlobalHelper.genKey();
 
     String? messageButton;
     void Function()? onPress;
+    bool closeSession = false;
 
     try {
-      http.Response _response;
+      http.Response response;
       Uri uri = Uri.parse(url);
 
       if (showLoading) {
-        //debugPrint("KeyLoading del interceptor: $keyLoading");
-        fp.showAlertLoading(key: keyLoading, content: const AlertLoading());
-       // fp.alertLoading = [const SizedBox()];
-        await Future.delayed(const Duration(milliseconds: 600));
+        GlobalHelper.logger.w("KeyLoading del interceptor: $keyLoading");
+        // keyLoading = GlobalHelper.genKey();
+        fp.showAlert(key: keyLoading, content: const AlertLoading());
+        // fp.alertLoading = [const SizedBox()];
+        // await Future.delayed(const Duration(milliseconds: 600));
       }
 
       //? Envio de TOKEN
-      // LoginResponse? userData = await UserDataStorage().getUserData();
+      // AuthResponseModel? userData = await UserDataStorage().getUserData();
 
-      String tokenSesion = "";
-      //String namePatiente = "";
-      //bool changePasswrd = false;
+      String tokenSesion = '';
+      // String tokenSesion = (userData != null) ? userData.token : '';
+      // String tokenInformation = "";
 
       // if (userData != null) {
-      //   tokenSesion = userData.tokenSession;
-      
+      //   tokenSesion = userData.token!;
       // }
 
-      //debugPrint("token de sesion: $tokenSesion");
-      //debugPrint("nombre paciente: $namePatiente");
-      //debugPrint("cambiar contraseña: ${changePasswrd.toString()}");
-
-      //PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      Map<String, String> _headers = {
+      // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      Map<String, String> headers = {
         "Content-Type": "application/json",
-        "token": (requestType == 'JSON') ? tokenSesion : tokenSesion,
-        // "versionName": '${packageInfo.version} ${AppConfig.appEnv.environmentName}',
-        // "versionCode": packageInfo.buildNumber
-        // "versionName": '1.8.10 DEV',
-        // "versionCode": "1"
+        "Authorization": (requestType == 'JSON') ? tokenSesion : tokenSesion,
+        // "versionName": packageInfo.version,
+        // "versioncode": packageInfo.buildNumber,
+        "so": Platform.isAndroid ? 'Android' : 'IOS'
       };
 
-      logger.w(_headers);
+      GlobalHelper.logger.w(headers);
 
       int responseStatusCode = 0;
       String responseBody = "";
@@ -89,38 +94,35 @@ class InterceptorHttp {
         case "JSON":
           switch (method) {
             case "POST":
-              _response = await http.post(uri,
-                  headers: _headers,
-                  body: body != null ? json.encode(body) : null);
+              response = await http
+                  .post(uri,
+                      headers: headers,
+                      body: body != null ? json.encode(body) : null)
+                  .timeout(const Duration(seconds: 60));
               //inspect(_response);
               break;
             case "GET":
-              _response = await http.get(uri, headers: _headers);
+              response = await http.get(uri, headers: headers);
               break;
             case "PUT":
-              _response = await http.put(uri,
-                  headers: _headers,
+              response = await http.put(uri,
+                  headers: headers,
                   body: body != null ? json.encode(body) : null);
               break;
             case "PATCH":
-              _response = await http.patch(uri,
-                  headers: _headers,
+              response = await http.patch(uri,
+                  headers: headers,
                   body: body != null ? json.encode(body) : null);
               break;
 
             default:
-              _response = await http.post(uri, body: jsonEncode(body));
+              response = await http.post(uri, body: jsonEncode(body));
               break;
           }
-          responseStatusCode = _response.statusCode;
-          responseBody = _response.body;
+          responseStatusCode = response.statusCode;
+          responseBody = response.body;
+          break; // case JSON
 
-          //log(json.encode(responseBody.toString()));
-          //logger.f(responseBody);
-          //Logger(printer: SimplePrinter(colors: true), level: Level.trace).w(json.decode(responseBody));
-          logger.log(Level.trace, json.decode(responseBody));
-
-          break;
         case "FORM":
           final httpClient = getHttpClient();
           final request = await httpClient.postUrl(Uri.parse(url));
@@ -135,8 +137,8 @@ class InterceptorHttp {
             requestMultipart.fields.addAll(multipartFields);
           }
 
-          _headers.forEach((key, value) {
-            request.headers.set("token", tokenSesion);
+          headers.forEach((key, value) {
+            request.headers.set("Authorization", tokenSesion);
           });
 
           debugPrint("TOKEN CARGADO");
@@ -186,118 +188,125 @@ class InterceptorHttp {
               responseBody = data;
             }
           }
-          break;
+          break; // case Form
       }
-      
-      //logger.t('statusCode: ${responseStatusCode.toString()}');
+
+      GlobalHelper.logger.w('statusCode: ${responseStatusCode.toString()}');
 
       switch (responseStatusCode) {
         case 200:
           var responseDecoded = json.decode(responseBody);
-          generalResponse.data = responseDecoded["data"];
           //final keySesion = GlobalHelper.genKey();
-          if (responseDecoded["error"]) {
-            // if (responseDecoded["message"] == "No tiene acceso al recurso solicitado") {
-            //   generalResponse.message ='Su sesión ha caducado, vuelva a iniciar sesión.';
-            //   debugPrint('entrooo aquiiii porque el token ya cacudo');
-            //   messageButton = 'Volver a ingresar';
-            //     onPress = () async {
-            //       fp.dismissAlert(key: keyError);
-            //       Navigator.pushReplacement(context, GlobalHelper.navigationFadeIn(context, const LoginPage()));
-            //       await UserDataStorage().removeUserData();
-            //       await UserDataStorage().removeUserCredentials();
-            //     };
-            //   fp.dismissAlert(key: keyLoading);
-            //   break;
-            // }
-            //debugPrint('HAY ERROR');
-            generalResponse.error = true;
-            generalResponse.message = responseDecoded["message"];
-            fp.dismissAlertLoading(key: keyLoading);
-          } else {
-            //debugPrint('NO HAY ERROR');
-            generalResponse.error = false;
-            generalResponse.message = responseDecoded["message"];
-            //fp.dismissAlert(key: keyLoading);
+          if (responseDecoded["datos"] != null) {
+          generalResponse.data = responseDecoded["datos"];
+            
           }
+          generalResponse.error = false;
+          generalResponse.message = responseDecoded["mensaje"];
+          fp.dismissAlert(key: keyLoading);
+          // } else {
+          //debugPrint('NO HAY ERROR');
+          generalResponse.error = false;
+          // generalResponse.message = responseDecoded["mensaje"];
+          //fp.dismissAlert(key: keyLoading);
+          // }
           break;
         case 307:
           generalResponse.error = true;
-          generalResponse.message = "Ocurrió un error al consultar con los servicios. Intente con una red que le permita el acceso";
-           fp.dismissAlertLoading(key: keyLoading);
+          generalResponse.message =
+              "Ocurrió un error al consultar con los servicios. Intente con una red que le permita el acceso";
+          fp.dismissAlert(key: keyLoading);
           break;
         case 401:
-          generalResponse.message ='Su sesión ha caducado, vuelva a iniciar sesión.';
+          GlobalHelper.logger.w('entra aqui');
           generalResponse.error = true;
+          generalResponse.message =
+              'Su sesión ha caducado, vuelva a iniciar sesión.';
           messageButton = 'Volver a ingresar';
+          closeSession = true;
           onPress = () async {
             fp.clearAllAlert();
-            Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, const LoginPage()), (route) => false);
-            //Navigator.pushReplacement(context, GlobalHelper.navigationFadeIn(context, const LoginPage()));
-            // await UserDataStorage().removeUserData();
-            // await UserDataStorage().removeUserCredentials();
-            // AlertProfileWidget.patientDataResponse = null;
-            //fp.dismissAlert(key: LayoutHomeWidget.keyModalProfile);
-          };     
-           fp.dismissAlertLoading(key: keyLoading);
+            // fp.setIconAppBarItem(IconItems.iconMenuHome);
+            Navigator.pushAndRemoveUntil(
+                context,
+                GlobalHelper.navigationFadeIn(context, const LoginPage()),
+                (route) => false);
+            // UserDataStorage().removeDataLogin();
+            // UserDataStorage().removeSelected();
+            // sp.setPositionStudent(0);
+          };
+          fp.dismissAlert(key: keyLoading);
+          break;
+        case 512:
+          generalResponse.error = true;
+          generalResponse.message =
+              'Tiempo de espera agotado. El servidor no pudo procesar tu solicitud a tiempo. Inténtalo de nuevo más tarde.';
+          fp.dismissAlert(key: keyLoading);
           break;
         default:
           generalResponse.error = true;
-          generalResponse.message = json.decode(responseBody)["message"];
-           fp.dismissAlertLoading(key: keyLoading);
+          generalResponse.message = json.decode(responseBody)["mensaje"];
+          fp.dismissAlert(key: keyLoading);
           break;
       }
     } on TimeoutException catch (e) {
-      debugPrint('$e');
+      GlobalHelper.logger.e("Error en TimeoutException: $e");
+      //debugPrint('$e');
       generalResponse.error = true;
       generalResponse.message = 'Tiempo de conexión excedido.';
-       fp.dismissAlertLoading(key: keyLoading);
+      fp.dismissAlert(key: keyLoading);
     } on FormatException catch (ex) {
-      //generalResponse.error = true;
-      //generalResponse.message = ex.toString();
-      debugPrint(ex.toString());
-      fp.dismissAlertLoading(key: keyLoading);
+      generalResponse.error = true;
+      generalResponse.message = ex.toString();
+      //debugPrint(ex.toString());
+      GlobalHelper.logger.e("Error en FormatException: $ex");
+      fp.dismissAlert(key: keyLoading);
     } on SocketException catch (exSock) {
-      logger.e("Error por conexion: $exSock");
+      GlobalHelper.logger.e("Error por conexion: $exSock");
       //debugPrint("Error por conexion -> ${exSock.toString()}");
       generalResponse.error = true;
-      //generalResponse.message = exSock.toString();
-      generalResponse.message = "Verifique su conexión a internet y vuelva a intentar.";
-       fp.dismissAlertLoading(key: keyLoading);
+      // generalResponse.message = exSock.toString();
+      generalResponse.message =
+          "Verifique su conexión a internet y vuelva a intentar.";
+      fp.dismissAlert(key: keyLoading);
     } on Exception catch (e, stacktrace) {
-      logger.e("Error en request: $stacktrace");
+      GlobalHelper.logger.e("Error en request: $stacktrace");
       //debugPrint("Error en request -> ${stacktrace.toString()}");
       generalResponse.error = true;
       generalResponse.message = "Ocurrio un error, vuelva a intentarlo.";
-      fp.dismissAlertLoading(key: keyLoading);
+      fp.dismissAlert(key: keyLoading);
     }
 
     if (!generalResponse.error) {
       if (showLoading) {
-         fp.dismissAlertLoading(key: keyLoading);
+        fp.dismissAlert(key: keyLoading);
         //fp.alertLoading = [];
       }
     } else {
       //debugPrint("Key de error del Interceptor: $keyError");
-      fp.showAlert(
-        key: keyError,
-        content: AlertGeneric(
-          content: ErrorGeneric(
-            keyToClose: keyError,
-            message: generalResponse.message,
-            messageButton: messageButton,
-            onPress: onPress,
-          ),
-        ),
-      );
+      final keyError = GlobalHelper.genKey();
+
+      // fp.showAlert(
+      //   key: keyError,
+      //   content: AlertGeneric(
+      //     content: ErrorGeneric(
+      //       closeSession: closeSession,
+      //       keyToClose: keyError,
+      //       message: generalResponse.message,
+      //       messageButton: messageButton,
+      //       onPress: onPress,
+      //     ),
+      //   ),
+      // );
     }
+
     return generalResponse;
   }
 
   HttpClient getHttpClient() {
     bool trustSelfSigned = true;
     HttpClient httpClient = HttpClient()
-      ..connectionTimeout = const Duration(seconds: 10)
+      ..connectionTimeout = const Duration(seconds: 6)
       ..badCertificateCallback =
           ((X509Certificate cert, String host, int port) => trustSelfSigned);
 

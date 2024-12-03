@@ -55,8 +55,22 @@ class _FormLoginState extends State<FormLogin> {
           }, icon: obscure ? Icon(Icons.remove_red_eye_outlined): Icon(Icons.visibility_off_outlined)),
         ),
         SizedBox(height: size.height *0.02,),
-        FilledButtonWidget(text: widget.buttonPrimaryText),
-        TextButtonWidget(text: widget.buttonSecondaryText),
+        Visibility(
+          visible: widget.isRegister,
+          child: TextFormFieldWidget(
+            hintText: 'Repetir Contraseña',
+            obscureText: obscure,
+            suffixIcon: IconButton(onPressed: (){
+              obscure = !obscure;
+              setState(() {
+                
+              });
+            }, icon: obscure ? Icon(Icons.remove_red_eye_outlined): Icon(Icons.visibility_off_outlined)),
+          ),
+        ),
+        SizedBox(height: size.height *0.02,),
+        FilledButtonWidget(text: widget.buttonPrimaryText, onPressed: widget.onPressPrimaryButton,),
+        TextButtonWidget(text: widget.buttonSecondaryText, onPressed: widget.onPressSecondaryButton,),
         SizedBox(height: size.height *0.02,),
         TextButtonWidget(text: 'Ingresar como usario Invitado'),
       ],

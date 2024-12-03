@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/security/register/register_page.dart';
 import 'package:observa_gye_app/modules/security/widget/form_login.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -7,7 +8,8 @@ import 'package:observa_gye_app/shared/widget/layout_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final GlobalKey<State<StatefulWidget>>? keyPage;
+  const LoginPage({super.key, this.keyPage});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -24,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
     return LayoutAuth(
-      requiredStack: false,
+      // requiredStack: false,
      child: Container(
       alignment: Alignment.center,
       width: size.width * 0.9,
@@ -40,11 +42,12 @@ class _LoginPageState extends State<LoginPage> {
           passwordController: passwordController, 
           buttonPrimaryText: 'Iniciar Sesion',
           onPressPrimaryButton: (){
-            final registerPageKey = GlobalHelper.genKey();
-            fp.showAlert(key: registerPageKey, content: Column());
+            // fp.showAlert(key: registerPageKey, content: Column());
           },
           onPressSecondaryButton: (){
-
+            final registerPageKey = GlobalHelper.genKey();
+            fp.addPage(key: registerPageKey, content: RegisterPage(key: registerPageKey, keyPage: registerPageKey,));
+            
           },
           buttonSecondaryText: '¿No tienes cuenta?, Registrate',
           ),
