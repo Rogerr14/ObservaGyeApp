@@ -32,16 +32,39 @@ class _FormLoginState extends State<FormLogin> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        SizedBox(height: size.height *0.02,),
         Text(
           'Bienvenido', style: TextStyle(
             fontSize: 30,
             color: AppTheme.primaryColor,
             fontWeight: FontWeight.bold
         ),),
+        SizedBox(height: size.height *0.002,),
+         Visibility(
+          visible: widget.isRegister,
+          child: TextFormFieldWidget(
+            hintText: 'nombres',
+          ),
+        ),
+        SizedBox(height: size.height *0.02,),
+         Visibility(
+          visible: widget.isRegister,
+          child: TextFormFieldWidget(
+            hintText: 'apellidos',
+          ),
+        ),
         SizedBox(height: size.height *0.02,),
         TextFormFieldWidget(
           
           hintText: 'correo@electronico.com',
+        ),
+        SizedBox(height: size.height *0.02,),
+        Visibility(
+          visible: widget.isRegister,
+          child: TextFormFieldWidget(
+            
+            hintText: 'telefono',
+          ),
         ),
         SizedBox(height: size.height *0.02,),
         TextFormFieldWidget(
@@ -71,8 +94,8 @@ class _FormLoginState extends State<FormLogin> {
         SizedBox(height: size.height *0.02,),
         FilledButtonWidget(text: widget.buttonPrimaryText, onPressed: widget.onPressPrimaryButton,),
         TextButtonWidget(text: widget.buttonSecondaryText, onPressed: widget.onPressSecondaryButton,),
-        SizedBox(height: size.height *0.02,),
-        TextButtonWidget(text: 'Ingresar como usario Invitado'),
+        // SizedBox(height: 10,),
+       
       ],
     );
   }
