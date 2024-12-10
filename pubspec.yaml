@@ -30,3 +30,15 @@ flutter:
 
   assets:
     - assets/
+  
+  fonts:
+    - family: Dubai
+      fonts:
+        - asset: assets/fonts/Dubai-Bold.ttf
+          style: normal
+          weight: 900
+        - asset: assets/fonts/Dubai-Regular.ttf
+        - asset: assets/fonts/Dubai-Light.ttf
+        - asset: assets/fonts/Dubai-Medium.ttf
+        
+        

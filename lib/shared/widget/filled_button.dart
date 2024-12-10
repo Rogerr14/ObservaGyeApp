@@ -10,31 +10,31 @@ class FilledButtonWidget extends StatelessWidget {
     required this.text,
     this.width = double.infinity,
     this.height = 40,
-    this.borderRadius = 25,
+    this.borderRadius = 25, 
+    this.fontSize = 15,
   });
 
   final void Function()? onPressed;
-  final Color? color;
-  final Color? colorText;
+  final Color color;
+  final Color colorText;
   final String text;
-  final double? width;
-  final double? height;
-  final double? borderRadius;
+  final double width;
+  final double height;
+  final double borderRadius;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      style: ButtonStyle(
-        minimumSize: WidgetStateProperty.all<Size>(Size(width!, height!)),
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius!),
-          ),
-        ),
-        backgroundColor: WidgetStatePropertyAll(color),
-      ),
+      style: FilledButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius)),
+          backgroundColor: color,
+          minimumSize: Size(width, height)),
       onPressed: onPressed,
-      child: Text(text, style:  TextStyle(color: colorText, fontWeight: FontWeight.w600, fontSize: 15)),
+      child: Text(text,
+          style: TextStyle(
+              color: colorText, fontWeight: FontWeight.bold, fontSize: fontSize, letterSpacing: 0.9)),
     );
   }
 }

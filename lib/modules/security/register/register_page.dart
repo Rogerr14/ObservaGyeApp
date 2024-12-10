@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/security/widget/form_login.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
@@ -28,37 +29,23 @@ class _RegisterPageState extends State<RegisterPage> {
     return LayoutAuth(
       requiredStack: false,
       keyDismiss:  widget.keyPage,
+      isRegister: true,
       nameInterceptor: 'registerPage',
-      child:  Column(
-        children: [
-          Container(
-          // width: size.width * 0.9,
-          height: size.height* 0.7,
-          decoration: BoxDecoration(
-            color: AppTheme.secondaryColor,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(40))
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: FormLogin(
-              isRegister: true,
-              emailController: emailController, 
-              passwordController: passwordController, 
-              passwordConfirmController: passwordConfirmController,
-              buttonPrimaryText: 'Registrarse',
-              onPressPrimaryButton: (){
-                // fp.showAlert(key: registerPageKey, content: Column());
-              },
-              onPressSecondaryButton: (){
-                final fp = Provider.of<FunctionalProvider>(context,listen: false);
-                fp.dismissPage(key: widget.keyPage!);
-              },
-              buttonSecondaryText: '¿Ya tienes cuenta?, Inicia Sesion',
-              ),
-          ),
-              ),
-              
-        ],
-      ));
+      child:  FormLogin(
+          titlePage: 'Regístrate',
+          isRegister: true,
+          emailController: emailController, 
+          passwordController: passwordController, 
+          passwordConfirmController: passwordConfirmController,
+          buttonPrimaryText: 'Registrarse',
+          onPressPrimaryButton: (){
+            // fp.showAlert(key: registerPageKey, content: Column());
+          },
+          onPressSecondaryButton: (){
+            final fp = Provider.of<FunctionalProvider>(context,listen: false);
+            fp.dismissPage(key: widget.keyPage!);
+          },
+          buttonSecondaryText: 'Inicia Sesion',
+          ));
   }
 }

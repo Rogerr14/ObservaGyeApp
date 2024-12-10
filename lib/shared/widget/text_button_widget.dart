@@ -7,24 +7,22 @@ class TextButtonWidget extends StatelessWidget {
     this.onPressed,
     this.color = AppTheme.primaryColor,
     required this.text,
-    this.width = double.infinity,
-    this.height = 40,
-    this.borderRadius = 25,
+    this.fontWeight = FontWeight.w600, 
+    this.fontSize = 17,
   });
 
   final void Function()? onPressed;
   final Color? color;
   final String text;
-  final double? width;
-  final double? height;
-  final double? borderRadius;
+  final double fontSize;
+  final FontWeight fontWeight;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      
       onPressed: onPressed,
-      child: Text(text, style:  TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 15)),
+      child: Text(text,
+          style: TextStyle(color: color, fontWeight: fontWeight, fontSize: fontSize, decoration: TextDecoration.underline, )),
     );
   }
 }

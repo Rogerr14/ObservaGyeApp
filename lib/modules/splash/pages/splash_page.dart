@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/404/pages/page_404.dart';
-import 'package:observa_gye_app/modules/security/login/login_page.dart';
 import 'package:observa_gye_app/shared/routes/app_routes.dart';
 
 
@@ -35,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
-          const curve = Curves.easeInOut;
+          const curve = Curves.easeOutExpo;
           var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
           var offsetAnimation = animation.drive(tween);
           var fadeTween = Tween(begin: 0.0, end: 1.0);

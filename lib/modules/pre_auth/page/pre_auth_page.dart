@@ -24,21 +24,27 @@ class _PreAuthPageState extends State<PreAuthPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(AppTheme.logoApp),
+                Image.asset(AppTheme.ilustrationSplash, height: size.height *0.35,),
+                SvgPicture.asset(AppTheme.logoApp,height: size.height *0.06,),
+                const SizedBox(height: 20,),
                 FilledButtonWidget(
-                  text: 'Iniciar Sesion',
-                  color: AppTheme.secondaryColor,
+                  text: 'Iniciar Sesión',
                   colorText: AppTheme.primaryColor,
-                  width: size.width * 0.02,
+                  fontSize: 17,
+                  color: AppTheme.secondaryColor,
+                  width: size.width * 0.6,
+                  height: size.height * 0.055,
+                  
                   borderRadius: 10,
                   onPressed: (){
                     GlobalHelper.navigateToPageRemove(context, '/login');
                   },
                 ),
-                TextButtonWidget(
+                const SizedBox(height: 10,),
+                const TextButtonWidget(
                   text: 'Ingresar como Invitado',
                   color: AppTheme.secondaryColor,
-                  
+                  fontWeight: FontWeight.bold,
                 ),
               ],
             ),

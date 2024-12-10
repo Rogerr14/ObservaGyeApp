@@ -6,7 +6,6 @@ import 'package:observa_gye_app/modules/security/widget/form_login.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/layout_auth.dart';
-import 'package:observa_gye_app/shared/widget/text_button_widget.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -45,33 +44,32 @@ class _LoginPageState extends State<LoginPage> {
     return LayoutAuth(
       // requiredStack: false,
      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.center,
        children: [
-         Container(
-          alignment: Alignment.center,
-          // width: size.width * 0.9,
-          height: size.height* 0.7,
-          decoration: BoxDecoration(
-            color: AppTheme.secondaryColor,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Text('¡Bienvenido!', style: TextStyle(
+              color: AppTheme.secondaryColor,
+              fontSize: 30,
+              fontWeight: FontWeight.bold
+            ),),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: FormLogin(
-              emailController: emailController, 
-              passwordController: passwordController, 
-              buttonPrimaryText: 'Iniciar Sesion',
-              onPressPrimaryButton: (){
-                _login();
-              },
-              onPressSecondaryButton: (){
-                final registerPageKey = GlobalHelper.genKey();
-                fp.addPage(key: registerPageKey, content: RegisterPage(key: registerPageKey, keyPage: registerPageKey,));
-                
-              },
-              buttonSecondaryText: '¿No tienes cuenta?, Registrate',
-              ),
-          ),
-             ),
+         FormLogin(
+           titlePage: 'Iniciar Sesión',
+           emailController: emailController, 
+           passwordController: passwordController, 
+           buttonPrimaryText: 'Iniciar Sesion',
+           onPressPrimaryButton: (){
+             _login();
+           },
+           onPressSecondaryButton: (){
+             final registerPageKey = GlobalHelper.genKey();
+             fp.addPage(key: registerPageKey, content: RegisterPage(key: registerPageKey, keyPage: registerPageKey,));
+             
+           },
+           buttonSecondaryText: 'Registrate',
+           ),
        ],
      ));
   }

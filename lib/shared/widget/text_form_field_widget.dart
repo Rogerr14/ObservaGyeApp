@@ -31,11 +31,13 @@ class TextFormFieldWidget extends StatelessWidget {
     this.initialValue,
     this.onFieldSubmitted,
     this.onEditingComplete,
-    this.onSaved,
+    this.onSaved, 
+    this.fontSizeHint = 17,
   });
 
   final double maxHeigth;
   final double maxWidth;
+  final double fontSizeHint;
   final TextInputType? keyboardType;
   final TextAlign textAlign;
   final String? hintText;
@@ -78,9 +80,9 @@ class TextFormFieldWidget extends StatelessWidget {
       maxLines: maxLines,
       obscuringCharacter: '*',
       obscureText: obscureText,
-      style: const TextStyle(color: AppTheme.hinText, fontWeight: FontWeight.w400),
+      style:  TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w700, fontSize: fontSizeHint),
       //cursorColor: AppTheme.primaryColor,
-
+      
       textInputAction: textInputAction,
       inputFormatters: inputFormatters,
       validator: validator,
@@ -92,19 +94,21 @@ class TextFormFieldWidget extends StatelessWidget {
       textAlign: textAlign,
       keyboardType: keyboardType,
       decoration: InputDecoration(
+        
           errorStyle: const TextStyle(
             color: AppTheme.error,
           ),
           filled: true,
           fillColor: fillColor,
           hintText: hintText,
+          
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
           alignLabelWithHint: true,
           isCollapsed: false,
           isDense: true,
           hintStyle: TextStyle(
-              fontWeight: fontWeightHintText, color: AppTheme.hinText.withOpacity(0.5)),
+              fontWeight: fontWeightHintText, color: AppTheme.primaryColor.withOpacity(0.5)),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeigth),
