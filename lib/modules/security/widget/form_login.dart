@@ -44,6 +44,7 @@ class _FormLoginState extends State<FormLogin> {
           visible: widget.isRegister,
           child: TextFormFieldWidget(
             hintText: 'nombres',
+            
           ),
         ),
         SizedBox(height: size.height *0.02,),
@@ -57,6 +58,7 @@ class _FormLoginState extends State<FormLogin> {
         TextFormFieldWidget(
           
           hintText: 'correo@electronico.com',
+          controller: widget.emailController,
         ),
         SizedBox(height: size.height *0.02,),
         Visibility(
@@ -70,6 +72,7 @@ class _FormLoginState extends State<FormLogin> {
         TextFormFieldWidget(
           hintText: 'Contraseña',
           obscureText: obscure,
+          controller: widget.passwordController,
           suffixIcon: IconButton(onPressed: (){
             obscure = !obscure;
             setState(() {

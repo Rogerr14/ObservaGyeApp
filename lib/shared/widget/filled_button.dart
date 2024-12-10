@@ -6,6 +6,7 @@ class FilledButtonWidget extends StatelessWidget {
     super.key,
     this.onPressed,
     this.color = AppTheme.primaryColor,
+    this.colorText = AppTheme.secondaryColor,
     required this.text,
     this.width = double.infinity,
     this.height = 40,
@@ -14,6 +15,7 @@ class FilledButtonWidget extends StatelessWidget {
 
   final void Function()? onPressed;
   final Color? color;
+  final Color? colorText;
   final String text;
   final double? width;
   final double? height;
@@ -23,16 +25,16 @@ class FilledButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton(
       style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all<Size>(Size(width!, height!)),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        minimumSize: WidgetStateProperty.all<Size>(Size(width!, height!)),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius!),
           ),
         ),
-        backgroundColor: MaterialStatePropertyAll(color),
+        backgroundColor: WidgetStatePropertyAll(color),
       ),
       onPressed: onPressed,
-      child: Text(text, style: const TextStyle(color: AppTheme.white, fontWeight: FontWeight.w600, fontSize: 15)),
+      child: Text(text, style:  TextStyle(color: colorText, fontWeight: FontWeight.w600, fontSize: 15)),
     );
   }
 }

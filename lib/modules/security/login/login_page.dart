@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/security/register/register_page.dart';
+import 'package:observa_gye_app/modules/security/service/security_service.dart';
 import 'package:observa_gye_app/modules/security/widget/form_login.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -21,6 +22,21 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
 
 
+  _login() async{
+
+    SecurityService securityService = SecurityService();
+    final body = {
+    "correo": emailController.text,
+    "password": passwordController.text
+    };
+
+    final response = await securityService.login(context, body);
+    if(!response.error){
+      GlobalHelper.navigateToPageRemove(context, '/home');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +48,20 @@ class _LoginPageState extends State<LoginPage> {
        children: [
          Container(
           alignment: Alignment.center,
-          width: size.width * 0.9,
-          height: size.height* 0.5,
+          // width: size.width * 0.9,
+          height: size.height* 0.7,
           decoration: BoxDecoration(
-            color: AppTheme.white,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            color: AppTheme.secondaryColor,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: FormLogin(
               emailController: emailController, 
               passwordController: passwordController, 
               buttonPrimaryText: 'Iniciar Sesion',
               onPressPrimaryButton: (){
-                // fp.showAlert(key: registerPageKey, content: Column());
+                _login();
               },
               onPressSecondaryButton: (){
                 final registerPageKey = GlobalHelper.genKey();
@@ -56,8 +72,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
           ),
              ),
-             SizedBox(height: 10,),
-              TextButtonWidget(text: 'Ingresar como usario Invitado',color: AppTheme.white, onPressed: (){},),
        ],
      ));
   }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:observa_gye_app/env/environment.dart';
-import 'package:observa_gye_app/modules/security/login/page/login_page.dart';
+import 'package:observa_gye_app/modules/security/login/login_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/models/general_response.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -29,7 +29,7 @@ class InterceptorHttp {
     final urlService = Environment().config?.serviceUrl ?? "no url";
 
     String url =
-        "$urlService$endPoint?${Uri(queryParameters: queryParameters).query}";
+        "$endPoint?${Uri(queryParameters: queryParameters).query}";
 
     GlobalHelper.logger.t('URL $method: $url');
     body != null
@@ -45,8 +45,8 @@ class InterceptorHttp {
 
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
     // final sp = Provider.of<StudentProvider>(context, listen: false);
-    GlobalKey<State<StatefulWidget>> keyLoading = GlobalHelper.genKey();
-    // final keyLoading = GlobalHelper.genKey();
+    // GlobalKey<State<StatefulWidget>> keyLoading = GlobalHelper.genKey();
+    final keyLoading = GlobalHelper.genKey();
     // final keyError = GlobalHelper.genKey();
 
     String? messageButton;
@@ -59,7 +59,7 @@ class InterceptorHttp {
 
       if (showLoading) {
         GlobalHelper.logger.w("KeyLoading del interceptor: $keyLoading");
-        // keyLoading = GlobalHelper.genKey();
+        // keyLoading = GlobalHelper.genKey();}
         fp.showAlert(key: keyLoading, content: const AlertLoading());
         // fp.alertLoading = [const SizedBox()];
         // await Future.delayed(const Duration(milliseconds: 600));
@@ -82,7 +82,7 @@ class InterceptorHttp {
         "Authorization": (requestType == 'JSON') ? tokenSesion : tokenSesion,
         // "versionName": packageInfo.version,
         // "versioncode": packageInfo.buildNumber,
-        "so": Platform.isAndroid ? 'Android' : 'IOS'
+        // "so": Platform.isAndroid ? 'Android' : 'IOS'
       };
 
       GlobalHelper.logger.w(headers);
@@ -286,18 +286,18 @@ class InterceptorHttp {
       //debugPrint("Key de error del Interceptor: $keyError");
       final keyError = GlobalHelper.genKey();
 
-      // fp.showAlert(
-      //   key: keyError,
-      //   content: AlertGeneric(
-      //     content: ErrorGeneric(
-      //       closeSession: closeSession,
-      //       keyToClose: keyError,
-      //       message: generalResponse.message,
-      //       messageButton: messageButton,
-      //       onPress: onPress,
-      //     ),
-      //   ),
-      // );
+      fp.showAlert(
+        key: keyError,
+        content: AlertGeneric(
+          content: ErrorGeneric(
+            closeSession: closeSession,
+            keyToClose: keyError,
+            message: generalResponse.message,
+            messageButton: messageButton,
+            onPress: onPress,
+          ),
+        ),
+      );
     }
 
     return generalResponse;

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class AppTheme {
   //colors
   // static const Color primaryColor = Color(0xFF1A3636);
-  static const Color primaryColor = Color(0xFFA8CD89);
+  static const Color primaryColor = Color(0xFFfefae0);
+  static const Color secondaryColor = Color(0xFF606c38);
 
 
 
@@ -22,6 +23,9 @@ class AppTheme {
   static const String icon404Path = 'assets/404.svg';
   static const String iconErrorPath = "assets/error.svg";
   static const String iconCheckPath = "assets/check.svg";
+
+
+  static const String loading = "assets/loading.gif";
   
   
   

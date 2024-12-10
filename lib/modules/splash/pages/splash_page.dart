@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/404/pages/page_404.dart';
-import 'package:observa_gye_app/modules/security/login/page/login_page.dart';
+import 'package:observa_gye_app/modules/security/login/login_page.dart';
 import 'package:observa_gye_app/shared/routes/app_routes.dart';
 
 
@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeSnap){
-     Future.delayed(const Duration(seconds: 3), ()=> _goTo('/login'));
+     Future.delayed(const Duration(seconds: 3), ()=> _goTo('/preAuth'));
     });
     super.initState();
   }

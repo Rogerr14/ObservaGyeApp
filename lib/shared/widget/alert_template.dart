@@ -5,6 +5,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
+import 'package:observa_gye_app/shared/widget/button_general_widget.dart';
 // import 'package:flutter_svg/svg.dart';
 
 import 'package:provider/provider.dart';
@@ -17,10 +18,10 @@ class AlertLoading extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: SizedBox(
-          height: 110,
-          width: 100,
+          // height: 110,
+          // width: 100,
           child: Center(
-            child: Image.asset(AppTheme.logoApp),
+            child: Image.asset(AppTheme.loading),
           )),
     );
   }
@@ -177,71 +178,71 @@ class _AlertGenericState extends State<AlertGeneric> {
   }
 }
 
-// class ErrorGeneric extends StatelessWidget {
-//   final GlobalKey keyToClose;
-//   final String message;
-//   final String? messageButton;
-//   final void Function()? onPress;
-//   final bool closeSession;
+class ErrorGeneric extends StatelessWidget {
+  final GlobalKey keyToClose;
+  final String message;
+  final String? messageButton;
+  final void Function()? onPress;
+  final bool closeSession;
 
-//   const ErrorGeneric(
-//       {super.key,
-//       this.closeSession = false,
-//       required this.message,
-//       required this.keyToClose,
-//       this.messageButton,
-//       this.onPress});
+  const ErrorGeneric(
+      {super.key,
+      this.closeSession = false,
+      required this.message,
+      required this.keyToClose,
+      this.messageButton,
+      this.onPress});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final size = MediaQuery.of(context).size;
-//     // final responsive = Responsive(context);
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    // final responsive = Responsive(context);
 
-//     return Column(
-//       children: [
-//         Icon(
-//           Icons.highlight_remove,
-//           size: size.height * 0.07,
-//           color: AppTheme.error,
-//         ),
-//         // SizedBox(height: size.height * 0.005),
-//         const Text(
-//           'Error',
-//           style: TextStyle(
-//               fontSize: 30,
-//               color: AppTheme.primaryColor,
-//               fontWeight: FontWeight.bold),
-//         ),
-//         SizedBox(height: size.height * 0.01),
-//         Text(
-//           message,
-//           style: const TextStyle(
-//               fontSize: 20,
-//               color: AppTheme.primaryColor,
-//               fontWeight: FontWeight.bold),
-//         ),
+    return Column(
+      children: [
+        Icon(
+          Icons.highlight_remove,
+          size: size.height * 0.07,
+          color: AppTheme.error,
+        ),
+        // SizedBox(height: size.height * 0.005),
+        const Text(
+          'Error',
+          style: TextStyle(
+              fontSize: 30,
+              color: AppTheme.primaryColor,
+              fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: size.height * 0.01),
+        Text(
+          message,
+          style: const TextStyle(
+              fontSize: 20,
+              color: AppTheme.primaryColor,
+              fontWeight: FontWeight.bold),
+        ),
 
-//         SizedBox(height: size.height * 0.03),
-//         ButtonGeneralWidget(
-//           nameButton: 'Aceptar',
-//           backgroundColor: AppTheme.error,
-//           height: 30,
-//           width: 120,
-//           textColor: AppTheme.white,
-//           onPressed: (onPress != null)
-//               ? onPress
-//               : () async {
-//                   final fp =
-//                       Provider.of<FunctionalProvider>(context, listen: false);
-//                   fp.dismissAlert(key: keyToClose);
-//                 },
-//         ),
+        SizedBox(height: size.height * 0.03),
+        ButtonGeneralWidget(
+          nameButton: 'Aceptar',
+          backgroundColor: AppTheme.error,
+          height: 30,
+          width: 120,
+          textColor: AppTheme.white,
+          onPressed: (onPress != null)
+              ? onPress
+              : () async {
+                  final fp =
+                      Provider.of<FunctionalProvider>(context, listen: false);
+                  fp.dismissAlert(key: keyToClose);
+                },
+        ),
 
-//         SizedBox(height: size.height * 0.01),
-//       ],
-//     );
-//   }
-// }
+        SizedBox(height: size.height * 0.01),
+      ],
+    );
+  }
+}
 
 
 

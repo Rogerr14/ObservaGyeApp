@@ -32,15 +32,14 @@ class _RegisterPageState extends State<RegisterPage> {
       child:  Column(
         children: [
           Container(
-          alignment: Alignment.center,
-          width: size.width * 0.9,
-          // height: size.height* 0.5,
+          // width: size.width * 0.9,
+          height: size.height* 0.7,
           decoration: BoxDecoration(
-            color: AppTheme.white,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            color: AppTheme.secondaryColor,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(40))
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: FormLogin(
               isRegister: true,
               emailController: emailController, 
@@ -58,8 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
           ),
               ),
-               SizedBox(height: 10,),
-              TextButtonWidget(text: 'Ingresar como usario Invitado',color: AppTheme.white, onPressed: (){},),
+              
         ],
       ));
   }

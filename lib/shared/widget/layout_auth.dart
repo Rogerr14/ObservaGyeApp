@@ -70,56 +70,26 @@ class _LayoutAuthState extends State<LayoutAuth> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       backgroundColor: AppTheme.primaryColor,
       body: Stack(
         children: [
           CustomScrollView(
-            // controller: _scrollController,
             physics: const ClampingScrollPhysics(),
             slivers: [
-              //   SliverAppBar(
-              //     title:  Hero(
-              //       tag: 'logo',
-              //       child: SvgPicture.asset(AppTheme.logoApp, height: size.height * 0.05)
-              //     ),
-              //   toolbarHeight: size.height * 0.20,
-              //   // automaticallyImplyLeading: true,
-              //   snap: true,
-              //   stretch: true,
-              //   // stretchTriggerOffset: 200,
-              //   floating: true,
-              //   elevation: 0,
-              //   centerTitle: true,
-              //   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(35))),
-              //   backgroundColor: AppTheme.primaryColor,
-              //   // flexibleSpace: FlexibleSpaceBar(
-              //   //     background: Padding(padding: EdgeInsets.symmetric(horizontal: size.width * 0.6, vertical: size.height * 0.9),
-              //   //   child: Hero(
-              //   //     tag: 'logo',
-              //   //     child: SvgPicture.asset(AppTheme.logoApp, height: size.height * 0.30)
-              //   //   ),
-              //   // )
-              //   // ),
-              //   // expandedHeight: 100,
-              // ),
+             
               SliverFillRemaining(
                 hasScrollBody: false,
                 // fillOverscroll: true,
-                child: Align(
-                  alignment: Alignment.center,
-                  
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Hero(
-                        tag: 'logo',
-                        child: SvgPicture.asset(AppTheme.logoApp, height: size.height * 0.05)
-                      ),
-                      SizedBox(height: size.height * 0.05,),
-                      widget.child,
-                    ],
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Hero(
+                      tag: 'logo',
+                      child: SvgPicture.asset(AppTheme.logoApp, height: size.height * 0.05)
+                    ),
+                    SizedBox(height: size.height * 0.05,),
+                    widget.child,
+                  ],
                 )
                   )
             ],

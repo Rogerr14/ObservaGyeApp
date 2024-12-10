@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:observa_gye_app/shared/widget/layout.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -11,6 +12,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return LayoutWidget(child:Container() ,);
   }
 }
