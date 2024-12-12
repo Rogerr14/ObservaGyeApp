@@ -246,6 +246,7 @@ class InterceptorHttp {
         default:
           generalResponse.error = true;
           generalResponse.message = json.decode(responseBody)["mensaje"];
+          GlobalHelper.logger.w(generalResponse.message);
           fp.dismissAlert(key: keyLoading);
           break;
       }

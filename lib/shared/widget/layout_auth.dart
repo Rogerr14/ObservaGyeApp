@@ -76,36 +76,25 @@ class _LayoutAuthState extends State<LayoutAuth> {
               SliverFillRemaining(
                   hasScrollBody: false,
                   // fillOverscroll: true,
-                  child: Stack(
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: widget.isRegister ?  SizedBox():  Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                            SvgPicture.asset(AppTheme.logoApp,height: size.height * 0.06,),
-                            const SizedBox(height: 10,),
-                            const Text('Una app de ciencia ciudadana', style:  TextStyle(
-                              color: AppTheme.secondaryColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 17
-                            ),)
-                                                ],
-                                              ),
-                          ),
-                          widget.child,
-                        ],
+                      Expanded(
+                        child: widget.isRegister ?  SizedBox():  Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                        SvgPicture.asset(AppTheme.logoApp,height: size.height * 0.06,),
+                        const SizedBox(height: 10,),
+                        const Text('Una app de ciencia ciudadana', style:  TextStyle(
+                          color: AppTheme.secondaryColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 17
+                        ),)
+                                            ],
+                                          ),
                       ),
-                         Visibility(
-                          visible: widget.isRegister,
-                           child: Positioned(
-                                       top: size.height * 0.1,
-                                       right: 0,
-                                       child: Image.asset(AppTheme.plantSvg, height: size.height * 0.15,)),
-                         ),
+                      widget.child,
                     ],
                   ))
             ],

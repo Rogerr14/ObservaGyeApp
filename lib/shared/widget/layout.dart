@@ -86,22 +86,95 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                   child: CustomScrollView(
                     slivers: [
                       SliverAppBar(
+                        toolbarHeight: size.height * 0.1,
                         pinned: true,
                         elevation: 0,
                         floating: false,
                         forceElevated: false,
-                        actions: [
-                          IconButton(onPressed: (){}, icon: Icon(Icons.person))
-                        ],
+                        
                         leading: IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
-                        backgroundColor: AppTheme.primaryColor,
+                        backgroundColor: AppTheme.white,
                         centerTitle: true,
-                        title: SvgPicture.asset(AppTheme.logoApp, height: size.height *0.035,),
+                        title: SvgPicture.asset(AppTheme.logoApp, colorFilter: ColorFilter.mode(AppTheme.primaryColor, BlendMode.srcIn), height: size.height *0.035,),
                       ),
                       SliverFillRemaining(
                         hasScrollBody: false,
-                        child: widget.child,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                
+                                decoration: BoxDecoration(
+                                  color: AppTheme.white,
+                                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(50),),
+                                  boxShadow: [
+                                    BoxShadow(color: AppTheme.grayShadow
+                                    , spreadRadius: 10)
+                                  ]
+                                  
+                                ),
+                                child: widget.child),
+                            ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 20
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  // crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
+                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
+                                      ],),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
+                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
+                                      ],),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
+                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
+                                      ],),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
+                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
+                                      ],),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
+                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
+                                      ],),
+                                    ),
+                                  ],
+                                ),
+                              )
+                          ],
+                        ),
                       ),
+                     
                     ],
                   ),
                 ),

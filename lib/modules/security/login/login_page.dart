@@ -23,16 +23,16 @@ class _LoginPageState extends State<LoginPage> {
 
   _login() async{
 
-    SecurityService securityService = SecurityService();
-    final body = {
-    "correo": emailController.text,
-    "password": passwordController.text
-    };
+    // SecurityService securityService = SecurityService();
+    // final body = {
+    // "correo": emailController.text,
+    // "password": passwordController.text
+    // };
 
-    final response = await securityService.login(context, body);
-    if(!response.error){
+    // final response = await securityService.login(context, body);
+    // if(!response.error){
       GlobalHelper.navigateToPageRemove(context, '/home');
-    }
+    // }
   }
 
 

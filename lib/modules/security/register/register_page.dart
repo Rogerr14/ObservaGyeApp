@@ -19,7 +19,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordConfirmController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nameController= TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
 
 
 
@@ -31,21 +33,27 @@ class _RegisterPageState extends State<RegisterPage> {
       keyDismiss:  widget.keyPage,
       isRegister: true,
       nameInterceptor: 'registerPage',
-      child:  FormLogin(
-          titlePage: 'Regístrate',
-          isRegister: true,
-          emailController: emailController, 
-          passwordController: passwordController, 
-          passwordConfirmController: passwordConfirmController,
-          buttonPrimaryText: 'Registrarse',
-          onPressPrimaryButton: (){
-            // fp.showAlert(key: registerPageKey, content: Column());
-          },
-          onPressSecondaryButton: (){
-            final fp = Provider.of<FunctionalProvider>(context,listen: false);
-            fp.dismissPage(key: widget.keyPage!);
-          },
-          buttonSecondaryText: 'Inicia Sesion',
-          ));
+      child:  Column(
+        children: [
+          FormLogin(
+              titlePage: 'Regístrate',
+              isRegister: true,
+              emailController: emailController, 
+              passwordController: passwordController, 
+              phoneController: phoneController,
+              nameController: nameController,
+              lastNameController: lastNameController,
+              buttonPrimaryText: 'Registrate',
+              onPressPrimaryButton: (){
+                // fp.showAlert(key: registerPageKey, content: Column());
+              },
+              onPressSecondaryButton: (){
+                final fp = Provider.of<FunctionalProvider>(context,listen: false);
+                fp.dismissPage(key: widget.keyPage!);
+              },
+              buttonSecondaryText: 'Inicia Sesion',
+              ),
+        ],
+      ));
   }
 }

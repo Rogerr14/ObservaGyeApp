@@ -20,8 +20,12 @@ class TextButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 3) 
+      ),
       onPressed: onPressed,
       child: Text(text,
+          
           style: TextStyle(color: color, fontWeight: fontWeight, fontSize: fontSize, decoration: TextDecoration.underline, )),
     );
   }
