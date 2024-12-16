@@ -98,86 +98,22 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                         title: SvgPicture.asset(AppTheme.logoApp, colorFilter: ColorFilter.mode(AppTheme.primaryColor, BlendMode.srcIn), height: size.height *0.035,),
                       ),
                       SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                
-                                decoration: BoxDecoration(
-                                  color: AppTheme.white,
-                                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(50),),
-                                  boxShadow: [
-                                    BoxShadow(color: AppTheme.grayShadow
-                                    , spreadRadius: 10)
-                                  ]
-                                  
-                                ),
-                                child: widget.child),
-                            ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 20
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  // crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
-                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
-                                      ],),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
-                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
-                                      ],),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
-                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
-                                      ],),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
-                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
-                                      ],),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                        Icon(Icons.home_filled, color: AppTheme.white, size: 30,),
-                                        Text('Inicio', style: TextStyle(color: AppTheme.white),)
-                                      ],),
-                                    ),
-                                  ],
-                                ),
-                              )
-                          ],
-                        ),
+                        // hasScrollBody: false,
+                        child: Container(
+                          width: size.width,
+                          decoration: BoxDecoration(
+                            color: AppTheme.white,
+                            borderRadius: BorderRadius.vertical(bottom: Radius.circular(50),),
+                            
+                            
+                          ),
+                          child: widget.child),
                       ),
                      
                     ],
                   ),
                 ),
+              menuBottomWidget()
                
               ],
             ),
@@ -188,4 +124,28 @@ class _LayoutWidgetState extends State<LayoutWidget> {
       ),
     );
   }
+
+
+  Widget menuBottomWidget () {
+    return  Row(
+               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+               children: [
+                _optionMenuWidget(AppTheme.iconHome, 'Inicio'),
+                _optionMenuWidget(AppTheme.iconAlert, 'Alertas'),
+                _optionMenuWidget(AppTheme.iconObservation, 'Observación'),
+                _optionMenuWidget(AppTheme.iconMyAport, 'Mis aportes'),
+                _optionMenuWidget(AppTheme.iconSearch, 'Buscar'),
+               ],
+            );
+  }
+
+
+  Widget _optionMenuWidget(String icon, String title){
+    return  IconButton(onPressed: (){}, icon: Column(children: [
+      SvgPicture.asset(icon, height: 30,),
+      Text(title,style: const TextStyle(color: AppTheme.white),)
+    ]));
+  }
+
+
 }

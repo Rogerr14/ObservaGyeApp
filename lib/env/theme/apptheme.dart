@@ -15,12 +15,23 @@ class AppTheme {
   //image routes
   static const String logoApp = 'assets/Observa_logo.svg';
   static const String ilustrationSplash = 'assets/ilustration_splash.png';
-  static const String icon404Path = 'assets/404.svg';
-  static const String iconErrorPath = "assets/error.svg";
-  static const String iconCheckPath = "assets/check.svg";
   static const String plantSvg = "assets/hoja.png";
 
   static const String loading = "assets/loading.gif";
+
+
+
+  //Icons App
+  static const String icon404Path = 'assets/404.svg';
+  static const String iconErrorPath = "assets/error.svg";
+  static const String iconCheckPath = "assets/check.svg";
+  static const String iconHome = "assets/Home.svg";
+  static const String iconAlert = "assets/Alert.svg";
+  static const String iconObservation = "assets/AddObservation.svg";
+  static const String iconMyAport = "assets/MyObservation.svg";
+  static const String iconSearch = "assets/Search.svg";
+  static const String iconMap = "assets/IconMap.svg";
+
 
   ThemeData theme() {
     return ThemeData(
