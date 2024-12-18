@@ -21,6 +21,7 @@ class LayoutWidget extends StatefulWidget {
 
 class _LayoutWidgetState extends State<LayoutWidget> {
   final ZoomDrawerController _drawerController = ZoomDrawerController();
+  int index = 0;
 
 
     @override
@@ -84,6 +85,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
               children: [
                 Expanded(
                   child: CustomScrollView(
+                    physics: NeverScrollableScrollPhysics(),
                     slivers: [
                       SliverAppBar(
                         toolbarHeight: size.height * 0.1,
@@ -130,19 +132,23 @@ class _LayoutWidgetState extends State<LayoutWidget> {
     return  Row(
                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                children: [
-                _optionMenuWidget(AppTheme.iconHome, 'Inicio'),
-                _optionMenuWidget(AppTheme.iconAlert, 'Alertas'),
-                _optionMenuWidget(AppTheme.iconObservation, 'Observación'),
-                _optionMenuWidget(AppTheme.iconMyAport, 'Mis aportes'),
-                _optionMenuWidget(AppTheme.iconSearch, 'Buscar'),
+                _optionMenuWidget(AppTheme.iconHome, 'Inicio', 0),
+                _optionMenuWidget(AppTheme.iconAlert, 'Alertas', 1),
+                _optionMenuWidget(AppTheme.iconObservation, 'Observación', 2),
+                _optionMenuWidget(AppTheme.iconMyAport, 'Mis aportes', 3),
+                _optionMenuWidget(AppTheme.iconSearch, 'Buscar', 4),
                ],
             );
   }
 
 
-  Widget _optionMenuWidget(String icon, String title){
-    return  IconButton(onPressed: (){}, icon: Column(children: [
-      SvgPicture.asset(icon, height: 30,),
+  Widget _optionMenuWidget(String icon, String title, int option){
+    return  IconButton(onPressed: (){
+      if(index != option){
+        index = option;
+      }
+    }, icon: Column(children: [
+      SvgPicture.asset(icon, height: 40,),
       Text(title,style: const TextStyle(color: AppTheme.white),)
     ]));
   }
