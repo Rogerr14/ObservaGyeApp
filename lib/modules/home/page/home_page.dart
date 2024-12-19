@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/home/page/submodules/alert_users/page/alerts_page.dart';
 import 'package:observa_gye_app/modules/home/page/submodules/observation_users/page/observation_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -96,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         size, (){
                           final keyAlertPage = GlobalHelper.genKey();
-
+                          fp.addPage(key: keyAlertPage, content: AlertsPage(key: keyAlertPage,keyDismiss: keyAlertPage));
                         }),
                   ],
                 ),
