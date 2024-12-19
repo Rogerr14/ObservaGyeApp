@@ -31,6 +31,7 @@ class AppTheme {
   static const String iconMyAport = "assets/MyObservation.svg";
   static const String iconSearch = "assets/Search.svg";
   static const String iconMap = "assets/IconMap.svg";
+  static const String iconUser = "assets/user.png";
 
 
   ThemeData theme() {

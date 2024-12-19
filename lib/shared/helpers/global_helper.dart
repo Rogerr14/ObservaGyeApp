@@ -4,6 +4,15 @@ import 'package:logger/logger.dart';
 import 'package:observa_gye_app/modules/404/pages/page_404.dart';
 import 'package:observa_gye_app/shared/routes/app_routes.dart';
 
+
+
+enum IconItems {
+ 
+  iconMenuHome,
+  iconAlert,
+}
+
+
 class GlobalHelper {
   // static slideTransitionNavigationPage(BuildContext context, String routeName, {String? type}) {
   //   final route = AppRoutes.routes[routeName];
@@ -106,6 +115,9 @@ class GlobalHelper {
 
  static var logger =
       Logger(printer: PrettyPrinter(methodCount: 0, printEmojis: false));
+
+
+  
 
   // static String formatDate({ required String dateStr}){
   //   DateTime date = DateFormat('dd/MM/yyyy HH:mm').parse(dateStr);

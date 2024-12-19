@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/home/page/submodules/alert_users/page/alerts_page.dart';
 import 'package:observa_gye_app/modules/home/page/submodules/observation_users/page/observation_page.dart';
+import 'package:observa_gye_app/modules/home/widget/card_observation_widget.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/layout.dart';
@@ -18,6 +19,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final List<Widget> widgets =  [
+    CardObservationWidget(nameObservation: 'Loro Africano', userObservation: 'JPerez', dateObservation: DateTime.now(), urlImageObservation: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg')
+  ];
+
+
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -34,40 +42,27 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TextTitleWidget(title: 'Ultimas Observaciones'),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             FlutterCarousel(
-              items: [1, 2, 3, 4, 5].map((i) {
-                return Container(
-                    width: size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                        color: AppTheme.grayShadow,
-                        borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: AppTheme.primaryColor, width: 2)),
-                    child: Text(
-                      'text $i',
-                      style: TextStyle(fontSize: 16.0),
-                    ));
-              }).toList(),
+              items: widgets,
               options: FlutterCarouselOptions(
                 height: size.height * 0.2,
                 showIndicator: true,
                 slideIndicator: CircularSlideIndicator(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Align(
+            const Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TextTitleWidget(title: 'Estadisticas'),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Column(
@@ -77,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     _cardWidget(
                         'Observaciones',
-                        TextTitleWidget(
+                        const TextTitleWidget(
                           title: '2,500',
                           size: 30,
                         ),
@@ -91,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                         }),
                     _cardWidget(
                         'Alertas',
-                        TextTitleWidget(
+                        const TextTitleWidget(
                           title: '350',
                           size: 30,
                         ),
@@ -101,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                         }),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 _cardWidget(

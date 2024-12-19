@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:observa_gye_app/shared/widget/card_lista_widget.dart';
 import 'package:observa_gye_app/shared/widget/layout.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
-
 
 class ObservationPage extends StatefulWidget {
   final GlobalKey<State<StatefulWidget>> keyDismiss;
@@ -15,21 +15,30 @@ class _ObservationPageState extends State<ObservationPage> {
   @override
   Widget build(BuildContext context) {
     return LayoutWidget(
-      keyDismiss: widget.keyDismiss,
-      requiredStack: false,
-      nameInterceptor: 'ObservationPage',
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20,),
-                child: TextTitleWidget(title: 'Observaciones')))
-          ],
-        ),
-      ));
+        keyDismiss: widget.keyDismiss,
+        requiredStack: false,
+        nameInterceptor: 'ObservationPage',
+        child:  Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: TextTitleWidget(title: 'Observaciones'),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                   itemCount: 2,
+                  itemBuilder: (context, index) => CardListaWidget(ulrImagen: 'ulrImagen', title: 'jola', subtitle: 'ss', onPressed: (){}),),
+              )
+            ],
+          ),
+        ));
   }
 }

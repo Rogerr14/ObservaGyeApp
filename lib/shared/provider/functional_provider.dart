@@ -1,10 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 
 class FunctionalProvider extends ChangeNotifier {
   List<Widget> pages = [];
   List<Widget> alerts = [];
+
+  IconItems iconAppBarItem = IconItems.iconMenuHome;
   // List<Widget> alertLoading = [];
   bool darkMode = false;
 
