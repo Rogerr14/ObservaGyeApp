@@ -9,7 +9,7 @@ class AppTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color transparent = Colors.transparent;
   static const Color error = Color(0xffF94838);
-  static const Color hinText = Color(0xff5B5B5B);
+  static const Color hinText = Color.fromARGB(255, 163, 160, 160);
   static const Color grayShadow = Color(0xFFD9D9D9);
 
   //image routes
