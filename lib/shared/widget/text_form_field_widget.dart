@@ -108,7 +108,7 @@ class TextFormFieldWidget extends StatelessWidget {
           isCollapsed: false,
           isDense: true,
           hintStyle: TextStyle(
-              fontWeight: fontWeightHintText, color: AppTheme.primaryColor.withOpacity(0.5)),
+              fontWeight: fontWeightHintText, color: AppTheme.primaryColor),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeigth),
@@ -125,7 +125,7 @@ class TextFormFieldWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: borderWith!, color: AppTheme.error),
+            borderSide: BorderSide(width: borderWith!, color: AppTheme.primaryColor),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedErrorBorder: OutlineInputBorder(

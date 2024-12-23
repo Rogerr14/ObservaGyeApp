@@ -35,7 +35,7 @@ class _ObservationPageState extends State<ObservationPage> {
               Expanded(
                 child: ListView.builder(
                    itemCount: 2,
-                  itemBuilder: (context, index) => CardListaWidget(ulrImagen: 'ulrImagen', title: 'jola', subtitle: 'ss', onPressed: (){}),),
+                  itemBuilder: (context, index) => CardListaWidget(ulrImagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg', title: 'jola', subtitle: 'ss', onPressed: (){}),),
               )
             ],
           ),

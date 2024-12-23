@@ -83,7 +83,7 @@ class _FormLoginState extends State<FormLogin> {
                         fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                              color: AppTheme.grayShadow,
+                              color: AppTheme.white,
                               blurRadius: 0.2,
                               offset: Offset(0.3, 4))
                         ]),
@@ -115,7 +115,7 @@ class _FormLoginState extends State<FormLogin> {
                       maxHeigth: size.height * 0.06,
                       borderWith: 1.5,
                       showShading: true,
-                      fillColor: AppTheme.grayShadow,
+                      fillColor: AppTheme.white,
                       prefixIcon: const Icon(
                         Icons.person_2_outlined,
                         color: AppTheme.primaryColor,
@@ -148,7 +148,7 @@ class _FormLoginState extends State<FormLogin> {
                           maxHeigth: size.height * 0.06,
                           borderWith: 1.5,
                           showShading: true,
-                          fillColor: AppTheme.grayShadow,
+                          fillColor: AppTheme.white,
                           prefixIcon: const Icon(
                             Icons.person_2_outlined,
                             color: AppTheme.primaryColor,
@@ -169,7 +169,7 @@ class _FormLoginState extends State<FormLogin> {
                     maxHeigth: size.height * 0.06,
                     borderWith: 1.5,
                     showShading: true,
-                    fillColor: AppTheme.grayShadow,
+                    fillColor: AppTheme.white,
                     prefixIcon: const Icon(
                       Icons.alternate_email,
                       color: AppTheme.primaryColor,
@@ -191,7 +191,7 @@ class _FormLoginState extends State<FormLogin> {
                           maxHeigth: size.height * 0.06,
                           borderWith: 1.5,
                           showShading: true,
-                          fillColor: AppTheme.grayShadow,
+                          fillColor: AppTheme.white,
                           prefixIcon: const Icon(
                             Icons.phone_outlined,
                             color: AppTheme.primaryColor,
@@ -216,7 +216,7 @@ class _FormLoginState extends State<FormLogin> {
                     maxHeigth: size.height * 0.06,
                     borderWith: 1.5,
                     // showShading: true,
-                    fillColor: AppTheme.grayShadow,
+                    fillColor: AppTheme.white,
           
                     controller: widget.passwordController,
                     suffixIcon: IconButton(

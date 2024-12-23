@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
 class CardObservationWidget extends StatefulWidget {
@@ -28,10 +29,10 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
     final size = MediaQuery.of(context).size;
     return Card(
         color: AppTheme.grayShadow,
-        elevation: 5,
+        elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: AppTheme.primaryColor, width: 2)
+          side: BorderSide(color: AppTheme.primaryColor, width: 0.5)
         ),
         child: SizedBox(
           width: size.width,
@@ -42,11 +43,18 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                     TextTitleWidget(title: widget.nameObservation, size: 20,),
                     TextTitleWidget(title: widget.userObservation, size: 15,),
                     TextSubtitleWidget(subtitle: DateFormat('yyyy-MM-dd').format(widget.dateObservation), size: 14,),
-                   
+
+                      ],
+                    ),
+                    FilledButtonWidget(text: 'Ver más',width: 10, height:30, onPressed: (){},)
                   ],
                 ),
                 ClipRRect(

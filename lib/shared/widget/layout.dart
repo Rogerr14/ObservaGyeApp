@@ -141,7 +141,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
               title: 'Inicio',
               onPressed: () {
                 GlobalHelper.logger.w(fp.iconAppBarItem);
-                if (iconSelect != IconItems.iconMenuHome) {
+                if (fp.iconAppBarItem != IconItems.iconMenuHome) {
                   fp.iconAppBarItem = IconItems.iconMenuHome;
                   fp.clearAllAlert();
                 }
