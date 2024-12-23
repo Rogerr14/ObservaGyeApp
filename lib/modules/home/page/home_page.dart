@@ -19,12 +19,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  final List<Widget> widgets =  [
-    CardObservationWidget(nameObservation: 'Loro Africano', userObservation: 'JPerez', dateObservation: DateTime.now(), urlImageObservation: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg')
+  final List<Widget> widgets = [
+    CardObservationWidget(
+        nameObservation: 'Loro Africano',
+        userObservation: 'JPerez',
+        dateObservation: DateTime.now(),
+        urlImageObservation:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg')
   ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,38 +73,34 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _cardWidget(
-                        'Observaciones',
-                        const TextTitleWidget(
-                          title: '2,500',
-                          size: 30,
-                        ),
-                        size,
-                        (){
-                          final keyObservatioPage = GlobalHelper.genKey();
-                          fp.addPage(key: keyObservatioPage, content: ObservationPage(
-                            key: keyObservatioPage,
-                            keyDismiss: keyObservatioPage),
-                            );
-                        }),
+                      'Observaciones',
+                      const TextTitleWidget(
+                        title: '2,500',
+                        size: 40,
+                      ),
+                      size,
+                    ),
                     _cardWidget(
-                        'Alertas',
-                        const TextTitleWidget(
-                          title: '350',
-                          size: 30,
-                        ),
-                        size, (){
-                          final keyAlertPage = GlobalHelper.genKey();
-                          fp.addPage(key: keyAlertPage, content: AlertsPage(key: keyAlertPage,keyDismiss: keyAlertPage));
-                        }),
+                      'Alertas',
+                      const TextTitleWidget(
+                        title: '350',
+                        size: 40,
+                      ),
+                      size,
+                    )
                   ],
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                _cardWidget(
-                    'Mapa', SvgPicture.asset(AppTheme.iconMap), size, (){
-                      final keyMapPage = GlobalHelper.genKey();
-                    })
+                    _cardWidget(
+                      'Usuarios',
+                      const TextTitleWidget(
+                        title: '2,300',
+                        size: 40,
+                      ),
+                      size,
+                    )
               ],
             )
           ],
@@ -111,24 +109,20 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Widget _cardWidget(String title, Widget child, Size size, Function() onTap) {
+  Widget _cardWidget(String title, Widget child, Size size) {
     return SizedBox(
       width: size.width * 0.35,
       height: size.height * 0.15,
-      child: InkWell(
-        onTap: onTap,
-        child: Card(
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: AppTheme.primaryColor, width: 2),
-              borderRadius: BorderRadius.circular(10)),
-          color: AppTheme.grayShadow,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [TextTitleWidget(title: title), child],
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            child,
+            TextTitleWidget(
+              title: title,
+              size: 20,
             ),
-          ),
+          ],
         ),
       ),
     );
