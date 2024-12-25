@@ -81,8 +81,6 @@ class TextFormFieldWidget extends StatelessWidget {
       obscuringCharacter: '*',
       obscureText: obscureText,
       style:  TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w700, fontSize: fontSizeHint),
-      //cursorColor: AppTheme.primaryColor,
-      
       textInputAction: textInputAction,
       inputFormatters: inputFormatters,
       validator: validator,
@@ -114,23 +112,23 @@ class TextFormFieldWidget extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeigth),
           border: OutlineInputBorder(
             borderSide: BorderSide(width: borderWith!, color: AppTheme.primaryColor),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(width: borderWith!, color: AppTheme.primaryColor),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(width: borderWith!, color: AppTheme.primaryColor),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(width: borderWith!, color: AppTheme.primaryColor),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(width: borderWith!, color: AppTheme.error),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           )),
     );
   }

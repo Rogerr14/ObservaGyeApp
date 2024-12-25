@@ -19,7 +19,8 @@ class LayoutAuth extends StatefulWidget {
       required this.child,
       this.requiredStack = true,
       this.keyDismiss,
-      this.nameInterceptor, this.isRegister = false});
+      this.nameInterceptor,
+      this.isRegister = false});
 
   @override
   State<LayoutAuth> createState() => _LayoutAuthState();
@@ -65,38 +66,41 @@ class _LayoutAuthState extends State<LayoutAuth> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppTheme.primaryColor,
       body: Stack(
         children: [
-           CustomScrollView(
-            physics: const ClampingScrollPhysics(),
+          // Visibility(
+          //   visible: !widget.isRegister,
+          //   child: SliverAppBar(
+          //     title: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         SvgPicture.asset(
+          //           AppTheme.logoApp,
+          //           height: size.height * 0.06,
+          //         ),
+          //         const SizedBox(
+          //           height: 10,
+          //         ),
+          //         const Text(
+          //           'Una app de ciencia ciudadana',
+          //           style: TextStyle(
+          //               color: AppTheme.secondaryColor,
+          //               fontWeight: FontWeight.w700,
+          //               fontSize: 17),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          CustomScrollView(
+            controller: _scrollController,
+            physics: AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverFillRemaining(
                   hasScrollBody: false,
-                  // fillOverscroll: true,
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: widget.isRegister ?  SizedBox():  Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                        SvgPicture.asset(AppTheme.logoApp,height: size.height * 0.06,),
-                        const SizedBox(height: 10,),
-                        const Text('Una app de ciencia ciudadana', style:  TextStyle(
-                          color: AppTheme.secondaryColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 17
-                        ),)
-                                            ],
-                                          ),
-                      ),
-                      widget.child,
-                    ],
-                  ))
+                  child: widget.child)
             ],
           ),
           if (widget.requiredStack) const PageModal(),
