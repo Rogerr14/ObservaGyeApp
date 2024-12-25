@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:observa_gye_app/env/environment.dart';
-import 'package:observa_gye_app/modules/security/login/login_page.dart';
+import 'package:observa_gye_app/modules/security/login/page/login_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/models/general_response.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';

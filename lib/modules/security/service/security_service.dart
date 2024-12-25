@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/environment.dart';
-import 'package:observa_gye_app/modules/security/model/login_response_model.dart';
+import 'package:observa_gye_app/modules/security/login/model/login_response_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/models/general_response.dart';
 import 'package:observa_gye_app/shared/services/http_interceptor.dart';

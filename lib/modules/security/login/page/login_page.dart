@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
-import 'package:observa_gye_app/modules/security/register/register_page.dart';
+import 'package:observa_gye_app/modules/security/register/page/register_page.dart';
 import 'package:observa_gye_app/modules/security/service/security_service.dart';
-import 'package:observa_gye_app/modules/security/widget/form_login.dart';
+import 'package:observa_gye_app/modules/security/login/widget/form_login.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/layout_auth.dart';
