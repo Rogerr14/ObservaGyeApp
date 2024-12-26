@@ -70,33 +70,9 @@ class _LayoutAuthState extends State<LayoutAuth> {
       backgroundColor: AppTheme.primaryColor,
       body: Stack(
         children: [
-          // Visibility(
-          //   visible: !widget.isRegister,
-          //   child: SliverAppBar(
-          //     title: Column(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         SvgPicture.asset(
-          //           AppTheme.logoApp,
-          //           height: size.height * 0.06,
-          //         ),
-          //         const SizedBox(
-          //           height: 10,
-          //         ),
-          //         const Text(
-          //           'Una app de ciencia ciudadana',
-          //           style: TextStyle(
-          //               color: AppTheme.secondaryColor,
-          //               fontWeight: FontWeight.w700,
-          //               fontSize: 17),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
           CustomScrollView(
             controller: _scrollController,
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverFillRemaining(
                   hasScrollBody: false,

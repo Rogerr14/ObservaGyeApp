@@ -6,10 +6,13 @@ import 'package:observa_gye_app/shared/routes/app_routes.dart';
 
 
 
-enum IconItems {
+enum ButtonNavigatorBarItem {
  
   iconMenuHome,
   iconAlert,
+  iconObservation,
+  iconMyAport,
+  iconSearch
 }
 
 

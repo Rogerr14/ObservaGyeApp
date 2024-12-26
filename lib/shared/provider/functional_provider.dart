@@ -7,12 +7,16 @@ class FunctionalProvider extends ChangeNotifier {
   List<Widget> pages = [];
   List<Widget> alerts = [];
 
-  IconItems iconAppBarItem = IconItems.iconMenuHome;
+  ButtonNavigatorBarItem buttonNavigatorBarItem = ButtonNavigatorBarItem.iconMenuHome;
   // List<Widget> alertLoading = [];
   bool darkMode = false;
 
-  darkModeActive(bool value) {
-    darkMode = value;
+selectIconBottomNavigationBarItem(){
+    return buttonNavigatorBarItem;
+  }
+
+  setIconBottomNavigationBarItem(ButtonNavigatorBarItem value){
+    buttonNavigatorBarItem = value;
     notifyListeners();
   }
 
