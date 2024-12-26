@@ -36,9 +36,11 @@ class AppTheme {
 
   ThemeData theme() {
     return ThemeData(
+      focusColor: AppTheme.primaryColor,
       textSelectionTheme: const TextSelectionThemeData(
         selectionHandleColor: AppTheme.primaryColor,
         //selectionColor: AppTheme.primaryColor,
+        selectionColor: AppTheme.primaryColor,
         cursorColor: AppTheme.primaryColor,
       ),
       //  colorScheme: ColorScheme.fromSeed(

@@ -1,6 +1,5 @@
 // import 'package:animate_do/animate_do.dart';
 
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
@@ -21,8 +20,8 @@ class AlertLoading extends StatelessWidget {
           // height: 110,
           // width: 100,
           child: Center(
-            child: Image.asset(AppTheme.loading),
-          )),
+        child: Image.asset(AppTheme.loading),
+      )),
     );
   }
 }
@@ -178,8 +177,6 @@ class _AlertGenericState extends State<AlertGeneric> {
   }
 }
 
-
-
 class ErrorGeneric extends StatelessWidget {
   final GlobalKey keyToClose;
   final String message;
@@ -261,7 +258,8 @@ class CustomDatePickerAlert extends StatelessWidget {
     required this.onDateSelected,
     required this.keyToClose,
     this.lastDate,
-    this.onPress, this.firstDate,
+    this.onPress,
+    this.firstDate,
   }) : super(key: key);
 
   @override
@@ -271,14 +269,22 @@ class CustomDatePickerAlert extends StatelessWidget {
       children: [
         SizedBox(
           width: double.maxFinite,
-          child: CalendarDatePicker(
-            initialDate: initialDate,
-            firstDate:firstDate ?? DateTime(1900),
-            lastDate: lastDate ?? DateTime(2030),
-            onDateChanged: (DateTime date) {
-              onDateSelected(date);
-            },
-            initialCalendarMode: DatePickerMode.day,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+                colorScheme: const ColorScheme.light(primary: AppTheme.primaryColor),
+                datePickerTheme: const DatePickerThemeData(
+                    dayStyle: const TextStyle(color: AppTheme.primaryColor),
+                    dayOverlayColor:
+                        WidgetStatePropertyAll(AppTheme.primaryColor))),
+            child: CalendarDatePicker(
+              initialDate: initialDate,
+              firstDate: firstDate ?? DateTime(1900),
+              lastDate: lastDate ?? DateTime(2030),
+              onDateChanged: (DateTime date) {
+                onDateSelected(date);
+              },
+              initialCalendarMode: DatePickerMode.day,
+            ),
           ),
         ),
         Row(
@@ -291,10 +297,9 @@ class CustomDatePickerAlert extends StatelessWidget {
                         Provider.of<FunctionalProvider>(context, listen: false);
                     fp.dismissAlert(key: keyToClose);
                   },
-              child: Text(
+              child: const Text(
                 'Aceptar',
-                style: TextStyle(
-                    fontSize: 15),
+                style: TextStyle(fontSize: 15, color: AppTheme.primaryColor),
               ),
             ),
           ],

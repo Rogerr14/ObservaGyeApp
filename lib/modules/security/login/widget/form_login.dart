@@ -55,6 +55,7 @@ class _FormLoginState extends State<FormLogin> {
               hintText: 'Correo electrónico',
               controller: _emailController,
               textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.emailAddress,
               prefixIcon: const Icon(
                 Icons.alternate_email,
                 color: AppTheme.primaryColor,

@@ -27,6 +27,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=> FunctionalProvider(), )
       ],
       child: MaterialApp(
+        
         title: appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme().theme(),
