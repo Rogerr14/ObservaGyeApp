@@ -9,6 +9,7 @@ environment:
 dependencies:
   animate_do: ^3.3.4
   back_button_interceptor: ^8.0.0
+  dropdown_button2: ^2.3.9
   flutter:
     sdk: flutter
   flutter_carousel_widget: ^3.1.0

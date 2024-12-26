@@ -178,6 +178,8 @@ class _AlertGenericState extends State<AlertGeneric> {
   }
 }
 
+
+
 class ErrorGeneric extends StatelessWidget {
   final GlobalKey keyToClose;
   final String message;
@@ -244,7 +246,63 @@ class ErrorGeneric extends StatelessWidget {
   }
 }
 
+class CustomDatePickerAlert extends StatelessWidget {
+  final DateTime initialDate;
+  final DateTime? lastDate;
 
+  final DateTime? firstDate;
+  final GlobalKey keyToClose;
+  final void Function(DateTime) onDateSelected;
+  final void Function()? onPress;
+
+  const CustomDatePickerAlert({
+    Key? key,
+    required this.initialDate,
+    required this.onDateSelected,
+    required this.keyToClose,
+    this.lastDate,
+    this.onPress, this.firstDate,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: double.maxFinite,
+          child: CalendarDatePicker(
+            initialDate: initialDate,
+            firstDate:firstDate ?? DateTime(1900),
+            lastDate: lastDate ?? DateTime(2030),
+            onDateChanged: (DateTime date) {
+              onDateSelected(date);
+            },
+            initialCalendarMode: DatePickerMode.day,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: onPress ??
+                  () {
+                    final fp =
+                        Provider.of<FunctionalProvider>(context, listen: false);
+                    fp.dismissAlert(key: keyToClose);
+                  },
+              child: Text(
+                'Aceptar',
+                style: TextStyle(
+                    fontSize: 15),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
 // class OkGeneric extends StatelessWidget {
 //   final GlobalKey keyToClose;

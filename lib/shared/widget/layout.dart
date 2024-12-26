@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
-import 'package:observa_gye_app/modules/principal_modules/generate_alert/page/alerts_page.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_alert/page/generate_alert_page.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_observation/page/generate_observation_page.dart';
 import 'package:observa_gye_app/modules/principal_modules/home/page/home_page.dart';
 import 'package:observa_gye_app/modules/principal_modules/my_aports/page/my_aports_page.dart';
 import 'package:observa_gye_app/modules/principal_modules/search/page/search_page.dart';
@@ -91,7 +92,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             //     SliverAppBar(
             //       forceElevated: false,
             //       elevation: 0,
-                  
+
             //       backgroundColor: AppTheme.white,
             //       leading: IconButton(
             //           onPressed: fp.pages.isEmpty
@@ -137,55 +138,52 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             //       ),
 
             //     ),
-                
+
             //   ],
             // ),
-                mainScreen: Scaffold(
-                  appBar: AppBar(
-                    // primary: false,
-                    automaticallyImplyLeading: false,
-                    leading: IconButton(
-                        onPressed: fp.pages.isEmpty
-                            ? () {
-                                _drawerController.open!();
-                              }
-                            : () {
-                                fp.dismissPage(key: widget.keyDismiss!);
-                              },
-                        icon: fp.pages.isEmpty
-                            ? const Icon(Icons.menu)
-                            : const Icon(Icons.arrow_back_ios_new_sharp)),
-                    backgroundColor: AppTheme.white,
-                    title: SvgPicture.asset(
-                      AppTheme.logoApp,
-                      colorFilter: const ColorFilter.mode(
-                          AppTheme.primaryColor, BlendMode.srcIn),
-                      height: size.height * 0.035,
-                    ),
-                    centerTitle: true,
-                  ),
-                  backgroundColor: AppTheme.primaryColor,
-                  body: Container(
-                    clipBehavior: Clip.antiAlias,
-                    width: size.width,
-                    height: size.height,
-                    decoration: const BoxDecoration(
-                        color: AppTheme.white,
-                        borderRadius:
-                            BorderRadius.vertical(bottom: Radius.circular(50))),
-                    child:
-                      SingleChildScrollView(
-                        child:
-                    fp.pages.isEmpty
+            mainScreen: Scaffold(
+              appBar: AppBar(
+                // primary: false,
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                    onPressed: fp.pages.isEmpty
+                        ? () {
+                            _drawerController.open!();
+                          }
+                        : () {
+                            fp.dismissPage(key: widget.keyDismiss!);
+                          },
+                    icon: fp.pages.isEmpty
+                        ? const Icon(Icons.menu)
+                        : const Icon(Icons.arrow_back_ios_new_sharp)),
+                backgroundColor: AppTheme.white,
+                title: SvgPicture.asset(
+                  AppTheme.logoApp,
+                  colorFilter: const ColorFilter.mode(
+                      AppTheme.primaryColor, BlendMode.srcIn),
+                  height: size.height * 0.035,
+                ),
+                centerTitle: true,
+              ),
+              backgroundColor: AppTheme.primaryColor,
+              body: Container(
+                  clipBehavior: Clip.antiAlias,
+                  width: size.width,
+                  height: size.height,
+                  decoration: const BoxDecoration(
+                      color: AppTheme.white,
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(50))),
+                  child: SingleChildScrollView(
+                    child: fp.pages.isEmpty
                         ? body(iconSelect: iconSelect)
                         : widget.child,
-                      )
-                  ),
-                  bottomNavigationBar: ButtonNavigartorBarItem(
-                    iconSelect: iconSelect,
-                    fp: fp,
-                  ),
-                ),
+                  )),
+              bottomNavigationBar: ButtonNavigartorBarItem(
+                iconSelect: iconSelect,
+                fp: fp,
+              ),
+            ),
           ),
         ),
         if (widget.requiredStack) const PageModal(),
@@ -200,11 +198,13 @@ class _LayoutWidgetState extends State<LayoutWidget> {
         // fp.clearAllAlert();
         return const HomePage();
       case ButtonNavigatorBarItem.iconAlert:
-        return const AlertsPage();
+        return const GenerateAlertage();
       case ButtonNavigatorBarItem.iconSearch:
         return const SearchPage();
       case ButtonNavigatorBarItem.iconMyAport:
         return const MyAportsPage();
+      case ButtonNavigatorBarItem.iconObservation:
+        return const GenerateObservationPage();
       default:
         return widget.child;
     }
