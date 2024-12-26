@@ -6,31 +6,27 @@ import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:provider/provider.dart';
 
 class ButtonNavigartorBarItem extends StatelessWidget {
-  
-  const ButtonNavigartorBarItem({super.key, required this.fp, required this.iconSelect});
+  const ButtonNavigartorBarItem(
+      {super.key, required this.fp, required this.iconSelect});
 
   final FunctionalProvider fp;
   final ButtonNavigatorBarItem iconSelect;
 
-
   @override
   Widget build(BuildContext context) {
-    final iconSelect = context.watch<FunctionalProvider>().buttonNavigatorBarItem;
+    final iconSelect =
+        context.watch<FunctionalProvider>().buttonNavigatorBarItem;
     return Theme(
       data: Theme.of(context).copyWith(
-        splashFactory: NoSplash.splashFactory,
-        highlightColor: AppTheme.white
-      ),
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: AppTheme.white),
       child: BottomNavigationBar(
         elevation: 0,
         type: BottomNavigationBarType.fixed,
         backgroundColor: AppTheme.primaryColor,
         selectedItemColor: AppTheme.white,
         selectedLabelStyle: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: AppTheme.white
-        ),
+            fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.white),
         unselectedItemColor: AppTheme.white.withOpacity(0.8),
         // showSelectedLabels: true,
         // showUnselectedLabels: true,
@@ -41,33 +37,30 @@ class ButtonNavigartorBarItem extends StatelessWidget {
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            tooltip: 'Alerta',
-            icon: SvgPicture.asset(AppTheme.iconAlert),
-            label: 'Alerta'
-          ),
+              tooltip: 'Alerta',
+              icon: SvgPicture.asset(AppTheme.iconAlert),
+              label: 'Alerta'),
           BottomNavigationBarItem(
-            tooltip: 'Observacion',
-            icon: SvgPicture.asset(AppTheme.iconObservation),
-            label: 'Observacion'
-          ),
+              tooltip: 'Observacion',
+              icon: SvgPicture.asset(AppTheme.iconObservation),
+              label: 'Observacion'),
           BottomNavigationBarItem(
-            tooltip: 'Mis Aportes',
-            icon: SvgPicture.asset(AppTheme.iconMyAport),
-            label: 'Mis Aportes'
-          ),
+              tooltip: 'Mis Aportes',
+              icon: SvgPicture.asset(AppTheme.iconMyAport),
+              label: 'Mis Aportes'),
           BottomNavigationBarItem(
-            tooltip: 'Buscar',
-            icon: SvgPicture.asset(AppTheme.iconSearch),
-            label: 'Buscar'
-          ),
-      
+              tooltip: 'Buscar',
+              icon: SvgPicture.asset(AppTheme.iconSearch),
+              label: 'Buscar'),
         ],
         currentIndex: iconSelect.index,
-        onTap: (index){
-          if(iconSelect.index == index) return;
-          fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.values[index]);
+        onTap: (index) {
+          fp.clearAllAlert();
+          if (iconSelect.index == index) return;
+          fp.setIconBottomNavigationBarItem(
+              ButtonNavigatorBarItem.values[index]);
         },
-        ),
+      ),
     );
   }
 }

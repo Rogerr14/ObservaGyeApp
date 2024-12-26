@@ -4,7 +4,7 @@ import 'package:observa_gye_app/env/theme/apptheme.dart';
 class FilledButtonWidget extends StatelessWidget {
   const FilledButtonWidget({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     this.color = AppTheme.primaryColor,
     this.colorText = AppTheme.secondaryColor,
     required this.text,
@@ -14,7 +14,7 @@ class FilledButtonWidget extends StatelessWidget {
     this.fontSize = 15,
   });
 
-  final void Function()? onPressed;
+  final void Function() onPressed;
   final Color color;
   final Color colorText;
   final String text;

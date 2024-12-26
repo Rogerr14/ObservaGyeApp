@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -11,12 +10,13 @@ class CardObservationWidget extends StatefulWidget {
   final String userObservation;
   final DateTime dateObservation;
   final String urlImageObservation;
+  final Function() onPress;
   const CardObservationWidget({
     super.key,
     required this.nameObservation,
     required this.userObservation,
     required this.dateObservation,
-    required this.urlImageObservation,
+    required this.urlImageObservation, required this.onPress,
   });
 
   @override
@@ -31,9 +31,8 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
         color: AppTheme.grayShadow,
         elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: AppTheme.primaryColor, width: 0.5)
-        ),
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: AppTheme.primaryColor, width: 0.5)),
         child: SizedBox(
           width: size.width,
           child: Padding(
@@ -46,20 +45,37 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    TextTitleWidget(title: widget.nameObservation, size: 20,),
-                    TextTitleWidget(title: widget.userObservation, size: 15,),
-                    TextSubtitleWidget(subtitle: DateFormat('yyyy-MM-dd').format(widget.dateObservation), size: 14,),
-
+                        TextTitleWidget(
+                          title: widget.nameObservation,
+                          size: 20,
+                        ),
+                        TextTitleWidget(
+                          title: widget.userObservation,
+                          size: 15,
+                        ),
+                        TextSubtitleWidget(
+                          subtitle: DateFormat('yyyy-MM-dd')
+                              .format(widget.dateObservation),
+                          size: 14,
+                        ),
                       ],
                     ),
-                    FilledButtonWidget(text: 'Ver más',width: 10, height:30, onPressed: (){},)
+                    FilledButtonWidget(
+                      text: 'Ver más',
+                      width: 10,
+                      height: 30,
+                      onPressed: widget.onPress,
+                    )
                   ],
                 ),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(widget.urlImageObservation, fit: BoxFit.contain,))
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      widget.urlImageObservation,
+                      fit: BoxFit.contain,
+                    ))
               ],
             ),
           ),

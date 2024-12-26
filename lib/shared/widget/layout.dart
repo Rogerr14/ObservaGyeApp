@@ -23,7 +23,7 @@ class LayoutWidget extends StatefulWidget {
   const LayoutWidget(
       {super.key,
       this.nameInterceptor,
-       this.child,
+      this.child,
       this.keyDismiss,
       this.requiredStack = true});
 
@@ -33,13 +33,13 @@ class LayoutWidget extends StatefulWidget {
 
 class _LayoutWidgetState extends State<LayoutWidget> {
   final ZoomDrawerController _drawerController = ZoomDrawerController();
-  
+
   late FunctionalProvider fp;
 
   @override
   void initState() {
     super.initState();
-    
+
     fp = Provider.of<FunctionalProvider>(context, listen: false);
     BackButtonInterceptor.add(_backButton,
         name: widget.nameInterceptor, context: context);
@@ -69,8 +69,8 @@ class _LayoutWidgetState extends State<LayoutWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
-    final iconSelect = context.watch<FunctionalProvider>().buttonNavigatorBarItem;
+    final iconSelect =
+        context.watch<FunctionalProvider>().buttonNavigatorBarItem;
     return Stack(
       children: [
         Scaffold(
@@ -85,47 +85,119 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             slideWidth: size.width * 0.7,
             closeCurve: Curves.elasticInOut,
             menuScreen: const MenuWidget(),
-            mainScreen: Scaffold(
-              appBar: AppBar(
-                leading: IconButton(
-                      onPressed: () {
-                        _drawerController.open!();
-                      },
-                      icon: const Icon(Icons.menu)),
-                backgroundColor: AppTheme.white,
-                title:SvgPicture.asset(
-                    AppTheme.logoApp,
-                    colorFilter: const ColorFilter.mode(
-                        AppTheme.primaryColor, BlendMode.srcIn),
-                    height: size.height * 0.035,
-                  ),
-                  centerTitle: true,
-              ),
-              backgroundColor: AppTheme.primaryColor,
-              body: Container(
-                width: size.width,
-                height: size.height,
-                decoration: const BoxDecoration(
-                  color: AppTheme.white,
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(50))
-                ),
-                child: body(iconSelect: iconSelect),
-              ),
+            // mainScreen: CustomScrollView(
+            //   // physics: NeverScrollableScrollPhysics(),
+            //   slivers: [
+            //     SliverAppBar(
+            //       forceElevated: false,
+            //       elevation: 0,
+                  
+            //       backgroundColor: AppTheme.white,
+            //       leading: IconButton(
+            //           onPressed: fp.pages.isEmpty
+            //               ? () {
+            //                   _drawerController.open!();
+            //                 }
+            //               : () {
+            //                   fp.dismissPage(key: widget.keyDismiss!);
+            //                 },
+            //           icon: fp.pages.isEmpty
+            //               ? const Icon(Icons.menu)
+            //               : const Icon(Icons.arrow_back_ios_new_sharp)),
+            //       title: SvgPicture.asset(
+            //         AppTheme.logoApp,
+            //         colorFilter: const ColorFilter.mode(
+            //             AppTheme.primaryColor, BlendMode.srcIn),
+            //         height: size.height * 0.035,
+            //       ),
+            //       centerTitle: true,
+            //     ),
+            //     SliverFillRemaining(
+            //       hasScrollBody: false,
+            //       child: Column(
+            //         children: [
+            //           Expanded(
+            //             child: Container(
+            //               width: size.width,
+            //               // height: size.height,
+            //               decoration: const BoxDecoration(
+            //                   color: AppTheme.white,
+            //                   borderRadius:
+            //                       BorderRadius.vertical(bottom: Radius.circular(50))),
+            //               child: fp.pages.isEmpty
+            //                   ? body(iconSelect: iconSelect)
+            //                   : widget.child,
+            //             ),
+            //           ),
+            //           ButtonNavigartorBarItem(
+            //         iconSelect: iconSelect,
+            //         fp: fp,
+            //       ),
+            //         ],
+            //       ),
 
-              bottomNavigationBar: ButtonNavigartorBarItem(iconSelect: iconSelect, fp: fp,),
-            ),
+            //     ),
+                
+            //   ],
+            // ),
+                mainScreen: Scaffold(
+                  appBar: AppBar(
+                    // primary: false,
+                    automaticallyImplyLeading: false,
+                    leading: IconButton(
+                        onPressed: fp.pages.isEmpty
+                            ? () {
+                                _drawerController.open!();
+                              }
+                            : () {
+                                fp.dismissPage(key: widget.keyDismiss!);
+                              },
+                        icon: fp.pages.isEmpty
+                            ? const Icon(Icons.menu)
+                            : const Icon(Icons.arrow_back_ios_new_sharp)),
+                    backgroundColor: AppTheme.white,
+                    title: SvgPicture.asset(
+                      AppTheme.logoApp,
+                      colorFilter: const ColorFilter.mode(
+                          AppTheme.primaryColor, BlendMode.srcIn),
+                      height: size.height * 0.035,
+                    ),
+                    centerTitle: true,
+                  ),
+                  backgroundColor: AppTheme.primaryColor,
+                  body: Container(
+                    clipBehavior: Clip.antiAlias,
+                    width: size.width,
+                    height: size.height,
+                    decoration: const BoxDecoration(
+                        color: AppTheme.white,
+                        borderRadius:
+                            BorderRadius.vertical(bottom: Radius.circular(50))),
+                    child:
+                      SingleChildScrollView(
+                        child:
+                    fp.pages.isEmpty
+                        ? body(iconSelect: iconSelect)
+                        : widget.child,
+                      )
+                  ),
+                  bottomNavigationBar: ButtonNavigartorBarItem(
+                    iconSelect: iconSelect,
+                    fp: fp,
+                  ),
+                ),
           ),
         ),
-                if (widget.requiredStack) const PageModal(),
-                if (widget.requiredStack) const AlertModal()
+        if (widget.requiredStack) const PageModal(),
+        if (widget.requiredStack) const AlertModal()
       ],
     );
   }
 
-  Widget body({required ButtonNavigatorBarItem iconSelect}){
-    switch(iconSelect){
-      
+  Widget? body({required ButtonNavigatorBarItem iconSelect}) {
+    switch (iconSelect) {
       case ButtonNavigatorBarItem.iconMenuHome:
+        // fp.clearAllAlert();
         return const HomePage();
       case ButtonNavigatorBarItem.iconAlert:
         return const AlertsPage();
@@ -134,8 +206,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
       case ButtonNavigatorBarItem.iconMyAport:
         return const MyAportsPage();
       default:
-        return const HomePage();
+        return widget.child;
     }
   }
-
 }
