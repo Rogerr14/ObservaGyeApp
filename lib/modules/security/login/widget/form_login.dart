@@ -33,7 +33,7 @@ class _FormLoginState extends State<FormLogin> {
 
     // final response = await securityService.login(context, body);
     // if(!response.error){
-      GlobalHelper.navigateToPageRemove(context, '/home');
+      GlobalHelper.navigateToPageRemove(context, '/main');
     // }
   }
 
