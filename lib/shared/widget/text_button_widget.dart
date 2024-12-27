@@ -21,7 +21,7 @@ class TextButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 3) 
+        padding: const EdgeInsets.symmetric(horizontal: 3) 
       ),
       onPressed: onPressed,
       child: Text(text,

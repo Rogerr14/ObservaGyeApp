@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeSnap){
-     Future.delayed(const Duration(seconds: 3), ()=> _goTo('/preAuth'));
+     Future.delayed(const Duration(seconds: 3), ()=> _goTo('/sliders'));
     });
     super.initState();
   }
@@ -56,7 +56,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

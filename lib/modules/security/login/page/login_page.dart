@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
-import 'package:observa_gye_app/modules/security/register/page/register_page.dart';
-import 'package:observa_gye_app/modules/security/service/security_service.dart';
 import 'package:observa_gye_app/modules/security/login/widget/form_login.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
-import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/layout_auth.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final GlobalKey<State<StatefulWidget>>? keyPage;
@@ -85,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
               top: Radius.circular(40),
             ),
           ),
-          child:  Padding(
+          child:  const Padding(
             padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
             child: Column(
               children: [

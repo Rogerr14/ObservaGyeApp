@@ -38,7 +38,7 @@ class ButtonGeneralWidget extends StatelessWidget {
           children: [
             icon != null ?
               icon!
-              : SizedBox(),
+              : const SizedBox(),
             Text(
               nameButton,
               style: TextStyle(

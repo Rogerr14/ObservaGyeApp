@@ -53,11 +53,11 @@ class _CardListaWidgetState extends State<CardListaWidget> {
               ),
               IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.arrow_forward_ios_outlined))
+                  icon: const Icon(Icons.arrow_forward_ios_outlined))
             ],
           ),
         ),
-        Divider()
+        const Divider()
       ],
     );
   }

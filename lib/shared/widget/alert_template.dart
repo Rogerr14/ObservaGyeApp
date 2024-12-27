@@ -255,14 +255,14 @@ class CustomDatePickerAlert extends StatelessWidget {
   final void Function()? onPress;
 
   const CustomDatePickerAlert({
-    Key? key,
+    super.key,
     required this.initialDate,
     required this.onDateSelected,
     required this.keyToClose,
     this.lastDate,
     this.onPress,
     this.firstDate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -275,7 +275,7 @@ class CustomDatePickerAlert extends StatelessWidget {
             data: Theme.of(context).copyWith(
                 colorScheme: const ColorScheme.light(primary: AppTheme.primaryColor),
                 datePickerTheme: const DatePickerThemeData(
-                    dayStyle: const TextStyle(color: AppTheme.primaryColor),
+                    dayStyle: TextStyle(color: AppTheme.primaryColor),
                     dayOverlayColor:
                         WidgetStatePropertyAll(AppTheme.primaryColor))),
             child: CalendarDatePicker(
@@ -337,9 +337,9 @@ class ConfirmContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButtonWidget(onPressed: cancel, text: 'Cancelar', fontSize: 17,),
+            TextButtonWidget(onPressed: cancel, text: 'Cancelar', fontSize: 17, color: AppTheme.error,),
             SizedBox(width: size.width * 0.08),
-            FilledButtonWidget(onPressed: confirm, width: size.width * 0.05, text: 'Confirmar',color: AppTheme.white, )
+            FilledButtonWidget(onPressed: confirm, width: size.width * 0.05, text: 'Confirmar',color: AppTheme.primaryColor, )
           ],
         ),
         SizedBox(height: size.height * 0.01),

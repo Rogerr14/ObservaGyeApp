@@ -18,49 +18,77 @@ class MenuWidget extends StatefulWidget {
 class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 90, 0, 20),
+      padding: const EdgeInsets.fromLTRB(0, 90, 0, 20),
       child: Column(
         children: [
-          Row(
-            children: [
-              Image.asset(
-                AppTheme.iconUser,
-                height: 50,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextTitleWidget(
-                    title: 'Usuario Usuario',
-                    color: AppTheme.white,
-                    showShadow: false,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        AppTheme.iconUser,
+                        height: 50,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextTitleWidget(
+                            title: 'Usuario Usuario',
+                            color: AppTheme.white,
+                            showShadow: false,
+                          ),
+                          TextSubtitleWidget(
+                            subtitle: 'Ver perfil',
+                            color: AppTheme.white,
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                  TextSubtitleWidget(
-                    subtitle: 'Ver perfil',
-                    color: AppTheme.white,
-                  )
-                ],
-              ),
-            ],
+                ),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+                Divider(),
+                _optionMenu(Icons.abc, 'Hola'),
+              ],
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: TextButton.icon(
-              onPressed: _closeSesion,
-              label: const TextTitleWidget(
-                title: 'Cerrar Sesión',
-                showShadow: false,
-                color: AppTheme.white,
-              ),
-              icon: const Icon(
-                Icons.logout_outlined,
-                color: AppTheme.white,
-                size: 24,
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: _closeSesion,
+                label: const TextTitleWidget(
+                  title: 'Cerrar Sesión',
+                  showShadow: false,
+                  color: AppTheme.white,
+                ),
+                icon: const Icon(
+                  Icons.logout_outlined,
+                  color: AppTheme.white,
+                  size: 24,
+                ),
               ),
             ),
           )
@@ -69,7 +97,26 @@ class _MenuWidgetState extends State<MenuWidget> {
     );
   }
 
-  _closeSesion()async {
+  _optionMenu(IconData icon, String titleOption) {
+    
+    return TextButton.icon(
+      style: TextButton.styleFrom(
+        fixedSize: Size(context.screenWidth, 50),
+        alignment: Alignment.centerLeft,
+        shape: RoundedRectangleBorder(),
+        splashFactory: InkSplash.splashFactory
+      ),
+        onPressed: () {},
+        label: TextTitleWidget(
+          title: titleOption,
+          color: AppTheme.white,
+          showShadow: false,
+        ),
+        icon: Icon(icon, size: 24, color: AppTheme.white,),
+        );
+  }
+
+  _closeSesion() async {
     await widget.controller.close!();
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
     final closeSesionKey = GlobalHelper.genKey();

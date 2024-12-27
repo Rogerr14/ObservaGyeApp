@@ -28,7 +28,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -40,17 +40,17 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                TextFormFieldWidget(
+                const TextFormFieldWidget(
                   hintText: 'Nombre de la especie',
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 DateTimePickerWidget(
@@ -78,16 +78,16 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                     );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                TextFormFieldWidget(
+                const TextFormFieldWidget(
                   hintText: 'Ubicación',
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                TextFormFieldWidget(
+                const TextFormFieldWidget(
                   hintText: 'Agregar una nota...',
                   maxLines: 4,
                 ),

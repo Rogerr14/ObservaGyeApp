@@ -3,6 +3,8 @@
         android:label="observa_gye_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyC0GN2PAMAK58RmY05Gw-MddSxOOhj90Ec"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

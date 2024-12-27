@@ -4,7 +4,6 @@ import 'package:observa_gye_app/modules/observation_detail/page/observation_deta
 import 'package:observa_gye_app/modules/principal_modules/home/widget/card_observation_widget.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
-import 'package:observa_gye_app/shared/widget/layout.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 

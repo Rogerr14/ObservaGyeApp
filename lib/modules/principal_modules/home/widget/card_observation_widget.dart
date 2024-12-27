@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
@@ -32,7 +31,7 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
         elevation: 1,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: AppTheme.primaryColor, width: 0.5)),
+            side: const BorderSide(color: AppTheme.primaryColor, width: 0.5)),
         child: SizedBox(
           width: size.width,
           child: Padding(

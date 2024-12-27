@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class AlertModal extends StatefulWidget {
   final String? summoner;
-  const AlertModal({Key? key, this.summoner}) : super(key: key);
+  const AlertModal({super.key, this.summoner});
 
   @override
   State<AlertModal> createState() => _AlertModalState();

@@ -84,6 +84,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             openCurve: Curves.easeInOut,
             mainScreenScale: 0,
             slideWidth: size.width * 0.7,
+            menuScreenWidth: size.width,
             closeCurve: Curves.elasticInOut,
             menuScreen:  MenuWidget(controller: _drawerController,),
             // mainScreen: CustomScrollView(

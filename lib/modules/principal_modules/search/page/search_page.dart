@@ -14,18 +14,16 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            child: TextFormFieldWidget(
-              hintText: 'Buscar...',
-              suffixIcon: Icon(Icons.search, size: 30, color: AppTheme.primaryColor,),
-            ),
-          )
-        ],
-      ),
+    return const Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child:  TextFormFieldWidget(
+            hintText: 'Buscar...',
+            suffixIcon: Icon(Icons.search, size: 30, color: AppTheme.primaryColor,),
+          ),
+        )
+      ],
     );
   }
 }

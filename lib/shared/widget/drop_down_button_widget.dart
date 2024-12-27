@@ -47,15 +47,15 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
           // },
           isExpanded: true,
           //isDense : false,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize:  20
           ),
           decoration: InputDecoration(
-             errorStyle: TextStyle(
+             errorStyle: const TextStyle(
               fontSize: 12,
               color: AppTheme.error,
             ),
-             hintStyle: TextStyle(
+             hintStyle: const TextStyle(
                color: AppTheme.primaryColor,
                fontSize:  30,
                fontWeight: FontWeight.normal,
@@ -86,7 +86,7 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
           ),
           hint: Text(
             widget.hint ?? '',
-            style: TextStyle(
+            style: const TextStyle(
               color: AppTheme.primaryColor,
               fontSize: 14,
               fontWeight: FontWeight.normal,
@@ -96,9 +96,9 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
           onChanged: widget.onChanged,
           value: widget.value,
           validator: widget.validator,
-          buttonStyleData: ButtonStyleData(
+          buttonStyleData: const ButtonStyleData(
             height:  18,
-            overlayColor: MaterialStatePropertyAll(AppTheme.white),
+            overlayColor: WidgetStatePropertyAll(AppTheme.white),
             elevation: 0,
             padding: EdgeInsets.only(right: 8),
           ),
@@ -118,14 +118,14 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
             offset: const Offset(0, -48),
             scrollbarTheme: ScrollbarThemeData(
               radius: const Radius.circular(10),
-              thickness: MaterialStateProperty.all<double>(6),
-              thumbVisibility: MaterialStateProperty.all<bool>(true),
+              thickness: WidgetStateProperty.all<double>(6),
+              thumbVisibility: WidgetStateProperty.all<bool>(true),
             ),
           ),
         
           menuItemStyleData:  MenuItemStyleData(
             height:  40,
-            padding: EdgeInsets.only(left: 14, right: 14),
+            padding: const EdgeInsets.only(left: 14, right: 14),
              selectedMenuItemBuilder: (context, child) {
               return Container(
                 height: 40,

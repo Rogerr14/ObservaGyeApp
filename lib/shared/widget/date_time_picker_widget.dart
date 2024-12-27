@@ -27,7 +27,7 @@ class DateTimePickerWidget extends StatelessWidget {
               }
               return null;
             },
-        suffixIcon: Icon(Icons.calendar_month_sharp, size:24,color: AppTheme.primaryColor,),
+        suffixIcon: const Icon(Icons.calendar_month_sharp, size:24,color: AppTheme.primaryColor,),
       ),
     );
   }

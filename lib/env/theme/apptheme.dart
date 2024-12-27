@@ -16,10 +16,10 @@ class AppTheme {
   static const String logoApp = 'assets/Observa_logo.svg';
   static const String ilustrationSplash = 'assets/ilustration_splash.png';
   static const String plantSvg = "assets/hoja.png";
-
+  static const String citizenScienceImage = "assets/citizen_science.png";
+  static const String connectionImage = "assets/connection.png";
+  static const String observationImage = "assets/observation.png";
   static const String loading = "assets/loading.gif";
-
-
 
   //Icons App
   static const String icon404Path = 'assets/404.svg';
@@ -32,7 +32,6 @@ class AppTheme {
   static const String iconSearch = "assets/Search.svg";
   static const String iconMap = "assets/IconMap.svg";
   static const String iconUser = "assets/user.png";
-
 
   ThemeData theme() {
     return ThemeData(
@@ -52,7 +51,7 @@ class AppTheme {
 
       // ),
       fontFamily: 'Dubai',
-      
+
       useMaterial3: true,
     );
   }
