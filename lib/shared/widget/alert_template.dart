@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/button_general_widget.dart';
+import 'package:observa_gye_app/shared/widget/filled_button.dart';
+import 'package:observa_gye_app/shared/widget/text_button_widget.dart';
 // import 'package:flutter_svg/svg.dart';
 
 import 'package:provider/provider.dart';
@@ -309,6 +311,57 @@ class CustomDatePickerAlert extends StatelessWidget {
   }
 }
 
+
+
+class ConfirmContent extends StatelessWidget {
+  final String message;
+  final void Function() confirm;
+  final void Function() cancel;
+  const ConfirmContent(
+      {super.key,
+      required this.message,
+      required this.confirm,
+      required this.cancel});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    // final responsive = Responsive(context);
+    return Column(
+      children: [
+        SizedBox(height: size.height * 0.015),
+        //SvgPicture.asset(AppTheme.iconCheckPath),
+        const SizedBox(height: 15),
+        messageAlerts(size, message: message, fontSize: 17),
+        const SizedBox(height: 25),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButtonWidget(onPressed: cancel, text: 'Cancelar', fontSize: 17,),
+            SizedBox(width: size.width * 0.08),
+            FilledButtonWidget(onPressed: confirm, width: size.width * 0.05, text: 'Confirmar',color: AppTheme.white, )
+          ],
+        ),
+        SizedBox(height: size.height * 0.01),
+      ],
+    );
+  }
+}
+
+Padding messageAlerts(Size size, {required String message, required double fontSize}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+    child: Text(
+      message,
+      textAlign: TextAlign.center,
+      style:  TextStyle(
+        fontSize: fontSize,
+        fontWeight: FontWeight.w700,
+        color: AppTheme.primaryColor,
+      ),
+    ),
+  );
+}
 // class OkGeneric extends StatelessWidget {
 //   final GlobalKey keyToClose;
 //   final String message;

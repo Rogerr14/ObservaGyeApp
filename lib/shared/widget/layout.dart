@@ -85,7 +85,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             mainScreenScale: 0,
             slideWidth: size.width * 0.7,
             closeCurve: Curves.elasticInOut,
-            menuScreen: const MenuWidget(),
+            menuScreen:  MenuWidget(controller: _drawerController,),
             // mainScreen: CustomScrollView(
             //   // physics: NeverScrollableScrollPhysics(),
             //   slivers: [
