@@ -103,7 +103,6 @@ class _MenuWidgetState extends State<MenuWidget> {
       style: TextButton.styleFrom(
         fixedSize: Size(context.screenWidth, 50),
         alignment: Alignment.centerLeft,
-        shape: RoundedRectangleBorder(),
         splashFactory: InkSplash.splashFactory
       ),
         onPressed: () {},
