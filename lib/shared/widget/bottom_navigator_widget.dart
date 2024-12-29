@@ -7,10 +7,11 @@ import 'package:provider/provider.dart';
 
 class ButtonNavigartorBarItem extends StatelessWidget {
   const ButtonNavigartorBarItem(
-      {super.key, required this.fp, required this.iconSelect});
+      {super.key, required this.fp, required this.iconSelect, required this.selecPage});
 
   final FunctionalProvider fp;
   final ButtonNavigatorBarItem iconSelect;
+  final Function() selecPage;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class ButtonNavigartorBarItem extends StatelessWidget {
           if (iconSelect.index == index) return;
           fp.setIconBottomNavigationBarItem(
               ButtonNavigatorBarItem.values[index]);
+          selecPage();
         },
       ),
     );

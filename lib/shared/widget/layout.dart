@@ -2,6 +2,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/page/generate_alert_page.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/page/generate_observation_page.dart';
@@ -18,10 +19,10 @@ import 'package:provider/provider.dart';
 
 class LayoutWidget extends StatefulWidget {
   final String? nameInterceptor;
-  final Widget? child;
+   Widget? child;
   final GlobalKey<State<StatefulWidget>>? keyDismiss;
   final bool requiredStack;
-  const LayoutWidget(
+   LayoutWidget(
       {super.key,
       this.nameInterceptor,
       this.child,
@@ -37,10 +38,19 @@ class _LayoutWidgetState extends State<LayoutWidget> {
 
   late FunctionalProvider fp;
 
+  XFile? image;
+  ImagePicker picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
-
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      
+    _selectWidgetPage();
+    setState(() {
+      
+    });
+    },);
     fp = Provider.of<FunctionalProvider>(context, listen: false);
     BackButtonInterceptor.add(_backButton,
         name: widget.nameInterceptor, context: context);
@@ -176,13 +186,12 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(50))),
                   child: SingleChildScrollView(
-                    child: fp.pages.isEmpty
-                        ? body(iconSelect: iconSelect)
-                        : widget.child,
+                    child: widget.child
                   )),
               bottomNavigationBar: ButtonNavigartorBarItem(
                 iconSelect: iconSelect,
                 fp: fp,
+                selecPage: _selectWidgetPage,
               ),
             ),
           ),
@@ -193,21 +202,43 @@ class _LayoutWidgetState extends State<LayoutWidget> {
     );
   }
 
-  Widget? body({required ButtonNavigatorBarItem iconSelect}) {
-    switch (iconSelect) {
+  _selectWidgetPage() async{
+    switch (fp.buttonNavigatorBarItem) {
       case ButtonNavigatorBarItem.iconMenuHome:
         // fp.clearAllAlert();
-        return const HomePage();
+        // return const HomePage();
+        widget.child = const HomePage();
+        break;
       case ButtonNavigatorBarItem.iconAlert:
-        return const GenerateAlertage();
+        image = await picker.pickImage(source: ImageSource.camera);
+        GlobalHelper.logger.w(image != null);
+        if(image != null){
+        widget.child =GenerateAlertage();
+
+        }else{
+          fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
+          widget.child = const HomePage();
+        }
+         break;
       case ButtonNavigatorBarItem.iconSearch:
-        return const SearchPage();
+        widget.child = SearchPage();
+         break;
       case ButtonNavigatorBarItem.iconMyAport:
-        return const MyAportsPage();
+        widget.child = MyAportsPage();
+         break;
       case ButtonNavigatorBarItem.iconObservation:
-        return const GenerateObservationPage();
+      image = await picker.pickImage(source: ImageSource.camera);
+      if(image != null){
+        widget.child = const GenerateObservationPage();
+
+      }else{
+        widget.child = const HomePage();
+        fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
+      }
+         break;
       default:
-        return widget.child;
+        widget.child = HomePage();
+         break;
     }
   }
 }
