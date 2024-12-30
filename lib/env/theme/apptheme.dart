@@ -11,6 +11,9 @@ class AppTheme {
   static const Color error = Color(0xffF94838);
   static const Color hinText = Color.fromARGB(255, 163, 160, 160);
   static const Color grayShadow = Color(0xFFD9D9D9);
+  static const Color yellow = Color(0xFFffd97d);
+  static const Color green = Color(0xFF70e000);
+  static const Color red = Color(0xFFee6055);
 
   //image routes
   static const String logoApp = 'assets/Observa_logo.svg';

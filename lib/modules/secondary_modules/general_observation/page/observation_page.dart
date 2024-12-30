@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:observa_gye_app/modules/principal_modules/my_aports/widget/list_widget.dart';
 import 'package:observa_gye_app/shared/widget/card_lista_widget.dart';
 import 'package:observa_gye_app/shared/widget/layout.dart';
 import 'package:observa_gye_app/shared/widget/layout_generic.dart';
@@ -41,7 +42,7 @@ class _ObservationPageState extends State<ObservationPage> {
               Expanded(
                 child: ListView.builder(
                    itemCount: 25,
-                  itemBuilder: (context, index) => CardListaWidget(ulrImagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg', title: 'jola', subtitle: 'ss', onPressed: (){}),),
+                  itemBuilder: (context, index) => ListWidget(),)
               ),
             
           ],

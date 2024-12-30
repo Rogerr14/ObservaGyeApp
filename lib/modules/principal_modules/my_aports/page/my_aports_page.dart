@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/principal_modules/my_aports/widget/my_alerts_page.dart';
+import 'package:observa_gye_app/modules/principal_modules/my_aports/widget/my_observation_page.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
 class MyAportsPage extends StatefulWidget {
@@ -66,8 +68,8 @@ class _MyAportsPageState extends State<MyAportsPage>
              physics: const NeverScrollableScrollPhysics(),
              controller: _tabController,
              children: [
-               Container(color: AppTheme.hinText,),
-               Container(color: AppTheme.primaryColor,)
+               MyObservationPage(),
+               MyAlertsPage()
              ],
            ),
          ),

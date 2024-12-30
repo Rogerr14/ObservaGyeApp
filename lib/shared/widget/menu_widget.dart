@@ -4,6 +4,7 @@ import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/page/generate_observation_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_alerts/page/alerts_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/page/observation_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/map_observation/page/maps_observation_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/profile/page/profile_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -74,7 +75,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 const Divider(),
                 _optionMenu(
                     icon: Icons.remove_red_eye_sharp,
-                    titleOption: 'OBSERVACIONES',
+                    titleOption: 'OBSERVACIONES GENERALES',
                     onPressed: () async {
                       final keyObservation = GlobalHelper.genKey();
                       fp.addPage(
@@ -88,7 +89,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 const Divider(),
                 _optionMenu(
                     icon: Icons.warning_rounded,
-                    titleOption: 'ALERTAS',
+                    titleOption: 'ALERTAS GENERALES',
                     onPressed: () async {
                       final keyAlerts = GlobalHelper.genKey();
                       fp.addPage(
@@ -107,7 +108,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                     final keyMapObservation = GlobalHelper.genKey();
                     fp.addPage(
                         key: keyMapObservation,
-                        content: ObservationPage(
+                        content: MapsObservationPage(
                           key: keyMapObservation,
                           keyDismiss: keyMapObservation,
                         ));

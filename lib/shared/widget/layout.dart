@@ -86,9 +86,11 @@ class _LayoutWidgetState extends State<LayoutWidget> {
     return Stack(
       children: [
         Scaffold(
-          extendBodyBehindAppBar: true,
+          // extendBodyBehindAppBar: true,
+          resizeToAvoidBottomInset: false,
           backgroundColor: AppTheme.primaryColor,
           body: ZoomDrawer(
+            
             controller: _drawerController,
             menuBackgroundColor: AppTheme.primaryColor,
             angle: 0,
@@ -156,6 +158,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             //   ],
             // ),
             mainScreen: Scaffold(
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 // primary: false,
                 automaticallyImplyLeading: false,
@@ -176,7 +179,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
               ),
               backgroundColor: AppTheme.primaryColor,
               body: Container(
-                  clipBehavior: Clip.antiAlias,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   width: size.width,
                   height: size.height,
                   decoration: const BoxDecoration(
