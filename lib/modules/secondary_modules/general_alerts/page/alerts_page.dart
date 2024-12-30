@@ -4,21 +4,21 @@ import 'package:observa_gye_app/shared/widget/layout.dart';
 import 'package:observa_gye_app/shared/widget/layout_generic.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
-class ObservationPage extends StatefulWidget {
+class AlertsPage extends StatefulWidget {
   final GlobalKey<State<StatefulWidget>> keyDismiss;
-  const ObservationPage({super.key, required this.keyDismiss});
+  const AlertsPage({super.key, required this.keyDismiss});
 
   @override
-  State<ObservationPage> createState() => _ObservationPageState();
+  State<AlertsPage> createState() => _AlertsPageState();
 }
 
-class _ObservationPageState extends State<ObservationPage> {
+class _AlertsPageState extends State<AlertsPage> {
   @override
   Widget build(BuildContext context) {
     return LayoutPageGeneric(
         keyDismiss: widget.keyDismiss,
         requiredStack: false,
-        nameInterceptor: 'ObservationPage',
+        nameInterceptor: 'AlertsPage',
         child:  Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,7 +28,7 @@ class _ObservationPageState extends State<ObservationPage> {
                 padding: EdgeInsets.symmetric(
                   horizontal: 20,
                 ),
-                child: TextTitleWidget(title: 'Observaciones', size: 20,),
+                child: TextTitleWidget(title: 'Alertas', size: 20,),
               ),
             ),
             SizedBox(height: 30,),

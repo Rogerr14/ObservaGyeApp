@@ -116,13 +116,13 @@ class _FormLoginState extends State<FormLogin> {
               }, 
             ),
             SizedBox(height:  size.height*0.02,),
-            TextButtonWidget(text: 'Olvidé mi contraseña', onPressed: (){},),
+            TextButtonWidget(text: 'Olvidé mi contraseña', fontSize: 15,onPressed: (){},),
             
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:  [
-              const TextSubtitleWidget(subtitle: '¿No tienes cuenta?'),
-              TextButtonWidget(text: 'Registrate', onPressed: (){
+              const TextSubtitleWidget(subtitle: '¿No tienes cuenta?', size: 15,),
+              TextButtonWidget(text: 'Registrate', fontSize: 15,onPressed: (){
                 final registerPageKey = GlobalHelper.genKey();
                 fp.addPage(key: registerPageKey, content: RegisterPage(
                   key: registerPageKey,

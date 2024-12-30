@@ -1,8 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:observa_gye_app/modules/observation_detail/page/observation_detail_page.dart';
 import 'package:observa_gye_app/modules/principal_modules/home/widget/card_observation_widget.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -17,17 +19,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Align(
+             Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TextTitleWidget(title: 'Ultimas Observaciones'),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextTitleWidget(title: 'Ultimas Observaciones', size: responsive.isTablet ? responsive.wp(7.2) : responsive.wp(5) ,),
                 )),
             const SizedBox(
               height: 20,
@@ -91,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
               options: FlutterCarouselOptions(
-                height: size.height * 0.2,
+                height: responsive.hp(22),
                 showIndicator: false,
                 // slideIndicator: CircularSlideIndicator(),
               ),
@@ -114,20 +117,14 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _cardWidget(
+                       '2,500',
                       'Observaciones',
-                      const TextTitleWidget(
-                        title: '2,500',
-                        size: 40,
-                      ),
-                      size,
+                       responsive
                     ),
                     _cardWidget(
+                      '350',
                       'Alertas',
-                      const TextTitleWidget(
-                        title: '350',
-                        size: 40,
-                      ),
-                      size,
+                       responsive
                     )
                   ],
                 ),
@@ -135,12 +132,9 @@ class _HomePageState extends State<HomePage> {
                   height: 20,
                 ),
                 _cardWidget(
+                  '2,300',
                   'Usuarios',
-                  const TextTitleWidget(
-                    title: '2,300',
-                    size: 40,
-                  ),
-                  size,
+                  responsive
                 )
               ],
             )
@@ -150,18 +144,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardWidget(String title, Widget child, Size size) {
+  Widget _cardWidget(String quantity, String title,  Responsive responsive) {
     return SizedBox(
-      width: size.width * 0.35,
-      height: size.height * 0.15,
+      width: responsive.wp(40),
+      height: responsive.hp(15),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            child,
+            TextTitleWidget(
+                    title: quantity,
+                    size: responsive.wp(10),
+                  ),
             TextTitleWidget(
               title: title,
-              size: 20,
+              size: responsive.wp(4.5),
             ),
           ],
         ),

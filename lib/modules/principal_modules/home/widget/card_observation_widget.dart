@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
@@ -25,6 +26,7 @@ class CardObservationWidget extends StatefulWidget {
 class _CardObservationWidgetState extends State<CardObservationWidget> {
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
     final size = MediaQuery.of(context).size;
     return Card(
         color: AppTheme.grayShadow,
@@ -35,7 +37,7 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
         child: SizedBox(
           width: size.width,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding:  EdgeInsets.symmetric(horizontal: responsive.wp(5), vertical: responsive.hp(2)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -48,23 +50,23 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
                       children: [
                         TextTitleWidget(
                           title: widget.nameObservation,
-                          size: 20,
-                        ),
-                        TextTitleWidget(
-                          title: widget.userObservation,
-                          size: 15,
+                          size: responsive.wp(5),
                         ),
                         TextSubtitleWidget(
                           subtitle: DateFormat('yyyy-MM-dd')
                               .format(widget.dateObservation),
-                          size: 14,
+                          size: responsive.wp(4),
+                        ),
+                        TextTitleWidget(
+                          title: widget.userObservation,
+                          size: responsive.wp(4),
                         ),
                       ],
                     ),
                     FilledButtonWidget(
                       text: 'Ver más',
-                      width: 10,
-                      height: 30,
+                      width: responsive.wp(25),
+                      height: responsive.hp(3),
                       onPressed: widget.onPress,
                     )
                   ],

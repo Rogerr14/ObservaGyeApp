@@ -19,10 +19,10 @@ import 'package:provider/provider.dart';
 
 class LayoutWidget extends StatefulWidget {
   final String? nameInterceptor;
-   Widget? child;
+  Widget? child;
   final GlobalKey<State<StatefulWidget>>? keyDismiss;
   final bool requiredStack;
-   LayoutWidget(
+  LayoutWidget(
       {super.key,
       this.nameInterceptor,
       this.child,
@@ -38,19 +38,20 @@ class _LayoutWidgetState extends State<LayoutWidget> {
 
   late FunctionalProvider fp;
 
+  Widget contain = const HomePage();
+
   XFile? image;
   ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      
-    _selectWidgetPage();
-    setState(() {
-      
-    });
-    },);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        _selectWidgetPage();
+        setState(() {});
+      },
+    );
     fp = Provider.of<FunctionalProvider>(context, listen: false);
     BackButtonInterceptor.add(_backButton,
         name: widget.nameInterceptor, context: context);
@@ -96,7 +97,9 @@ class _LayoutWidgetState extends State<LayoutWidget> {
             slideWidth: size.width * 0.7,
             menuScreenWidth: size.width,
             closeCurve: Curves.elasticInOut,
-            menuScreen:  MenuWidget(controller: _drawerController,),
+            menuScreen: MenuWidget(
+              controller: _drawerController,
+            ),
             // mainScreen: CustomScrollView(
             //   // physics: NeverScrollableScrollPhysics(),
             //   slivers: [
@@ -157,16 +160,11 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                 // primary: false,
                 automaticallyImplyLeading: false,
                 leading: IconButton(
-                    onPressed: fp.pages.isEmpty
-                        ? () {
-                            _drawerController.open!();
-                          }
-                        : () {
-                            fp.dismissPage(key: widget.keyDismiss!);
-                          },
-                    icon: fp.pages.isEmpty
-                        ? const Icon(Icons.menu)
-                        : const Icon(Icons.arrow_back_ios_new_sharp)),
+                  onPressed: () {
+                    _drawerController.open!();
+                  },
+                  icon: const Icon(Icons.menu),
+                ),
                 backgroundColor: AppTheme.white,
                 title: SvgPicture.asset(
                   AppTheme.logoApp,
@@ -185,9 +183,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                       color: AppTheme.white,
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(50))),
-                  child: SingleChildScrollView(
-                    child: widget.child
-                  )),
+                  child: SingleChildScrollView(child: contain)),
               bottomNavigationBar: ButtonNavigartorBarItem(
                 iconSelect: iconSelect,
                 fp: fp,
@@ -202,43 +198,49 @@ class _LayoutWidgetState extends State<LayoutWidget> {
     );
   }
 
-  _selectWidgetPage() async{
+  _selectWidgetPage() async {
     switch (fp.buttonNavigatorBarItem) {
       case ButtonNavigatorBarItem.iconMenuHome:
         // fp.clearAllAlert();
         // return const HomePage();
-        widget.child = const HomePage();
+        contain = const HomePage();
         break;
       case ButtonNavigatorBarItem.iconAlert:
         image = await picker.pickImage(source: ImageSource.camera);
         GlobalHelper.logger.w(image != null);
-        if(image != null){
-        widget.child =GenerateAlertage();
-
-        }else{
-          fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
-          widget.child = const HomePage();
+        if (image != null) {
+          contain = GenerateAlertage();
+        } else {
+          fp.setIconBottomNavigationBarItem(
+              ButtonNavigatorBarItem.iconMenuHome);
+          contain = const HomePage();
         }
-         break;
+        setState(() {
+          
+        });
+        break;
       case ButtonNavigatorBarItem.iconSearch:
-        widget.child = SearchPage();
-         break;
+        contain = SearchPage();
+        break;
       case ButtonNavigatorBarItem.iconMyAport:
-        widget.child = MyAportsPage();
-         break;
+        contain = MyAportsPage();
+        break;
       case ButtonNavigatorBarItem.iconObservation:
-      image = await picker.pickImage(source: ImageSource.camera);
-      if(image != null){
-        widget.child = const GenerateObservationPage();
-
-      }else{
-        widget.child = const HomePage();
-        fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
-      }
-         break;
+        image = await picker.pickImage(source: ImageSource.camera);
+        if (image != null) {
+          contain = const GenerateObservationPage();
+        } else {
+          contain = const HomePage();
+          fp.setIconBottomNavigationBarItem(
+              ButtonNavigatorBarItem.iconMenuHome);
+        }
+        setState(() {
+          
+        });
+        break;
       default:
-        widget.child = HomePage();
-         break;
+        contain = HomePage();
+        break;
     }
   }
 }

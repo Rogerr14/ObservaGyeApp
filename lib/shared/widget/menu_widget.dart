@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_observation/page/generate_observation_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/page/alerts_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_observation/page/observation_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/profile/page/profile_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
@@ -19,6 +23,7 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
+    final fp = Provider.of<FunctionalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 90, 0, 20),
       child: Column(
@@ -27,44 +32,104 @@ class _MenuWidgetState extends State<MenuWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        AppTheme.iconUser,
-                        height: 50,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextTitleWidget(
-                            title: 'Usuario Usuario',
-                            color: AppTheme.white,
-                            showShadow: false,
-                          ),
-                          TextSubtitleWidget(
-                            subtitle: 'Ver perfil',
-                            color: AppTheme.white,
-                          )
-                        ],
-                      ),
-                    ],
+                InkWell(
+                  onTap: () async {
+                    final keyUserPage = GlobalHelper.genKey();
+                    fp.addPage(
+                        key: keyUserPage,
+                        content: ProfilePage(
+                            key: keyUserPage, keyDismiss: keyUserPage));
+                    await widget.controller.close!();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          AppTheme.iconUser,
+                          height: 50,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextTitleWidget(
+                              title: 'Usuario Usuario',
+                              color: AppTheme.white,
+                              showShadow: false,
+                            ),
+                            TextSubtitleWidget(
+                              subtitle: 'Ver perfil',
+                              color: AppTheme.white,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Divider(),
-                _optionMenu(Icons.remove_red_eye_sharp, 'OBSERVACIONES'),
-                Divider(),
-                _optionMenu(Icons.warning_rounded, 'ALERTAS'),
-                Divider(),
-                _optionMenu(Icons.map_sharp, 'MAPA DE OBSERVACIONES'),
-                Divider(),
-                _optionMenu(Icons.settings, 'CONFIGURACION'),
-                Divider(),
+                const Divider(),
+                _optionMenu(
+                    icon: Icons.remove_red_eye_sharp,
+                    titleOption: 'OBSERVACIONES',
+                    onPressed: () async {
+                      final keyObservation = GlobalHelper.genKey();
+                      fp.addPage(
+                          key: keyObservation,
+                          content: ObservationPage(
+                            key: keyObservation,
+                            keyDismiss: keyObservation,
+                          ));
+                      await widget.controller.close!();
+                    }),
+                const Divider(),
+                _optionMenu(
+                    icon: Icons.warning_rounded,
+                    titleOption: 'ALERTAS',
+                    onPressed: () async {
+                      final keyAlerts = GlobalHelper.genKey();
+                      fp.addPage(
+                          key: keyAlerts,
+                          content: AlertsPage(
+                            key: keyAlerts,
+                            keyDismiss: keyAlerts,
+                          ));
+                      await widget.controller.close!();
+                    }),
+                const Divider(),
+                _optionMenu(
+                  icon: Icons.map_sharp,
+                  titleOption: 'MAPA DE OBSERVACIONES',
+                  onPressed: () async {
+                    final keyMapObservation = GlobalHelper.genKey();
+                    fp.addPage(
+                        key: keyMapObservation,
+                        content: ObservationPage(
+                          key: keyMapObservation,
+                          keyDismiss: keyMapObservation,
+                        ));
+                    await widget.controller.close!();
+                  },
+                ),
+                const Divider(),
+                _optionMenu(
+                  icon: Icons.settings,
+                  titleOption: 'CONFIGURACION',
+                  onPressed: () async {
+                    final keySettingsApp = GlobalHelper.genKey();
+                    fp.addPage(
+                        key: keySettingsApp,
+                        content: ObservationPage(
+                          key: keySettingsApp,
+                          keyDismiss: keySettingsApp,
+                        ));
+                    await widget.controller.close!();
+                  },
+                ),
+                const Divider(),
               ],
             ),
           ),
@@ -92,22 +157,27 @@ class _MenuWidgetState extends State<MenuWidget> {
     );
   }
 
-  _optionMenu(IconData icon, String titleOption) {
-    
+  _optionMenu(
+      {required IconData icon,
+      required String titleOption,
+      required Function() onPressed}) {
     return TextButton.icon(
       style: TextButton.styleFrom(
-        fixedSize: Size(context.screenWidth, 50),
-        alignment: Alignment.centerLeft,
-        splashFactory: InkSplash.splashFactory
+          fixedSize: Size(context.screenWidth, 50),
+          alignment: Alignment.centerLeft,
+          splashFactory: InkSplash.splashFactory),
+      onPressed: onPressed,
+      label: TextTitleWidget(
+        title: titleOption,
+        color: AppTheme.white,
+        showShadow: false,
       ),
-        onPressed: () {},
-        label: TextTitleWidget(
-          title: titleOption,
-          color: AppTheme.white,
-          showShadow: false,
-        ),
-        icon: Icon(icon, size: 24, color: AppTheme.white,),
-        );
+      icon: Icon(
+        icon,
+        size: 24,
+        color: AppTheme.white,
+      ),
+    );
   }
 
   _closeSesion() async {
