@@ -212,7 +212,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
         image = await picker.pickImage(source: ImageSource.camera);
         GlobalHelper.logger.w(image != null);
         if (image != null) {
-          contain = GenerateAlertage();
+          contain = GenerateAlertage(image: image!,);
         } else {
           fp.setIconBottomNavigationBarItem(
               ButtonNavigatorBarItem.iconMenuHome);

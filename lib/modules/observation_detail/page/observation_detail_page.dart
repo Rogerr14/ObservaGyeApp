@@ -41,6 +41,9 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
                 title: 'Loro Nariz Roja',
                 size: 20,
               ),
+              Visibility(
+                          visible: !widget.isGeneral,
+                          child: _statePublish(0, responsive)),
               const SizedBox(
                 height: 20,
               ),
@@ -135,11 +138,14 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
                   TextSubtitleWidget(subtitle: '24/07/2024')
                 ],
               ),
-              Row(
-                children: [
-                  TextTitleWidget(title: 'Usuario: '),
-                  TextSubtitleWidget(subtitle: 'JPerez')
-                ],
+              Visibility(
+                visible: widget.isGeneral,
+                child: Row(
+                  children: [
+                    TextTitleWidget(title: 'Usuario: '),
+                    TextSubtitleWidget(subtitle: 'JPerez')
+                  ],
+                ),
               ),
               Wrap(
                 children: [
@@ -154,5 +160,44 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
         ),
       ),
     );
+  }
+
+   _statePublish(int status, Responsive responsive) {
+    switch (status) {
+      case 0:
+        return Container(
+          width: responsive.wp(25),
+          height: responsive.hp(3),
+          decoration: BoxDecoration(
+              color: AppTheme.yellow, borderRadius: BorderRadius.circular(5)),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Enviado')),
+        );
+
+      case 1:
+        return Container(
+          width: responsive.wp(25),
+          height: responsive.hp(3),
+          decoration: BoxDecoration(
+              color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+        );
+      case 2:
+        return Container(
+          width: responsive.wp(25),
+          height: responsive.hp(3),
+          decoration: BoxDecoration(
+              color: AppTheme.red, borderRadius: BorderRadius.circular(5)),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
+        );
+
+      default:
+        return Container(
+          width: responsive.wp(25),
+          height: responsive.hp(3),
+          decoration: BoxDecoration(
+              color: AppTheme.error, borderRadius: BorderRadius.circular(5)),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+        );
+    }
   }
 }

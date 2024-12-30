@@ -12,9 +12,11 @@ import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
 class GenerateAlertage extends StatefulWidget {
+  final XFile image;
   // final GlobalKey<State<StatefulWidget>> keyDismiss;
   const GenerateAlertage({
     super.key,
+    required this.image,
   });
 
   @override
@@ -22,12 +24,13 @@ class GenerateAlertage extends StatefulWidget {
 }
 
 class _GenerateAlertageState extends State<GenerateAlertage> {
-  XFile? image;
+  // XFile? image;
   final ImagePicker picker = ImagePicker();
   String selectAlert = '';
-   DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
   TextEditingController _controllerdateTime = TextEditingController();
+  List<XFile> imagenes = [];
 
   List<DropdownMenuItem<String>> alertType = [
     const DropdownMenuItem(
@@ -43,6 +46,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   @override
   void initState() {
     // _takePick();
+    imagenes.add(widget.image);
     super.initState();
   }
 
@@ -70,11 +74,20 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
               ),
             ),
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const TextTitleWidget(
+                  title: 'Tipo de Alerta',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 DropDownButtonWidget(
                   hint: 'Seleccione la alerta...',
                   validator: (value) {
@@ -86,13 +99,17 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   items: alertType,
                   onChanged: (value) {
                     selectAlert = value!;
-                    setState(() {
-                      
-                    });
+                    setState(() {});
                   },
                 ),
                 const SizedBox(
                   height: 20,
+                ),
+                const TextTitleWidget(
+                  title: 'Fecha de alerta',
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 DateTimePickerWidget(
                   controller: _controllerdateTime,
@@ -122,14 +139,39 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                 const SizedBox(
                   height: 20,
                 ),
+                const TextTitleWidget(
+                  title: 'Ubicación Geográfica',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 const TextFormFieldWidget(
                   hintText: 'Ubicación',
-                  suffixIcon: Icon(Icons.public_rounded, size: 24, color: AppTheme.primaryColor,),
+                  suffixIcon: Icon(
+                    Icons.public_rounded,
+                    size: 24,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                 const TextFormFieldWidget(
+                const TextTitleWidget(
+                  title: 'Foto de Alerta',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: imagenes.map((e) => ClipRRect(child: Image.asset(e.path)),).toList(),
+                ),
+                const TextTitleWidget(
+                  title: 'Notas Adicionales',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const TextFormFieldWidget(
                   hintText: 'Agregar una nota...',
                   maxLines: 4,
                 ),

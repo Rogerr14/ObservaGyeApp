@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/observation_detail/page/observation_detail_page.dart';
+import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
+import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class ListWidget extends StatefulWidget {
   final bool isGeneral;
-  const ListWidget({super.key,  this.isGeneral = true});
+  const ListWidget({super.key, this.isGeneral = true});
 
   @override
   State<ListWidget> createState() => _ListWidgetState();
@@ -15,8 +19,18 @@ class _ListWidgetState extends State<ListWidget> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
+    final fp = Provider.of<FunctionalProvider>(context, listen: false);
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        final keyObservationDetail = GlobalHelper.genKey();
+        fp.addPage(
+            key: keyObservationDetail,
+            content: ObservationDetailPage(
+              isGeneral: widget.isGeneral,
+              keyPage: keyObservationDetail,
+              key: keyObservationDetail,
+            ));
+      },
       child: Column(
         children: [
           Padding(
@@ -42,11 +56,13 @@ class _ListWidgetState extends State<ListWidget> {
                       ),
                       TextSubtitleWidget(subtitle: '2024/02/13'),
                       Visibility(
-                        visible: !widget.isGeneral,
-                        child: _statePublish(0, responsive)),
-                        Visibility(
+                          visible: !widget.isGeneral,
+                          child: _statePublish(0, responsive)),
+                      Visibility(
                           visible: widget.isGeneral,
-                          child: TextSubtitleWidget(subtitle: 'User',))
+                          child: TextSubtitleWidget(
+                            subtitle: 'User',
+                          ))
                     ],
                   ),
                 ),
