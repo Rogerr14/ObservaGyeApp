@@ -191,6 +191,7 @@ class _MenuWidgetState extends State<MenuWidget> {
         content: ConfirmContent(
           message: 'Estás a punto de cerrar la sesión actual ¿Estás Seguro?',
           confirm: () {
+            fp.dismissAlert(key: closeSesionKey);
             GlobalHelper.navigateToPageRemove(context, '/login');
           },
           cancel: () {

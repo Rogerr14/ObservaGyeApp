@@ -78,8 +78,8 @@ class GlobalHelper {
       context,
       PageRouteBuilder(
         fullscreenDialog: true,
-         reverseTransitionDuration: const Duration(milliseconds: 100),
-        transitionDuration: const Duration(milliseconds: 100),
+         reverseTransitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 700),
         pageBuilder: (context, animation, _) => 
         FadeTransition(
           opacity: animation,
