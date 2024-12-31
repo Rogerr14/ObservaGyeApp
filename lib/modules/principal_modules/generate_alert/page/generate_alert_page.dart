@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/date_time_picker_widget.dart';
@@ -30,7 +34,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
   TextEditingController _controllerdateTime = TextEditingController();
-  List<XFile> imagenes = [];
+  List<File> imagenes = [];
 
   List<DropdownMenuItem<String>> alertType = [
     const DropdownMenuItem(
@@ -46,7 +50,9 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   @override
   void initState() {
     // _takePick();
-    imagenes.add(widget.image);
+    imagenes.add(File(widget.image.path));
+    imagenes.add(File(widget.image.path));
+    imagenes.add(File(widget.image.path));
     super.initState();
   }
 
@@ -57,6 +63,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
@@ -163,7 +170,60 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   height: 10,
                 ),
                 Row(
-                  children: imagenes.map((e) => ClipRRect(child: Image.asset(e.path)),).toList(),
+                  children: imagenes.length == 3
+                      ? imagenes
+                          .map(
+                            (e) => Stack(
+                              clipBehavior: Clip.antiAlias,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      e.path,
+                                      height: responsive.hp(10),
+                                    ),
+                                  ),
+                                ),
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: IconButton(onPressed: (){}, icon: Icon(Icons.highlight_remove_rounded))),
+                              ],
+                            ),
+                          )
+                          .toList()
+                      : imagenes.map(
+                          (e) {
+                            return Row(
+                              children: [
+                                ClipRRect(
+                                  child: Image.asset(
+                                    e.path,
+                                    height: responsive.hp(10),
+                                    width: responsive.wp(15),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                DottedBorder(
+                                  borderType: BorderType.RRect,
+                                  radius: Radius.circular(10),
+                                  // padding: EdgeInsets.all(6),
+                                  child: SizedBox(
+                                    height: responsive.hp(10),
+                                    width: responsive.wp(15),
+                                    child: Center(
+                                      child: Icon(Icons.add_a_photo, color: AppTheme.primaryColor, size: 24,),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        ).toList(),
                 ),
                 const TextTitleWidget(
                   title: 'Notas Adicionales',
