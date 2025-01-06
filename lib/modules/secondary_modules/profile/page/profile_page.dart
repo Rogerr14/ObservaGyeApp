@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/widget/layout_generic.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
@@ -16,8 +18,22 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool editable = false;
   TextEditingController _emailController = TextEditingController();
+  UserModel? userModel;
 
 
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+    
+  }
+
+  _getData()async{
+    userModel = await SecureStorage().getUserData();
+    setState(() {
+      
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -25,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
       keyDismiss: widget.keyDismiss,
       requiredStack: false,
       nameInterceptor: 'ProfilePage',
-      child: Padding(
+      child: userModel == null ? SizedBox(): Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
         ),
@@ -52,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Align(
               alignment: Alignment.center,
               child: TextTitleWidget(
-                title: 'User User',
+                title: '${userModel!.name} ${userModel!.lastName}',
                 size: responsive.wp(5.5),
               ),
             ),
@@ -65,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: TextTitleWidget(title: 'Correo'),
             ),
             
-            TextSubtitleWidget(subtitle: 'correo@correo.com'),
+            TextSubtitleWidget(subtitle: '${userModel!.email}'),
             const SizedBox(
               height: 20,
             ),
@@ -73,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
               alignment: Alignment.centerLeft,
               child: TextTitleWidget(title: 'Nombres'),
             ),
-            TextSubtitleWidget(subtitle: 'USUARIO NOMBRE'),
+            TextSubtitleWidget(subtitle:  userModel!.name),
             const SizedBox(
               height: 20,
             ),
@@ -81,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
               alignment: Alignment.centerLeft,
               child: TextTitleWidget(title: 'Apellidos'),
             ),
-            TextSubtitleWidget(subtitle: 'USUARIO APELLIDO'),
+            TextSubtitleWidget(subtitle: userModel!.lastName),
             const SizedBox(
               height: 20,
             ),
@@ -89,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
               alignment: Alignment.centerLeft,
               child: TextTitleWidget(title: 'Telefono'),
             ),
-            TextSubtitleWidget(subtitle: '0978907712'),
+            TextSubtitleWidget(subtitle: userModel!.phone),
             const SizedBox(
               height: 20,
             ),

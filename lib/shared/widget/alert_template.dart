@@ -362,63 +362,65 @@ Padding messageAlerts(Size size, {required String message, required double fontS
     ),
   );
 }
-// class OkGeneric extends StatelessWidget {
-//   final GlobalKey keyToClose;
-//   final String message;
-//   // final String? messageButton;
-//   final void Function()? onPress;
-//   // final bool closeSession;
 
-//   const OkGeneric(
-//       {super.key,
-//       // this.closeSession = false,
-//       required this.message,
-//       required this.keyToClose,
-//       // this.messageButton,
-//       this.onPress});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final size = MediaQuery.of(context).size;
-//     // final responsive = Responsive(context);
+class OkGeneric extends StatelessWidget {
+  final GlobalKey keyToClose;
+  final String message;
+  // final String? messageButton;
+  final void Function()? onPress;
+  // final bool closeSession;
 
-//     return Column(
-//       children: [
-//         Icon(
-//           Icons.check_circle,
-//           size: size.height * 0.07,
-//           color: AppTheme.geenOk,
-//         ),
-//         SizedBox(height: size.height * 0.01),
-//         Text(
-//           message,
-//           style: const TextStyle(
-//               fontSize: 20,
-//               color: AppTheme.primaryColor,
-//               fontWeight: FontWeight.bold),
-//         ),
+  const OkGeneric(
+      {super.key,
+      // this.closeSession = false,
+      required this.message,
+      required this.keyToClose,
+      // this.messageButton,
+      this.onPress});
 
-//         SizedBox(height: size.height * 0.03),
-//         ButtonGeneralWidget(
-//           nameButton: 'Aceptar',
-//           backgroundColor: AppTheme.error,
-//           height: 30,
-//           width: 120,
-//           textColor: AppTheme.white,
-//           onPressed: (onPress != null)
-//               ? onPress
-//               : () async {
-//                   final fp =
-//                       Provider.of<FunctionalProvider>(context, listen: false);
-//                   fp.dismissAlert(key: keyToClose);
-//                 },
-//         ),
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    // final responsive = Responsive(context);
 
-//         SizedBox(height: size.height * 0.01),
-//       ],
-//     );
-//   }
-// }
+    return Column(
+      children: [
+        Icon(
+          Icons.check_circle,
+          size: size.height * 0.07,
+          color: AppTheme.primaryColor,
+        ),
+        SizedBox(height: size.height * 0.01),
+        Text(
+          message,
+          style: const TextStyle(
+              fontSize: 20,
+              color: AppTheme.primaryColor,
+              fontWeight: FontWeight.bold),
+        ),
+
+        SizedBox(height: size.height * 0.03),
+        ButtonGeneralWidget(
+          nameButton: 'Aceptar',
+          backgroundColor: AppTheme.error,
+          height: 30,
+          width: 120,
+          textColor: AppTheme.white,
+          onPressed: (onPress != null)
+              ? onPress
+              : () async {
+                  final fp =
+                      Provider.of<FunctionalProvider>(context, listen: false);
+                  fp.dismissAlert(key: keyToClose);
+                },
+        ),
+
+        SizedBox(height: size.height * 0.01),
+      ],
+    );
+  }
+}
 
 // class CustomAlert extends StatelessWidget {
 //   final GlobalKey keyToClose;

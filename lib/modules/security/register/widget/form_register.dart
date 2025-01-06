@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/security/service/security_service.dart';
+import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
+import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
@@ -20,11 +23,35 @@ class _FormRegisterState extends State<FormRegister> {
   final _formRegisterKey = GlobalKey<FormState>();
   bool visibityPassword = false;
 
+
+
+  _registerUser()async{
+    final fp = Provider.of<FunctionalProvider>(context, listen: false);
+   SecurityService securityService = SecurityService();
+   final body = {
+  "id_rol": 2,
+  "nombres": _nameController.text,
+  "apellidos" : _lastNameController.text,
+  "correo": _emailController.text,
+  "password": _passwordController.text,
+  "telefono":_phoneController.text
+  };
+
+  final response = await securityService.createAccount(context, body);
+  if(!response.error){
+    final alertCreateAccountKey = GlobalHelper.genKey();
+    fp.showAlert(key: alertCreateAccountKey, content: AlertGeneric(content: OkGeneric(message: response.message, keyToClose: alertCreateAccountKey, onPress: (){
+      fp.dismissAlert(key: alertCreateAccountKey);
+      fp.dismissPage(key: widget.keyPage);
+    },)));
+  }
+}
+
   //Controllers
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -197,7 +224,9 @@ class _FormRegisterState extends State<FormRegister> {
                     height: 45,
                     borderRadius: 20,
                     onPressed: () {
-                      if (_formRegisterKey.currentState!.validate()) {}
+                      if (_formRegisterKey.currentState!.validate()) {
+                        _registerUser();
+                      }
                     },
                   ),
                 ],

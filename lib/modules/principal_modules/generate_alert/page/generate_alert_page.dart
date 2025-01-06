@@ -11,6 +11,7 @@ import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/date_time_picker_widget.dart';
 import 'package:observa_gye_app/shared/widget/drop_down_button_widget.dart';
+import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -29,12 +30,14 @@ class GenerateAlertage extends StatefulWidget {
 
 class _GenerateAlertageState extends State<GenerateAlertage> {
   // XFile? image;
+  late FunctionalProvider fp;
   final ImagePicker picker = ImagePicker();
   String selectAlert = '';
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
   TextEditingController _controllerdateTime = TextEditingController();
   List<File> imagenes = [];
+  ImagePicker imagePicker = ImagePicker();
 
   List<DropdownMenuItem<String>> alertType = [
     const DropdownMenuItem(
@@ -49,17 +52,64 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
 
   @override
   void initState() {
+    fp = Provider.of<FunctionalProvider>(context, listen: false);
     // _takePick();
     imagenes.add(File(widget.image.path));
-    imagenes.add(File(widget.image.path));
-    imagenes.add(File(widget.image.path));
+    // imagenes.add(File(widget.image.path));
+    // imagenes.add(File(widget.image.path));
     super.initState();
   }
 
-  // _takePick() async {
-  //   // image = await picker.pickImage(source: ImageSource.camera);
-  //   await picker.pickMultiImage()
-  // }
+  _takePick(Responsive responsive) async {
+    // image = await picker.pickImage(source: ImageSource.camera);
+    final selectSourcekey = GlobalHelper.genKey();
+    fp.showAlert(key: selectSourcekey, content: AlertGeneric(content: Container(
+      
+      child: Column(
+        children: [
+          TextTitleWidget(title: 'Selecciona una opción'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(onPressed: ()async{
+                final photo = await imagePicker.pickImage(source: ImageSource.camera);
+                if(photo!= null){
+                  fp.dismissAlert(key: selectSourcekey);
+                  imagenes.add(File(photo.path));
+                }
+                setState(() {
+                  
+                });
+              }, icon: Column(
+                children: [
+                  Icon(Icons.camera_alt_outlined, size: 24, color: AppTheme.primaryColor,),
+                  TextTitleWidget(title: 'Cámara')
+                ],
+              ),
+              ),
+              SizedBox(width: 20,),
+              IconButton(onPressed: ()async{
+                final photo = await imagePicker.pickImage(source: ImageSource.gallery);
+                if(photo!= null){
+                  fp.dismissAlert(key: selectSourcekey);
+                  imagenes.add(File(photo.path));
+                }
+                setState(() {
+                  
+                });
+              }, icon:Column(
+                children: [
+                  Icon(Icons.photo, size: 24, color: AppTheme.primaryColor,),
+                  TextTitleWidget(title: 'Galeria')
+                ],
+              ),),
+            ],
+          ),
+        ],
+      ),
+    ), dismissable: true,keyToClose: selectSourcekey,));
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,60 +220,121 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   height: 10,
                 ),
                 Row(
-                  children: imagenes.length == 3
-                      ? imagenes
+
+                  children: [
+                    ...imagenes
                           .map(
                             (e) => Stack(
-                              clipBehavior: Clip.antiAlias,
+                              clipBehavior: Clip.hardEdge,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.asset(
-                                      e.path,
+                                    child: Image.file(
+                                      e,
                                       height: responsive.hp(10),
+                                      // width: responsive.wp(2),
                                     ),
                                   ),
                                 ),
                                       Positioned(
                                         top: 0,
                                         right: 0,
-                                        child: IconButton(onPressed: (){}, icon: Icon(Icons.highlight_remove_rounded))),
+                                        child: IconButton(onPressed: (){
+                                          imagenes.removeWhere((element) => element == e,);
+                                          setState(() {
+                                            
+                                          });
+                                        }, icon: Icon(Icons.highlight_remove_rounded))),
                               ],
                             ),
                           )
-                          .toList()
-                      : imagenes.map(
-                          (e) {
-                            return Row(
-                              children: [
-                                ClipRRect(
-                                  child: Image.asset(
-                                    e.path,
-                                    height: responsive.hp(10),
-                                    width: responsive.wp(15),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: Radius.circular(10),
-                                  // padding: EdgeInsets.all(6),
-                                  child: SizedBox(
-                                    height: responsive.hp(10),
-                                    width: responsive.wp(15),
-                                    child: Center(
-                                      child: Icon(Icons.add_a_photo, color: AppTheme.primaryColor, size: 24,),
+                          ,
+
+                       (imagenes.length != 3)? InkWell(
+                                  onTap: (){
+                                    _takePick(responsive);
+                                  },
+                                  child: DottedBorder(
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(10),
+                                    // padding: EdgeInsets.all(6),
+                                    child: SizedBox(
+                                      height: responsive.hp(10),
+                                      width: responsive.wp(15),
+                                      child: Center(
+                                        child: Icon(Icons.add_a_photo, color: AppTheme.primaryColor, size: 24,),
+                                      ),
                                     ),
                                   ),
-                                )
-                              ],
-                            );
-                          },
-                        ).toList(),
+                                ) :SizedBox()   
+                  ],
+                  // children: imagenes.length == 3
+                  //     ? imagenes
+                  //         .map(
+                  //           (e) => Stack(
+                  //             clipBehavior: Clip.hardEdge,
+                  //             children: [
+                  //               Padding(
+                  //                 padding: const EdgeInsets.symmetric(horizontal: 10),
+                  //                 child: ClipRRect(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   child: Image.file(
+                  //                     e,
+                  //                     height: responsive.hp(10),
+                  //                     // width: responsive.wp(2),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //                     Positioned(
+                  //                       top: 0,
+                  //                       right: 0,
+                  //                       child: IconButton(onPressed: (){
+                  //                         imagenes.removeWhere((element) => element == e,);
+                  //                         setState(() {
+                                            
+                  //                         });
+                  //                       }, icon: Icon(Icons.highlight_remove_rounded))),
+                  //             ],
+                  //           ),
+                  //         )
+                  //         .toList()
+                  //     : imagenes.map(
+                  //         (e) {
+                  //           return Row(
+                  //             children: [
+                  //               ClipRRect(
+                  //                 child: Image.file(
+                  //                   e,
+                  //                   height: responsive.hp(10),
+                  //                   width: responsive.wp(15),
+                  //                 ),
+                  //               ),
+                  //               SizedBox(
+                  //                 width: 20,
+                  //               ),
+                  //               InkWell(
+                  //                 onTap: (){
+                  //                   _takePick(responsive);
+                  //                 },
+                  //                 child: DottedBorder(
+                  //                   borderType: BorderType.RRect,
+                  //                   radius: Radius.circular(10),
+                  //                   // padding: EdgeInsets.all(6),
+                  //                   child: SizedBox(
+                  //                     height: responsive.hp(10),
+                  //                     width: responsive.wp(15),
+                  //                     child: Center(
+                  //                       child: Icon(Icons.add_a_photo, color: AppTheme.primaryColor, size: 24,),
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               )
+                  //             ],
+                  //           );
+                  //         },
+                  //       ).toList(),
                 ),
                 const TextTitleWidget(
                   title: 'Notas Adicionales',
@@ -235,6 +346,12 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   hintText: 'Agregar una nota...',
                   maxLines: 4,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: FilledButtonWidget(onPressed: (){}, text: 'Enviar', height: responsive.hp(5),width: responsive.wp(35),))
               ],
             ),
           )

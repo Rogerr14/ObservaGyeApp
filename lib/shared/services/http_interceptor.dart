@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:observa_gye_app/env/environment.dart';
+import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/modules/security/login/page/login_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/models/general_response.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
@@ -26,7 +28,7 @@ class InterceptorHttp {
     String requestType = "JSON",
     Function(int sentBytes, int totalBytes)? onProgressLoad,
   }) async {
-    final urlService = Environment().config?.serviceUrl ?? "no url";
+    // final urlService = Environment().config?.serviceUrl ?? "no url";
 
     String url =
         "$endPoint?${Uri(queryParameters: queryParameters).query}";
@@ -67,9 +69,9 @@ class InterceptorHttp {
 
       //? Envio de TOKEN
       // AuthResponseModel? userData = await UserDataStorage().getUserData();
-
-      String tokenSesion = '';
-      // String tokenSesion = (userData != null) ? userData.token : '';
+        UserModel? userData = await SecureStorage().getUserData();
+      // String tokenSesion = '';
+      String tokenSesion = (userData != null) ? userData.token : '';
       // String tokenInformation = "";
 
       // if (userData != null) {
@@ -80,6 +82,7 @@ class InterceptorHttp {
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": (requestType == 'JSON') ? tokenSesion : tokenSesion,
+        "session_type": "APP"
         // "versionName": packageInfo.version,
         // "versioncode": packageInfo.buildNumber,
         // "so": Platform.isAndroid ? 'Android' : 'IOS'
@@ -99,7 +102,7 @@ class InterceptorHttp {
                       headers: headers,
                       body: body != null ? json.encode(body) : null)
                   .timeout(const Duration(seconds: 60));
-              //inspect(_response);
+                // GlobalHelper.logger.w(response.body);
               break;
             case "GET":
               response = await http.get(uri, headers: headers);
@@ -197,8 +200,9 @@ class InterceptorHttp {
         case 200:
           var responseDecoded = json.decode(responseBody);
           //final keySesion = GlobalHelper.genKey();
-          if (responseDecoded["datos"] != null) {
-          generalResponse.data = responseDecoded["datos"];
+          GlobalHelper.logger.w(responseDecoded["data"]);
+          if (responseDecoded["data"] != null) {
+          generalResponse.data = responseDecoded["data"];
             
           }
           generalResponse.error = false;

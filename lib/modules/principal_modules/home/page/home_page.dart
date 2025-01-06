@@ -2,6 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:observa_gye_app/modules/observation_detail/page/observation_detail_page.dart';
+import 'package:observa_gye_app/modules/principal_modules/home/model/home_model.dart';
+import 'package:observa_gye_app/modules/principal_modules/home/services/home_services.dart';
 import 'package:observa_gye_app/modules/principal_modules/home/widget/card_observation_widget.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
@@ -17,6 +19,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  HomeResponse? homeResponse;
+  late FunctionalProvider fp;
+
+  @override
+  void initState() {
+    super.initState();
+      fp =
+                        Provider.of<FunctionalProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      
+    _getHome();
+    },);
+  }
+
+  @override
+  void dispose() {
+    
+    super.dispose();
+  }
+
+
+
+
+  _getHome()async{
+    HomeService homeService= HomeService();
+    final response = await homeService.getHome(context);
+    if(!response.error){
+      homeResponse = response.data;
+      setState(() {
+        
+      });
+    }
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -24,7 +64,7 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SingleChildScrollView(
-        child: Column(
+        child: homeResponse == null ? const SizedBox(): Column(
           children: [
              Align(
                 alignment: Alignment.centerLeft,
@@ -45,8 +85,6 @@ class _HomePageState extends State<HomePage> {
                   urlImageObservation:
                       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg',
                   onPress: () {
-                    final fp =
-                        Provider.of<FunctionalProvider>(context, listen: false);
                     final keyObservationPage = GlobalHelper.genKey();
                     fp.addPage(
                         key: keyObservationPage,
@@ -63,8 +101,6 @@ class _HomePageState extends State<HomePage> {
                   urlImageObservation:
                       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg',
                   onPress: () {
-                    final fp =
-                        Provider.of<FunctionalProvider>(context, listen: false);
                     final keyObservationPage = GlobalHelper.genKey();
                     fp.addPage(
                         key: keyObservationPage,
@@ -81,8 +117,7 @@ class _HomePageState extends State<HomePage> {
                   urlImageObservation:
                       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg',
                   onPress: () {
-                    final fp =
-                        Provider.of<FunctionalProvider>(context, listen: false);
+
                     final keyObservationPage = GlobalHelper.genKey();
                     fp.addPage(
                         key: keyObservationPage,
@@ -117,12 +152,12 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _cardWidget(
-                       '2,500',
+                       homeResponse?.totalObservation ?? '0' ,
                       'Observaciones',
                        responsive
                     ),
                     _cardWidget(
-                      '350',
+                      homeResponse?.totalAlerts ?? '0',
                       'Alertas',
                        responsive
                     )
@@ -132,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                   height: 20,
                 ),
                 _cardWidget(
-                  '2,300',
+                  homeResponse?.totalUsers ?? '0',
                   'Usuarios',
                   responsive
                 )

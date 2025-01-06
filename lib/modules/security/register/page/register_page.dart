@@ -18,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return LayoutAuth(
         requiredStack: false,
         keyDismiss: widget.keyPage,
-        isRegister: true,
+        // isRegister: true,
         nameInterceptor: 'registerPage',
         child: Column(
           children: [

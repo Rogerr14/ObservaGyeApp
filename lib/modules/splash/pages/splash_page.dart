@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/404/pages/page_404.dart';
+import 'package:observa_gye_app/modules/principal_modules/main_page/page/main_page.dart';
+import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/routes/app_routes.dart';
 
 
@@ -17,12 +20,32 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeSnap){
-     Future.delayed(const Duration(seconds: 3), ()=> _goTo('/sliders'));
+     Future.delayed(const Duration(seconds: 3), (){
+      _verifySession();
+     });
     });
     super.initState();
   }
 
-   _goTo(String routeName) {
+    void _verifySession()async{
+      final userData = await SecureStorage().getUserData();
+      final sliderInformation = await SecureStorage().getInformation();
+      if(userData != null){
+        Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, const MainPage()), (route) => false);
+      }else{
+
+      if(sliderInformation){
+        _goTo('/login');
+      }else{
+         _goTo('/sliders');
+      }
+      }
+    }
+
+
+
+   void _goTo(String routeName) {
+    
     final route = AppRoutes.routes[routeName];
     final page = (route != null) ? route.call(context) : const PageNotFound();
     Navigator.pushAndRemoveUntil(

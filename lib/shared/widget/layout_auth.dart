@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 class LayoutAuth extends StatefulWidget {
   final String? nameInterceptor;
   final Widget child;
-  final bool isRegister;
   final GlobalKey<State<StatefulWidget>>? keyDismiss;
   final bool requiredStack;
 
@@ -19,7 +18,7 @@ class LayoutAuth extends StatefulWidget {
       this.requiredStack = true,
       this.keyDismiss,
       this.nameInterceptor,
-      this.isRegister = false});
+      });
 
   @override
   State<LayoutAuth> createState() => _LayoutAuthState();

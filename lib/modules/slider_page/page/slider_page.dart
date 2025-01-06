@@ -5,6 +5,7 @@ import 'package:observa_gye_app/modules/slider_page/widget/app_information.dart'
 import 'package:observa_gye_app/modules/slider_page/widget/information_citizen.dart';
 import 'package:observa_gye_app/modules/slider_page/widget/user_information.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 
 class SliderPage extends StatefulWidget {
@@ -63,6 +64,8 @@ class _SliderPageState extends State<SliderPage> with TickerProviderStateMixin {
                   delay: const Duration(milliseconds: 700),
                   child: FilledButtonWidget(
                     onPressed: () {
+                      final storage = SecureStorage();
+                      storage.setInfomation('true');
                       GlobalHelper.navigateToPageRemove(context, '/login');
                     },
                     text: 'Continuar',

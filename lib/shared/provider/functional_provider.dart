@@ -1,11 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 
 class FunctionalProvider extends ChangeNotifier {
   List<Widget> pages = [];
   List<Widget> alerts = [];
+
 
   ButtonNavigatorBarItem buttonNavigatorBarItem = ButtonNavigatorBarItem.iconMenuHome;
   // List<Widget> alertLoading = [];
@@ -19,6 +22,8 @@ selectIconBottomNavigationBarItem(){
     buttonNavigatorBarItem = value;
     notifyListeners();
   }
+
+
 
   showAlert(
       {required GlobalKey key,

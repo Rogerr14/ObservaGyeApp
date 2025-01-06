@@ -6,7 +6,9 @@ import 'package:observa_gye_app/modules/secondary_modules/general_alerts/page/al
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/page/observation_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/map_observation/page/maps_observation_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/profile/page/profile_page.dart';
+import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
@@ -21,10 +23,26 @@ class MenuWidget extends StatefulWidget {
 }
 
 class _MenuWidgetState extends State<MenuWidget> {
+  late FunctionalProvider fp;
+  UserModel? userModel;
+
+  @override
+  void initState() {
+     fp = Provider.of<FunctionalProvider>(context, listen: false);
+     _getData();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  _getData()async{
+    userModel = await SecureStorage().getUserData(); 
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
-    final fp = Provider.of<FunctionalProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 90, 0, 20),
       child: Column(
@@ -54,15 +72,15 @@ class _MenuWidgetState extends State<MenuWidget> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Column(
+                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextTitleWidget(
-                              title: 'Usuario Usuario',
+                              title: userModel != null ? '${userModel!.name.toUpperCase()} ${userModel!.lastName.toUpperCase()}': '',
                               color: AppTheme.white,
                               showShadow: false,
                             ),
-                            TextSubtitleWidget(
+                            const TextSubtitleWidget(
                               subtitle: 'Ver perfil',
                               color: AppTheme.white,
                             )
