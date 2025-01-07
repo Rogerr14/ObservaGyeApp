@@ -41,7 +41,7 @@ class SecurityService {
 
 
   Future<GeneralResponse> createAccount(BuildContext context, dynamic body)async{
-    final urlEndpoint = "${url}api/Usuario/Crear";
+    final urlEndpoint = "$url/Usuario/Crear";
     try {
       final response = await interceptorHttp.request(context, 'POST', urlEndpoint, body);
       if(!response.error){

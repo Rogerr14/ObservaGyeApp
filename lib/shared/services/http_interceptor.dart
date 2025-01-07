@@ -64,7 +64,7 @@ class InterceptorHttp {
         // keyLoading = GlobalHelper.genKey();}
         fp.showAlert(key: keyLoading, content: const AlertLoading());
         // fp.alertLoading = [const SizedBox()];
-        // await Future.delayed(const Duration(milliseconds: 600));
+        await Future.delayed(const Duration(milliseconds: 600));
       }
 
       //? Envio de TOKEN

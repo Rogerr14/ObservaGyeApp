@@ -24,13 +24,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
       fp =
                         Provider.of<FunctionalProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp)async {
       
     _getHome();
     },);
+    super.initState();
   }
 
   @override

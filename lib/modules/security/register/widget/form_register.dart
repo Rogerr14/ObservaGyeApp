@@ -40,7 +40,7 @@ class _FormRegisterState extends State<FormRegister> {
   final response = await securityService.createAccount(context, body);
   if(!response.error){
     final alertCreateAccountKey = GlobalHelper.genKey();
-    fp.showAlert(key: alertCreateAccountKey, content: AlertGeneric(content: OkGeneric(message: response.message, keyToClose: alertCreateAccountKey, onPress: (){
+    fp.showAlert(key: alertCreateAccountKey, content: AlertGeneric(content: OkGeneric(message: response.message,  keyToClose: alertCreateAccountKey, onPress: (){
       fp.dismissAlert(key: alertCreateAccountKey);
       fp.dismissPage(key: widget.keyPage);
     },)));

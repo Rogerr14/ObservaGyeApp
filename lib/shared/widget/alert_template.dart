@@ -403,7 +403,7 @@ class OkGeneric extends StatelessWidget {
         SizedBox(height: size.height * 0.03),
         ButtonGeneralWidget(
           nameButton: 'Aceptar',
-          backgroundColor: AppTheme.error,
+          backgroundColor: AppTheme.primaryColor,
           height: 30,
           width: 120,
           textColor: AppTheme.white,

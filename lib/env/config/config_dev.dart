@@ -9,7 +9,9 @@ class DevEnv extends BaseConfig{
 
   @override
 
-    String get serviceUrl => 'http://192.168.100.6:2500/api';
+    // String get serviceUrl => 'http://192.168.100.6:2500/api';
+    // String get serviceUrl => 'http://10.10.80.168:2500/api';
+    String get serviceUrl => 'http://192.168.10.113:2500/api';
 
   @override
   Color get primaryColor => const Color(0xFF0D47A1);
