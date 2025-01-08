@@ -131,7 +131,7 @@ class _DropDownButtonWidgetState extends State<DropDownButtonWidget> {
                 height: 40,
                 decoration: const BoxDecoration(
                   //borderRadius: BorderRadius.circular(10),
-                  color: AppTheme.primaryColor,
+                  color: AppTheme.hinText,
                 ),
                 child: child,
               );

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -6,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/model/type_alerts_model.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/services/alerts_services.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -39,17 +42,9 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   TextEditingController _controllerdateTime = TextEditingController();
   List<File> imagenes = [];
   ImagePicker imagePicker = ImagePicker();
+  TypeAlertsModel? typeAlertsModel;
 
-  List<DropdownMenuItem<String>> alertType = [
-    const DropdownMenuItem(
-      value: '1',
-      child: TextSubtitleWidget(subtitle: 'Fuego'),
-    ),
-    const DropdownMenuItem(
-      value: '2',
-      child: TextSubtitleWidget(subtitle: 'Deforestación'),
-    ),
-  ];
+  List<DropdownMenuItem<String>> alertType = [];
 
   @override
   void initState() {
@@ -57,9 +52,51 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
     // _takePick();
     imagenes.add(File(widget.image.path));
     _readMetaData();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        _getTypesAlerts();
+      },
+    );
     // imagenes.add(File(widget.image.path));
     // imagenes.add(File(widget.image.path));
     super.initState();
+  }
+
+  _getTypesAlerts() async {
+    final response = await AlertsServices().getTypeAlerts(context);
+    if (!response.error) {
+      typeAlertsModel = response.data;
+      if (typeAlertsModel != null) {
+        selectAlert = typeAlertsModel!.tiposAlertas.first.tipoAlerta;
+        alertType = typeAlertsModel!.tiposAlertas
+            .map(
+              (alerta) => DropdownMenuItem(
+                  value: alerta.idTipoAlerta,
+                  child: TextSubtitleWidget(subtitle: alerta.tipoAlerta)),
+            )
+            .toList();
+        //   typeAlertsModel!.tiposAlertas.map(
+        //     (alerta) {
+        // GlobalHelper.logger.w(jsonEncode(alerta));
+        //       alertType.add(DropdownMenuItem(
+        //           value: alerta.idTipoAlerta,
+        //           child: TextSubtitleWidget(subtitle: alerta.tipoAlerta)));
+        //     },
+        //   );
+      }
+
+      //   const DropdownMenuItem(
+      //   value: '1',
+      //   child: TextSubtitleWidget(subtitle: 'Fuego'),
+      // ),
+      // const DropdownMenuItem(
+      //   value: '2',
+      //   child: TextSubtitleWidget(subtitle: 'Deforestación'),
+      // ),
+    }
+    GlobalHelper.logger.w('alertas ${alertType.length}');
+    setState(() {});
   }
 
   _readMetaData() async {

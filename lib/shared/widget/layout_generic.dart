@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 class LayoutPageGeneric extends StatefulWidget {
   final String? nameInterceptor;
   final Widget child;
+  final Widget? iconSuffix;
   final GlobalKey<State<StatefulWidget>>? keyDismiss;
   final bool requiredStack;
   const LayoutPageGeneric(
@@ -20,15 +21,13 @@ class LayoutPageGeneric extends StatefulWidget {
       this.nameInterceptor,
       required this.child,
       this.keyDismiss,
-      this.requiredStack = true});
+      this.requiredStack = true, this.iconSuffix});
 
   @override
   State<LayoutPageGeneric> createState() => _LayoutPageGenericState();
 }
 
 class _LayoutPageGenericState extends State<LayoutPageGeneric> {
-  
-
   late FunctionalProvider fp;
 
   XFile? image;
@@ -37,7 +36,7 @@ class _LayoutPageGenericState extends State<LayoutPageGeneric> {
   @override
   void initState() {
     super.initState();
-   
+
     fp = Provider.of<FunctionalProvider>(context, listen: false);
     BackButtonInterceptor.add(_backButton,
         name: widget.nameInterceptor, context: context);
@@ -67,38 +66,35 @@ class _LayoutPageGenericState extends State<LayoutPageGeneric> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-   
+
     return Stack(
       children: [
         Scaffold(
-        
-              appBar: AppBar(
-                // primary: false,
-                automaticallyImplyLeading: false,
-                leading: IconButton(
-                    onPressed: () {
-                            fp.dismissPage(key: widget.keyDismiss!);
-                          },
-                    icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-                backgroundColor: AppTheme.white,
-                title: SvgPicture.asset(
-                  AppTheme.logoApp,
-                  colorFilter: const ColorFilter.mode(
-                      AppTheme.primaryColor, BlendMode.srcIn),
-                  height: size.height * 0.035,
-                ),
-                centerTitle: true,
-              ),
+            appBar: AppBar(
+              // primary: false,
+              automaticallyImplyLeading: false,
+              actions: [
+                widget.iconSuffix ?? const SizedBox()
+              ],
+              leading: IconButton(
+                  onPressed: () {
+                    fp.dismissPage(key: widget.keyDismiss!);
+                  },
+                  icon: const Icon(Icons.arrow_back_ios_new_sharp)),
               backgroundColor: AppTheme.white,
-              body:  widget.child
-                
-          
-        ),
+              title: SvgPicture.asset(
+                AppTheme.logoApp,
+                colorFilter: const ColorFilter.mode(
+                    AppTheme.primaryColor, BlendMode.srcIn),
+                height: size.height * 0.035,
+              ),
+              centerTitle: true,
+            ),
+            backgroundColor: AppTheme.white,
+            body: widget.child),
         if (widget.requiredStack) const PageModal(),
         if (widget.requiredStack) const AlertModal()
       ],
     );
   }
-
-  
 }
