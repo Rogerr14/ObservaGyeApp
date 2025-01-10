@@ -4,9 +4,13 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_alert/service/alert_data.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_alert/service/alert_generate_service.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_alerts/model/type_alerts_model.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_alerts/services/alerts_services.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
@@ -37,14 +41,18 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   late FunctionalProvider fp;
   final ImagePicker picker = ImagePicker();
   String selectAlert = '';
+  String selectSendero = '';
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
-  TextEditingController _controllerdateTime = TextEditingController();
+  final TextEditingController _controllerdateTime = TextEditingController();
+  final TextEditingController _latitudUbication = TextEditingController();
+  final TextEditingController _descriptionAlert = TextEditingController();
   List<File> imagenes = [];
   ImagePicker imagePicker = ImagePicker();
   TypeAlertsModel? typeAlertsModel;
 
   List<DropdownMenuItem<String>> alertType = [];
+  List<DropdownMenuItem<String>> senderos = [];
 
   @override
   void initState() {
@@ -63,12 +71,34 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
     super.initState();
   }
 
+  _generateAlert() async {
+    AlertData alerta = AlertData(
+        idTipoAlerta: int.parse(selectAlert),
+        idSendero: int.parse(selectSendero),
+        coordenadaLongitud: 0.0,
+        coordenadaLatitud: 0.0,
+        descripcion: _descriptionAlert.text,
+        fechaCreado: DateTime.now());
+    GlobalHelper.logger.i(jsonEncode(imagenes.first.path));
+    final fp = Provider.of<FunctionalProvider>(context, listen: false);
+    final List<MultipartFile> imagenesSend = await Future.wait( imagenes.map(
+      (imagen) async {
+        return await MultipartFile.fromPath('imagenes', imagen.path, contentType: MediaType('image', 'jpg') );
+      },
+    ).toList());
+    final response =
+        await AlertGenerateService().sendAlertReport(context, imagenesSend, {"alerta": jsonEncode(alerta)});
+    if (!response.error) {
+      GlobalHelper.logger.i(response.message);
+    }
+  }
+
   _getTypesAlerts() async {
     final response = await AlertsServices().getTypeAlerts(context);
     if (!response.error) {
       typeAlertsModel = response.data;
       if (typeAlertsModel != null) {
-        selectAlert = typeAlertsModel!.tiposAlertas.first.tipoAlerta;
+        // selectAlert = typeAlertsModel!.tiposAlertas.first.tipoAlerta;
         alertType = typeAlertsModel!.tiposAlertas
             .map(
               (alerta) => DropdownMenuItem(
@@ -76,31 +106,23 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   child: TextSubtitleWidget(subtitle: alerta.tipoAlerta)),
             )
             .toList();
-        //   typeAlertsModel!.tiposAlertas.map(
-        //     (alerta) {
-        // GlobalHelper.logger.w(jsonEncode(alerta));
-        //       alertType.add(DropdownMenuItem(
-        //           value: alerta.idTipoAlerta,
-        //           child: TextSubtitleWidget(subtitle: alerta.tipoAlerta)));
-        //     },
-        //   );
+        senderos = typeAlertsModel!.senderos
+            .map(
+              (sendero) => DropdownMenuItem(
+                  value: sendero.idSendero,
+                  child: TextSubtitleWidget(
+                    subtitle: sendero.nombreSendero,
+                  )),
+            )
+            .toList();
       }
-
-      //   const DropdownMenuItem(
-      //   value: '1',
-      //   child: TextSubtitleWidget(subtitle: 'Fuego'),
-      // ),
-      // const DropdownMenuItem(
-      //   value: '2',
-      //   child: TextSubtitleWidget(subtitle: 'Deforestación'),
-      // ),
     }
     GlobalHelper.logger.w('alertas ${alertType.length}');
     setState(() {});
   }
 
   _readMetaData() async {
-    final fileBytes =  File(widget.image.path).readAsBytesSync();
+    final fileBytes = File(widget.image.path).readAsBytesSync();
     final data = await readExifFromBytes(fileBytes);
     if (data.isEmpty) {
       GlobalHelper.logger.w('no existe la data');
@@ -224,6 +246,30 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   items: alertType,
                   onChanged: (value) {
                     selectAlert = value!;
+                    GlobalHelper.logger.w(value);
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const TextTitleWidget(
+                  title: 'Sendero',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                DropDownButtonWidget(
+                  hint: 'Seleccione un sendero...',
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Seleccione una opcion';
+                    }
+                    return null;
+                  },
+                  items: senderos,
+                  onChanged: (value) {
+                    selectSendero = value!;
                     setState(() {});
                   },
                 ),
@@ -270,12 +316,17 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                 const SizedBox(
                   height: 10,
                 ),
-                const TextFormFieldWidget(
-                  hintText: 'Ubicación',
-                  suffixIcon: Icon(
-                    Icons.public_rounded,
-                    size: 24,
-                    color: AppTheme.primaryColor,
+                GestureDetector(
+                  onTap: () {},
+                  child: TextFormFieldWidget(
+                    hintText: 'Ubicación',
+                    enabled: false,
+                    controller: _latitudUbication,
+                    suffixIcon: const Icon(
+                      Icons.public_rounded,
+                      size: 24,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -291,7 +342,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                   children: [
                     ...imagenes.map(
                       (e) => Stack(
-                        clipBehavior: Clip.hardEdge,
+                        clipBehavior: Clip.none,
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -305,16 +356,21 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                             ),
                           ),
                           Positioned(
-                              top: 0,
-                              right: 0,
-                              child: IconButton(
-                                  onPressed: () {
-                                    imagenes.removeWhere(
-                                      (element) => element == e,
-                                    );
-                                    setState(() {});
-                                  },
-                                  icon: Icon(Icons.highlight_remove_rounded))),
+                            top: -20,
+                            right: -10,
+                            child: IconButton(
+                              onPressed: () {
+                                imagenes.removeWhere(
+                                  (element) => element == e,
+                                );
+                                setState(() {});
+                              },
+                              icon: const Icon(
+                                Icons.highlight_remove_rounded,
+                                color: AppTheme.error,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -342,18 +398,20 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                           )
                         : SizedBox()
                   ],
-    
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 const TextTitleWidget(
                   title: 'Notas Adicionales',
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   hintText: 'Agregar una nota...',
                   maxLines: 4,
+                  controller: _descriptionAlert,
                 ),
                 const SizedBox(
                   height: 10,
@@ -361,7 +419,9 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                 Align(
                     alignment: Alignment.center,
                     child: FilledButtonWidget(
-                      onPressed: () {},
+                      onPressed: () {
+                        _generateAlert();
+                      },
                       text: 'Enviar',
                       height: responsive.hp(5),
                       width: responsive.wp(35),
