@@ -102,10 +102,11 @@ class InterceptorHttp {
                       headers: headers,
                       body: body != null ? json.encode(body) : null)
                   .timeout(const Duration(seconds: 60));
-                // GlobalHelper.logger.w(response.body);
+                GlobalHelper.logger.w(response.body);
               break;
             case "GET":
               response = await http.get(uri, headers: headers);
+                GlobalHelper.logger.w(response.body);
               break;
             case "PUT":
               response = await http.put(uri,
@@ -200,7 +201,7 @@ class InterceptorHttp {
         case 200:
           var responseDecoded = json.decode(responseBody);
           //final keySesion = GlobalHelper.genKey();
-          GlobalHelper.logger.w(responseDecoded["data"]);
+          // GlobalHelper.logger.w(responseDecoded["data"]);
           if (responseDecoded["data"] != null) {
           generalResponse.data = responseDecoded["data"];
             

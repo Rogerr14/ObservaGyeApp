@@ -231,7 +231,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
       case ButtonNavigatorBarItem.iconObservation:
         image = await picker.pickImage(source: ImageSource.camera);
         if (image != null) {
-          contain = const GenerateObservationPage();
+          contain =  GenerateObservationPage(image: image!,);
         } else {
           contain = const HomePage();
           fp.setIconBottomNavigationBarItem(

@@ -100,7 +100,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   }
 
   _readMetaData() async {
-    final fileBytes = await File(widget.image.path).readAsBytesSync();
+    final fileBytes =  File(widget.image.path).readAsBytesSync();
     final data = await readExifFromBytes(fileBytes);
     if (data.isEmpty) {
       GlobalHelper.logger.w('no existe la data');
@@ -342,72 +342,9 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                           )
                         : SizedBox()
                   ],
-                  // children: imagenes.length == 3
-                  //     ? imagenes
-                  //         .map(
-                  //           (e) => Stack(
-                  //             clipBehavior: Clip.hardEdge,
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                  //                 child: ClipRRect(
-                  //                   borderRadius: BorderRadius.circular(10),
-                  //                   child: Image.file(
-                  //                     e,
-                  //                     height: responsive.hp(10),
-                  //                     // width: responsive.wp(2),
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //                     Positioned(
-                  //                       top: 0,
-                  //                       right: 0,
-                  //                       child: IconButton(onPressed: (){
-                  //                         imagenes.removeWhere((element) => element == e,);
-                  //                         setState(() {
-
-                  //                         });
-                  //                       }, icon: Icon(Icons.highlight_remove_rounded))),
-                  //             ],
-                  //           ),
-                  //         )
-                  //         .toList()
-                  //     : imagenes.map(
-                  //         (e) {
-                  //           return Row(
-                  //             children: [
-                  //               ClipRRect(
-                  //                 child: Image.file(
-                  //                   e,
-                  //                   height: responsive.hp(10),
-                  //                   width: responsive.wp(15),
-                  //                 ),
-                  //               ),
-                  //               SizedBox(
-                  //                 width: 20,
-                  //               ),
-                  //               InkWell(
-                  //                 onTap: (){
-                  //                   _takePick(responsive);
-                  //                 },
-                  //                 child: DottedBorder(
-                  //                   borderType: BorderType.RRect,
-                  //                   radius: Radius.circular(10),
-                  //                   // padding: EdgeInsets.all(6),
-                  //                   child: SizedBox(
-                  //                     height: responsive.hp(10),
-                  //                     width: responsive.wp(15),
-                  //                     child: Center(
-                  //                       child: Icon(Icons.add_a_photo, color: AppTheme.primaryColor, size: 24,),
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           );
-                  //         },
-                  //       ).toList(),
+    
                 ),
+                const SizedBox(height: 20,),
                 const TextTitleWidget(
                   title: 'Notas Adicionales',
                 ),

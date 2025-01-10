@@ -6,9 +6,14 @@ import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
+import 'package:observa_gye_app/shared/provider/functional_provider.dart';
+import 'package:observa_gye_app/shared/widget/alert_template.dart';
+import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/layout_generic.dart';
+import 'package:observa_gye_app/shared/widget/text_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   final GlobalKey<State<StatefulWidget>> keyDismiss;
@@ -42,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final fp = Provider.of<FunctionalProvider>(context, listen: false);
     final responsive = Responsive(context);
     return LayoutPageGeneric(
       keyDismiss: widget.keyDismiss,
@@ -53,7 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
               _editable = !_editable;
             } else {
               _editable = !_editable;
-              
             }
             setState(() {});
           },
@@ -122,11 +127,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TextTitleWidget(title: 'Apellidos'),
                     ),
                     _editable
-                    ? TextFormFieldWidget(
-                      controller: _lastNameController,
-                    ):
-
-                    TextSubtitleWidget(subtitle: userModel!.lastName),
+                        ? TextFormFieldWidget(
+                            controller: _lastNameController,
+                          )
+                        : TextSubtitleWidget(subtitle: userModel!.lastName),
                     const SizedBox(
                       height: 20,
                     ),
@@ -134,26 +138,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: TextTitleWidget(title: 'Telefono'),
                     ),
-                    _editable 
-                    ? TextFormFieldWidget(
-                      controller: _phoneController,
-                    ) 
-                    : TextSubtitleWidget(subtitle: userModel!.phone),
+                    _editable
+                        ? TextFormFieldWidget(
+                            controller: _phoneController,
+                          )
+                        : TextSubtitleWidget(subtitle: userModel!.phone),
                     const SizedBox(
                       height: 20,
                     ),
                     Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextTitleWidget(title: 'Notitificaciones'),
-                        Switch(
-                          value: true,
-                          onChanged: (value) {},
-                          activeTrackColor: AppTheme.primaryColor,
-                        )
-                      ],
+                    TextButtonWidget(
+                      text: 'Cambiar contraseña',
+                      onPressed: () {
+                        final keyChangePassword = GlobalHelper.genKey();
+                        fp.showAlert(
+                          key: keyChangePassword,
+                          content: AlertGeneric(content: changePasswordForm()),
+                          closeAlert: true,
+                        );
+                      },
                     ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     TextTitleWidget(title: 'Notitificaciones'),
+                    //     Switch(
+                    //       value: true,
+                    //       onChanged: (value) {},
+                    //       activeTrackColor: AppTheme.primaryColor,
+                    //     )
+                    //   ],
+                    // ),
                     Align(
                       alignment: Alignment.center,
                       child: TextSubtitleWidget(subtitle: 'Version 1.0.0'),
@@ -162,6 +177,114 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+    );
+  }
+
+  Widget changePasswordForm() {
+    final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _newPasswordController = TextEditingController();
+    final TextEditingController _confirmPasswordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          TextTitleWidget(title: 'Cambiar Contraseña'),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: TextTitleWidget(title: 'Contraseña Anterior'),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextFormFieldWidget(
+            prefixIcon: const Icon(
+              Icons.password_sharp,
+              color: AppTheme.primaryColor,
+              size: 24,
+            ),
+            hintText: 'Contraseña Anterior',
+            controller: _passwordController,
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                return 'El campo contraseña no debe estar vacío.';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: TextTitleWidget(title: 'Contraseña Nueva'),
+          ),
+           const SizedBox(
+            height: 10,
+          ),
+          TextFormFieldWidget(
+            prefixIcon: const Icon(
+              Icons.password_sharp,
+              color: AppTheme.primaryColor,
+              size: 24,
+            ),
+            hintText: 'Contraseña Nueva',
+            controller: _newPasswordController,
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                return 'El campo contraseña no debe estar vacío.';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: TextTitleWidget(title: 'Confirmar Contraseña'),
+          ),
+           const SizedBox(
+            height: 10,
+          ),
+          TextFormFieldWidget(
+            prefixIcon: const Icon(
+              Icons.password_sharp,
+              color: AppTheme.primaryColor,
+              size: 24,
+            ),
+            hintText: 'Confirmar Contraseña',
+            controller: _confirmPasswordController,
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                return 'El campo contraseña no debe estar vacío.';
+              }else{
+                if(value.trim() != _newPasswordController.text.trim()){
+                  return 'No coiniciden las contraseñas';
+                }
+              }
+              
+      
+              return null;
+            },
+          ),
+           const SizedBox(
+            height: 20,
+          ),
+          FilledButtonWidget(onPressed: (){
+            if(formKey.currentState!.validate()){
+              
+            }
+          }, text: 'Aceptar'),
+           const SizedBox(
+            height: 20,
+          ),
+      
+        ],
+      ),
     );
   }
 }
