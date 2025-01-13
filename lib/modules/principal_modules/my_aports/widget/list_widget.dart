@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/alerts_detail/page/alerts_detail_page.dart';
 import 'package:observa_gye_app/modules/observation_detail/page/observation_detail_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/model/alerts_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -9,7 +11,8 @@ import 'package:provider/provider.dart';
 
 class ListWidget extends StatefulWidget {
   final bool isGeneral;
-  const ListWidget({super.key, this.isGeneral = true});
+  final Alerta alerta;
+  const ListWidget({super.key, this.isGeneral = true, required this.alerta});
 
   @override
   State<ListWidget> createState() => _ListWidgetState();
@@ -22,13 +25,14 @@ class _ListWidgetState extends State<ListWidget> {
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
     return GestureDetector(
       onTap: () {
-        final keyObservationDetail = GlobalHelper.genKey();
+        final keyAlertDetailPage = GlobalHelper.genKey();
         fp.addPage(
-            key: keyObservationDetail,
-            content: ObservationDetailPage(
+            key: keyAlertDetailPage,
+            content: AlertsDetailPage(
+              alerta: widget.alerta,
               isGeneral: widget.isGeneral,
-              keyPage: keyObservationDetail,
-              key: keyObservationDetail,
+              keyPage: keyAlertDetailPage,
+              key: keyAlertDetailPage,
             ));
       },
       child: Column(
@@ -40,7 +44,7 @@ class _ListWidgetState extends State<ListWidget> {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg',
+                      widget.alerta.imagen1,
                       height: responsive.hp(10),
                     )),
                 SizedBox(
@@ -51,17 +55,17 @@ class _ListWidgetState extends State<ListWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextTitleWidget(
-                        title: 'Nombre Especie',
+                        title: widget.alerta.tipoAlerta,
                         showShadow: false,
                       ),
-                      TextSubtitleWidget(subtitle: '2024/02/13'),
+                      TextSubtitleWidget(subtitle: widget.alerta.fechaCreado.toString()),
                       Visibility(
                           visible: !widget.isGeneral,
-                          child: _statePublish(0, responsive)),
+                          child: _statePublish(int.parse(widget.alerta.idEstado), responsive)),
                       Visibility(
                           visible: widget.isGeneral,
                           child: TextSubtitleWidget(
-                            subtitle: 'User',
+                            subtitle: widget.alerta.usuario,
                           ))
                     ],
                   ),
@@ -82,7 +86,7 @@ class _ListWidgetState extends State<ListWidget> {
 
   _statePublish(int status, Responsive responsive) {
     switch (status) {
-      case 0:
+      case 1:
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
@@ -91,7 +95,7 @@ class _ListWidgetState extends State<ListWidget> {
           child: Center(child: TextSubtitleWidget(subtitle: 'Enviado')),
         );
 
-      case 1:
+      case 2:
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
@@ -99,7 +103,7 @@ class _ListWidgetState extends State<ListWidget> {
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
           child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
         );
-      case 2:
+      case 3:
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
@@ -114,7 +118,7 @@ class _ListWidgetState extends State<ListWidget> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.error, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
         );
     }
   }

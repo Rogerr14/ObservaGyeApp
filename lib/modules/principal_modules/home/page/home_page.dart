@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   _getHome()async{
     HomeService homeService= HomeService();
+    
     final response = await homeService.getHome(context);
     if(!response.error){
       homeResponse = response.data;
@@ -76,58 +77,13 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
             FlutterCarousel(
-              
-              items: [
-                CardObservationWidget(
-                  nameObservation: 'Loro Africano',
-                  userObservation: 'JPerez',
-                  dateObservation: DateTime.now(),
-                  urlImageObservation:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg',
-                  onPress: () {
-                    final keyObservationPage = GlobalHelper.genKey();
-                    fp.addPage(
-                        key: keyObservationPage,
-                        content:
-                            ObservationDetailPage(
-                              key: keyObservationPage,
-                              keyPage: keyObservationPage));
-                  },
-                ),
-                CardObservationWidget(
-                  nameObservation: 'Loro Africano',
-                  userObservation: 'JPerez',
-                  dateObservation: DateTime.now(),
-                  urlImageObservation:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg',
-                  onPress: () {
-                    final keyObservationPage = GlobalHelper.genKey();
-                    fp.addPage(
-                        key: keyObservationPage,
-                        content:
-                            ObservationDetailPage(
-                              key: keyObservationPage,
-                              keyPage: keyObservationPage));
-                  },
-                ),
-                CardObservationWidget(
-                  nameObservation: 'Loro Africano',
-                  userObservation: 'JPerez',
-                  dateObservation: DateTime.now(),
-                  urlImageObservation:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Amazona_autumnalis_-Jurong_BirdPark-8b.jpg/220px-Amazona_autumnalis_-Jurong_BirdPark-8b.jpg',
-                  onPress: () {
+              items: homeResponse != null ? homeResponse!.observations.map(
+                (observation) => CardObservationWidget(
+                  observation: observation,
 
-                    final keyObservationPage = GlobalHelper.genKey();
-                    fp.addPage(
-                        key: keyObservationPage,
-                        content:
-                            ObservationDetailPage(
-                              key: keyObservationPage,
-                              keyPage: keyObservationPage));
-                  },
                 ),
-              ],
+              ).toList() : [],
+              
               options: FlutterCarouselOptions(
                 height: responsive.hp(22),
                 showIndicator: false,

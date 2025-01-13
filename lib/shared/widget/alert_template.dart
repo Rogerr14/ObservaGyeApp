@@ -2,6 +2,7 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/button_general_widget.dart';
@@ -392,12 +393,15 @@ class OkGeneric extends StatelessWidget {
           color: AppTheme.primaryColor,
         ),
         SizedBox(height: size.height * 0.01),
-        Text(
-          message,
-          style: const TextStyle(
-              fontSize: 20,
-              color: AppTheme.primaryColor,
-              fontWeight: FontWeight.bold),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            message,
+            style: const TextStyle(
+                fontSize: 20,
+                color: AppTheme.primaryColor,
+                fontWeight: FontWeight.bold),
+          ),
         ),
 
         SizedBox(height: size.height * 0.03),
@@ -422,6 +426,65 @@ class OkGeneric extends StatelessWidget {
   }
 }
 
+
+
+class NoExistInformation extends StatelessWidget {
+  final String message;
+  final void Function() function;
+  final String? namePage;
+  final bool? isNamePage;
+
+  const NoExistInformation({
+    Key? key,
+    required this.message,
+    required this.function,
+    this.namePage = '',
+    this.isNamePage = true,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: size.height * 0.015),
+        SvgPicture.asset(AppTheme.iconCautionPath),
+        const SizedBox(height: 30),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.027),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: message,
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppTheme.primaryColor),
+              children: <TextSpan>[
+               isNamePage == true ? TextSpan(
+                  text: ' $namePage.',
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.hinText),
+                ) : const TextSpan(),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 25),
+        FilledButtonWidget(
+            color: AppTheme.primaryColor,
+            onPressed: function,
+            width: size.width * 0.05,
+            text: 'Aceptar', colorText: AppTheme.white,),
+        SizedBox(height: size.height * 0.01),
+      ],
+    );
+  }
+}
 // class CustomAlert extends StatelessWidget {
 //   final GlobalKey keyToClose;
 //   final IconData icon;

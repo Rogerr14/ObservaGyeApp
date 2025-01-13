@@ -5,7 +5,9 @@ import 'package:observa_gye_app/modules/404/pages/page_404.dart';
 import 'package:observa_gye_app/modules/principal_modules/main_page/page/main_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
+import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/routes/app_routes.dart';
+import 'package:provider/provider.dart';
 
 
 class SplashPage extends StatefulWidget {
@@ -29,8 +31,11 @@ class _SplashPageState extends State<SplashPage> {
 
     void _verifySession()async{
       final userData = await SecureStorage().getUserData();
+      final fp =  Provider.of<FunctionalProvider>(context, listen: false);
       final sliderInformation = await SecureStorage().getInformation();
       if(userData != null){
+        String userName = '${userData.name.split(' ').first} ${userData.lastName.split(' ').first}';
+        fp.saveUserName(userName);
         Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, const MainPage()), (route) => false);
       }else{
 

@@ -12,7 +12,7 @@ class HomeService {
   String url =  Environment().config?.serviceUrl ?? '';
 
   Future<GeneralResponse<HomeResponse>> getHome(BuildContext context)async{
-    final urlService = '${url}/home';
+    final urlService = '$url/home';
     try {
       HomeResponse? homeResponse;
 

@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
+import 'package:observa_gye_app/shared/services/alerts_services.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/date_time_picker_widget.dart';
+import 'package:observa_gye_app/shared/widget/drop_down_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
@@ -30,13 +33,19 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
   List<File> imagenes = [];
+   String selectSendero = '';
   ImagePicker imagePicker = ImagePicker();
-
+  TypeAlertsModel? typeAlertsModel;
   late FunctionalProvider fp;
+  List<DropdownMenuItem<String>> senderos = [];
 
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      
+    _getTypesAlerts();
+    },);
      fp = Provider.of<FunctionalProvider>(context, listen: false);
     imagenes.add(File(widget.image.path));
     // TODO: implement initState
@@ -49,6 +58,33 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
     super.dispose();
   }
 
+
+
+
+
+
+  
+
+_getTypesAlerts() async {
+    final response = await AlertsServices().getTypeAlerts(context);
+    if (!response.error) {
+      typeAlertsModel = response.data;
+      if (typeAlertsModel != null) {
+        // selectAlert = typeAlertsModel!.tiposAlertas.first.tipoAlerta;
+
+        senderos = typeAlertsModel!.senderos
+            .map(
+              (sendero) => DropdownMenuItem(
+                  value: sendero.idSendero,
+                  child: TextSubtitleWidget(
+                    subtitle: sendero.nombreSendero,
+                  )),
+            )
+            .toList();
+      }
+    }
+    setState(() {});
+  }
 
 
 
@@ -170,6 +206,29 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                 ),
                 const TextFormFieldWidget(
                   hintText: 'Nombre de la especie',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const TextTitleWidget(
+                  title: 'Sendero',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                DropDownButtonWidget(
+                  hint: 'Seleccione un sendero...',
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Seleccione una opcion';
+                    }
+                    return null;
+                  },
+                  items: senderos,
+                  onChanged: (value) {
+                    selectSendero = value!;
+                    setState(() {});
+                  },
                 ),
                 const SizedBox(
                   height: 20,

@@ -43,7 +43,7 @@ class UserModel {
         "lastName": lastName,
         "email": email,
         "phone": phone,
-        "photo": photo ,
+        "photo": photo,
         "token": token,
     };
 }

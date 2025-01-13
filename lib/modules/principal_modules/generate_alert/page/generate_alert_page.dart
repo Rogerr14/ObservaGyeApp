@@ -9,10 +9,9 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
-import 'package:observa_gye_app/modules/principal_modules/generate_alert/service/alert_data.dart';
-import 'package:observa_gye_app/modules/principal_modules/generate_alert/service/alert_generate_service.dart';
-import 'package:observa_gye_app/modules/secondary_modules/general_alerts/model/type_alerts_model.dart';
-import 'package:observa_gye_app/modules/secondary_modules/general_alerts/services/alerts_services.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/alert_data.dart';
+import 'package:observa_gye_app/shared/services/alerts_services.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
@@ -66,20 +65,24 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
         _getTypesAlerts();
       },
     );
-    // imagenes.add(File(widget.image.path));
-    // imagenes.add(File(widget.image.path));
     super.initState();
   }
 
   _generateAlert() async {
+
+    
     AlertData alerta = AlertData(
         idTipoAlerta: int.parse(selectAlert),
         idSendero: int.parse(selectSendero),
         coordenadaLongitud: 0.0,
         coordenadaLatitud: 0.0,
         descripcion: _descriptionAlert.text,
-        fechaCreado: DateTime.now());
-    GlobalHelper.logger.i(jsonEncode(imagenes.first.path));
+        fechaCreado: DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+        ));
+    GlobalHelper.logger.i(jsonEncode(alerta));
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
     final List<MultipartFile> imagenesSend = await Future.wait( imagenes.map(
       (imagen) async {
@@ -87,9 +90,18 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
       },
     ).toList());
     final response =
-        await AlertGenerateService().sendAlertReport(context, imagenesSend, {"alerta": jsonEncode(alerta)});
+        await AlertsServices().sendAlertReport(context, imagenesSend, {"alerta": jsonEncode(alerta)});
     if (!response.error) {
-      GlobalHelper.logger.i(response.message);
+      final keyOkAlert = GlobalHelper.genKey();
+      fp.showAlert(key: keyOkAlert, content: AlertGeneric(content: 
+      OkGeneric(message: response.message, keyToClose: keyOkAlert, onPress: (){
+        fp.dismissAlert(key: keyOkAlert);
+        fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
+        GlobalHelper.navigateToPageRemove(context, '/main');
+        setState(() {
+          
+        });
+      },)));
     }
   }
 

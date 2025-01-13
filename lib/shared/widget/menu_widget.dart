@@ -76,7 +76,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextTitleWidget(
-                              title: userModel != null ? '${userModel!.name.toUpperCase()} ${userModel!.lastName.toUpperCase()}': '',
+                              title: fp.getUserName(),
+                              // title: userModel != null ? '${userModel!.name.toUpperCase()} ${userModel!.lastName.toUpperCase()}': '',
                               color: AppTheme.white,
                               showShadow: false,
                             ),

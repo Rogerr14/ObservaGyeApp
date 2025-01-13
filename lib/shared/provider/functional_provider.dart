@@ -8,6 +8,18 @@ import 'package:observa_gye_app/shared/widget/alert_template.dart';
 class FunctionalProvider extends ChangeNotifier {
   List<Widget> pages = [];
   List<Widget> alerts = [];
+String nameUser = '';
+
+  
+  saveUserName(String value){
+    nameUser = value;
+    notifyListeners();
+  }
+
+  String getUserName(){
+    return nameUser;
+  }
+
 
 
   ButtonNavigatorBarItem buttonNavigatorBarItem = ButtonNavigatorBarItem.iconMenuHome;

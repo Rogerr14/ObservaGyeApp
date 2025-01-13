@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/my_aports/widget/my_alerts_page.dart';
 import 'package:observa_gye_app/modules/principal_modules/my_aports/widget/my_observation_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/model/alerts_model.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/observations_model.dart';
+import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
+import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
+import 'package:observa_gye_app/shared/services/alerts_services.dart';
+import 'package:observa_gye_app/shared/services/observtion_services.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
 class MyAportsPage extends StatefulWidget {
@@ -16,10 +22,17 @@ class _MyAportsPageState extends State<MyAportsPage>
     with SingleTickerProviderStateMixin {
   int _currentTab = 0;
   late TabController _tabController;
+  UserModel? userModel;
+  Observations? observations;
+  AlertsModel? alertsModel;
 
   @override
   void initState() {
     super.initState();
+        _getMyReports();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    },);
     _tabController = TabController(
         length: 2,
         vsync: this,
@@ -33,6 +46,28 @@ class _MyAportsPageState extends State<MyAportsPage>
       setState(() {});
     }
   }
+
+  _getMyReports()async{
+    userModel = await SecureStorage().getUserData();
+    if(userModel != null){
+      String user_id = userModel!.idUser;
+    final responseObservation = await ObservationServices().getObservations(context, user_id: user_id);
+    final responseAlerts = await AlertsServices().getAlerts(context, id_user: user_id);
+      if(!responseObservation.error){
+        observations = responseObservation.data!;
+      }
+      if(!responseAlerts.error){
+        alertsModel = responseAlerts.data!;
+      }
+
+    }
+    setState(() {
+      
+    });
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +103,8 @@ class _MyAportsPageState extends State<MyAportsPage>
              physics: const NeverScrollableScrollPhysics(),
              controller: _tabController,
              children: [
-               MyObservationPage(),
-               MyAlertsPage()
+               MyObservationPage(observaciones: observations != null ? observations!.observaciones : [],),
+               MyAlertsPage(alertas: alertsModel != null ? alertsModel!.alertas : [],)
              ],
            ),
          ),

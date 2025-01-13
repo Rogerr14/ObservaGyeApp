@@ -30,8 +30,8 @@ class _FormRegisterState extends State<FormRegister> {
    SecurityService securityService = SecurityService();
    final body = {
   "id_rol": 2,
-  "nombres": _nameController.text,
-  "apellidos" : _lastNameController.text,
+  "nombres": _nameController.text.toUpperCase(),
+  "apellidos" : _lastNameController.text.toUpperCase(),
   "correo": _emailController.text,
   "password": _passwordController.text,
   "telefono":_phoneController.text
@@ -113,7 +113,7 @@ class _FormRegisterState extends State<FormRegister> {
                     ],
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'El campo contraseña no debe estar vacío.';
+                        return 'El campo no debe estar vacío.';
                       }
                       return null;
                     },

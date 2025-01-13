@@ -30,7 +30,7 @@ class _FormLoginState extends State<FormLogin> {
   final _formLoginKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  UserModel? userModel;
 
   @override
   void initState() {
@@ -47,8 +47,10 @@ class _FormLoginState extends State<FormLogin> {
 
     final response = await securityService.login(context, body);
     if(!response.error){
-     SecureStorage().setUserData(userModelFromJson(json.encode(response.data)));
-     
+    userModel = response.data!;
+     SecureStorage().setUserData(userModel!);
+      String user_name = '${userModel!.name.split(' ').first} ${userModel!.lastName.split(' ').first}';
+     fp.saveUserName(user_name);
      if(fp.alerts.isEmpty){
 
     GlobalHelper.navigateToPageRemove(context, '/main');

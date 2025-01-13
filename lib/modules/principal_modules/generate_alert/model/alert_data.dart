@@ -40,6 +40,6 @@ class AlertData {
         "coordenada_longitud": coordenadaLongitud,
         "coordenada_latitud": coordenadaLatitud,
         "descripcion": descripcion,
-        "fecha_creado": fechaCreado.toIso8601String(),
+        "fecha_creado": "${fechaCreado.year.toString().padLeft(4, '0')}-${fechaCreado.month.toString().padLeft(2, '0')}-${fechaCreado.day.toString().padLeft(2, '0')}",
     };
 }

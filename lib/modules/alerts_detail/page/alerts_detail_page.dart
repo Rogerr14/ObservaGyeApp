@@ -4,32 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
-import 'package:observa_gye_app/modules/principal_modules/home/model/home_model.dart';
-import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/observations_model.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/model/alerts_model.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/widget/layout_generic.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
-class ObservationDetailPage extends StatefulWidget {
-  final bool isGeneral;
-  final Observaciones observation;
+class AlertsDetailPage extends StatefulWidget {
+  final Alerta alerta;
   final GlobalKey<State<StatefulWidget>> keyPage;
-  const ObservationDetailPage({super.key, required this.keyPage,  this.isGeneral = true, required this.observation});
+  final bool isGeneral;
+  const AlertsDetailPage({super.key, required this.keyPage, required this.isGeneral, required this.alerta});
 
   @override
-  State<ObservationDetailPage> createState() => _ObservationDetailPageState();
+  State<AlertsDetailPage> createState() => _AlertsDetailPageState();
 }
 
-class _ObservationDetailPageState extends State<ObservationDetailPage> {
+class _AlertsDetailPageState extends State<AlertsDetailPage> {
   List<String> imagenes = [];
-  final Completer<GoogleMapController> _controller = Completer();
+ final Completer<GoogleMapController> _controller = Completer();
   late CameraPosition location; 
   @override
   void initState() {
     _imagenes();
     location = CameraPosition(
-      target: LatLng(double.parse(widget.observation.coordenadaLatitud), double.parse(widget.observation.coordenadaLongitud)), zoom: 14.4746);
-    // TODO: implement initState
+      target: LatLng(double.parse(widget.alerta.coordenadaLatitud), double.parse(widget.alerta.coordenadaLatitud)), zoom: 14.4746);
+    
     super.initState();
   }
 
@@ -39,13 +38,11 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
     super.dispose();
   }
 
-  
   _imagenes(){
-    if(widget.observation.imagen1 != '') imagenes.add(widget.observation.imagen1); 
-    if(widget.observation.imagen2 != '') imagenes.add(widget.observation.imagen2); 
-    if(widget.observation.imagen3 != '') imagenes.add(widget.observation.imagen3); 
+    if(widget.alerta.imagen1 != '') imagenes.add(widget.alerta.imagen1); 
+    if(widget.alerta.imagen2 != null) imagenes.add(widget.alerta.imagen2); 
+    if(widget.alerta.imagen3 != null) imagenes.add(widget.alerta.imagen3); 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,30 +59,24 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextTitleWidget(
-                title: widget.observation.nombreComun,
+                title: widget.alerta.tipoAlerta,
                 size: 20,
               ),
-              TextTitleWidget(
-                title: widget.observation.nombreCientifico,
-                size: 20,
-              ),
+              
               Visibility(
                           visible: !widget.isGeneral,
-                          child: _statePublish(0, responsive)),
+                          child: _statePublish(int.parse(widget.alerta.idEstado), responsive)),
               const SizedBox(
                 height: 20,
               ),
-             FlutterCarousel(
+              FlutterCarousel(
                 items: imagenes.map((imagen) => ClipRRect(
                     borderRadius: BorderRadius.circular(5),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Image.network(
-                        imagen,
-                        height: 10,
-                        width: responsive.width,
-                        fit: BoxFit.contain,
-                      ),
+                    child: Image.network(
+                      imagen,
+                      height: 10,
+                      width: responsive.width,
+                      fit: BoxFit.contain,
                     ),
                   ),).toList()
               ,
@@ -119,9 +110,9 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
                     Marker(
                       markerId: const MarkerId('Observacion'),
                       position:
-                         LatLng(double.parse(widget.observation.coordenadaLatitud), double.parse(widget.observation.coordenadaLongitud)),
+                         LatLng(double.parse(widget.alerta.coordenadaLatitud), double.parse(widget.alerta.coordenadaLongitud)),
                       infoWindow:  InfoWindow(
-                          title: widget.observation.nombreComun, snippet: widget.observation.nombreCientifico),
+                          title: widget.alerta.tipoAlerta, snippet: widget.alerta.nombreEstado),
                       // onTap: () {
                       //   final keyalert = GlobalHelper.genKey();
                       //   fp.showAlert(
@@ -151,7 +142,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
               Row(
                 children: [
                   TextTitleWidget(title: 'Fecha: '),
-                  TextSubtitleWidget(subtitle: widget.observation.fechaObservacion.toString())
+                  TextSubtitleWidget(subtitle: widget.alerta.fechaCreado.toString())
                 ],
               ),
               Visibility(
@@ -159,7 +150,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
                 child: Row(
                   children: [
                     TextTitleWidget(title: 'Usuario: '),
-                    TextSubtitleWidget(subtitle: widget.observation.usuario)
+                    TextSubtitleWidget(subtitle: widget.alerta.usuario)
                   ],
                 ),
               ),
@@ -168,7 +159,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
                   TextTitleWidget(title: 'Nota: '),
                   TextSubtitleWidget(
                       subtitle:
-                          widget.observation.descripcion)
+                          widget.alerta.descripcion)
                 ],
               ),
             ],
@@ -180,7 +171,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
 
    _statePublish(int status, Responsive responsive) {
     switch (status) {
-      case 0:
+      case 1:
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
@@ -189,7 +180,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
           child: Center(child: TextSubtitleWidget(subtitle: 'Enviado')),
         );
 
-      case 1:
+      case 2:
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
@@ -197,7 +188,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
           child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
         );
-      case 2:
+      case 3:
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
@@ -212,7 +203,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.error, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
         );
     }
   }
