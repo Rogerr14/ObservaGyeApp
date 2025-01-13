@@ -3,6 +3,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/button_general_widget.dart';
@@ -246,6 +247,85 @@ class ErrorGeneric extends StatelessWidget {
   }
 }
 
+class GpsSelectUbication extends StatefulWidget {
+  final void Function()? onPress;
+  final GlobalKey keyToClose;
+
+  const GpsSelectUbication({super.key, this.onPress, required this.keyToClose});
+
+  @override
+  State<GpsSelectUbication> createState() => _GpsSelectUbicationState();
+}
+
+class _GpsSelectUbicationState extends State<GpsSelectUbication> {
+  final Set<Marker> _markers = {};
+  LatLng _lastMapPosition = _center;
+  static const LatLng _center =
+      const LatLng(-2.1832355790582962, -80.01632771534288);
+  void _onCameraMove(CameraPosition position) {
+    _lastMapPosition = position.target;
+  }
+
+  void _onAddMarkerButtonPressed() {
+    setState(() {
+      _markers.add(Marker(
+        // This marker id can be anything that uniquely identifies each marker.
+        markerId: MarkerId(_lastMapPosition.toString()),
+        position: _lastMapPosition,
+        infoWindow: InfoWindow(
+          title: 'Really cool place',
+          snippet: '5 Star Rating',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
+  }
+
+  CameraPosition location = const CameraPosition(
+      target: LatLng(-2.1832355790582962, -80.01632771534288), zoom: 14.4746);
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: size.width * 0.8,
+          height: size.height * 0.6,
+          child: GoogleMap(
+            initialCameraPosition: location,
+            markers: _markers,
+            onCameraMove: _onCameraMove,
+          ),
+        ),
+        FloatingActionButton(
+                      onPressed: _onAddMarkerButtonPressed,
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: Colors.green,
+                      child: const Icon(Icons.add_location, size: 36.0),
+                    ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: widget.onPress ??
+                  () {
+                    final fp =
+                        Provider.of<FunctionalProvider>(context, listen: false);
+                    fp.dismissAlert(key: widget.keyToClose);
+                  },
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(fontSize: 15, color: AppTheme.primaryColor),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class CustomDatePickerAlert extends StatelessWidget {
   final DateTime initialDate;
   final DateTime? lastDate;
@@ -274,7 +354,8 @@ class CustomDatePickerAlert extends StatelessWidget {
           width: double.maxFinite,
           child: Theme(
             data: Theme.of(context).copyWith(
-                colorScheme: const ColorScheme.light(primary: AppTheme.primaryColor),
+                colorScheme:
+                    const ColorScheme.light(primary: AppTheme.primaryColor),
                 datePickerTheme: const DatePickerThemeData(
                     dayStyle: TextStyle(color: AppTheme.primaryColor),
                     dayOverlayColor:
@@ -312,8 +393,6 @@ class CustomDatePickerAlert extends StatelessWidget {
   }
 }
 
-
-
 class ConfirmContent extends StatelessWidget {
   final String message;
   final void Function() confirm;
@@ -338,9 +417,19 @@ class ConfirmContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButtonWidget(onPressed: cancel, text: 'Cancelar', fontSize: 17, color: AppTheme.error,),
+            TextButtonWidget(
+              onPressed: cancel,
+              text: 'Cancelar',
+              fontSize: 17,
+              color: AppTheme.error,
+            ),
             SizedBox(width: size.width * 0.08),
-            FilledButtonWidget(onPressed: confirm, width: size.width * 0.05, text: 'Confirmar',color: AppTheme.primaryColor, )
+            FilledButtonWidget(
+              onPressed: confirm,
+              width: size.width * 0.05,
+              text: 'Confirmar',
+              color: AppTheme.primaryColor,
+            )
           ],
         ),
         SizedBox(height: size.height * 0.01),
@@ -349,13 +438,14 @@ class ConfirmContent extends StatelessWidget {
   }
 }
 
-Padding messageAlerts(Size size, {required String message, required double fontSize}) {
+Padding messageAlerts(Size size,
+    {required String message, required double fontSize}) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
     child: Text(
       message,
       textAlign: TextAlign.center,
-      style:  TextStyle(
+      style: TextStyle(
         fontSize: fontSize,
         fontWeight: FontWeight.w700,
         color: AppTheme.primaryColor,
@@ -363,7 +453,6 @@ Padding messageAlerts(Size size, {required String message, required double fontS
     ),
   );
 }
-
 
 class OkGeneric extends StatelessWidget {
   final GlobalKey keyToClose;
@@ -403,7 +492,6 @@ class OkGeneric extends StatelessWidget {
                 fontWeight: FontWeight.bold),
           ),
         ),
-
         SizedBox(height: size.height * 0.03),
         ButtonGeneralWidget(
           nameButton: 'Aceptar',
@@ -419,14 +507,11 @@ class OkGeneric extends StatelessWidget {
                   fp.dismissAlert(key: keyToClose);
                 },
         ),
-
         SizedBox(height: size.height * 0.01),
       ],
     );
   }
 }
-
-
 
 class NoExistInformation extends StatelessWidget {
   final String message;
@@ -463,23 +548,27 @@ class NoExistInformation extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   color: AppTheme.primaryColor),
               children: <TextSpan>[
-               isNamePage == true ? TextSpan(
-                  text: ' $namePage.',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.hinText),
-                ) : const TextSpan(),
+                isNamePage == true
+                    ? TextSpan(
+                        text: ' $namePage.',
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.hinText),
+                      )
+                    : const TextSpan(),
               ],
             ),
           ),
         ),
         const SizedBox(height: 25),
         FilledButtonWidget(
-            color: AppTheme.primaryColor,
-            onPressed: function,
-            width: size.width * 0.05,
-            text: 'Aceptar', colorText: AppTheme.white,),
+          color: AppTheme.primaryColor,
+          onPressed: function,
+          width: size.width * 0.05,
+          text: 'Aceptar',
+          colorText: AppTheme.white,
+        ),
         SizedBox(height: size.height * 0.01),
       ],
     );

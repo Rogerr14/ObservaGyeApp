@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/alerts_detail/page/alerts_detail_page.dart';
 import 'package:observa_gye_app/modules/observation_detail/page/observation_detail_page.dart';
@@ -42,11 +43,19 @@ class _ListWidgetState extends State<ListWidget> {
             child: Row(
               children: [
                 ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      widget.alerta.imagen1,
-                      height: responsive.hp(10),
-                    )),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    widget.alerta.imagen1,
+                    height: responsive.hp(10),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return SvgPicture.asset(
+                        AppTheme.iconFireAlert,
+                        height: responsive.hp(10),
+                      );
+                    },
+                  ),
+                ),
                 SizedBox(
                   width: 10,
                 ),
@@ -58,10 +67,12 @@ class _ListWidgetState extends State<ListWidget> {
                         title: widget.alerta.tipoAlerta,
                         showShadow: false,
                       ),
-                      TextSubtitleWidget(subtitle: widget.alerta.fechaCreado.toString()),
+                      TextSubtitleWidget(
+                          subtitle: widget.alerta.fechaCreado.toString()),
                       Visibility(
                           visible: !widget.isGeneral,
-                          child: _statePublish(int.parse(widget.alerta.idEstado), responsive)),
+                          child: _statePublish(
+                              int.parse(widget.alerta.idEstado), responsive)),
                       Visibility(
                           visible: widget.isGeneral,
                           child: TextSubtitleWidget(

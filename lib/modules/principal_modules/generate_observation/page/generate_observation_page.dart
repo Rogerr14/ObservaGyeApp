@@ -7,14 +7,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/especies_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/services/alerts_services.dart';
+import 'package:observa_gye_app/shared/services/observtion_services.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/date_time_picker_widget.dart';
 import 'package:observa_gye_app/shared/widget/drop_down_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
+import 'package:observa_gye_app/shared/widget/gps_ubication_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -30,23 +33,26 @@ class GenerateObservationPage extends StatefulWidget {
 
 class _GenerateObservationPageState extends State<GenerateObservationPage> {
   TextEditingController _controllerdateTime = TextEditingController();
+  TextEditingController _gpsController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
   List<File> imagenes = [];
-   String selectSendero = '';
+  String selectSendero = '';
   ImagePicker imagePicker = ImagePicker();
   TypeAlertsModel? typeAlertsModel;
   late FunctionalProvider fp;
   List<DropdownMenuItem<String>> senderos = [];
-
+  ListEspecies? listEspecies;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      
-    _getTypesAlerts();
-    },);
-     fp = Provider.of<FunctionalProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        _getSenderos();
+        _getEspecies();
+      },
+    );
+    fp = Provider.of<FunctionalProvider>(context, listen: false);
     imagenes.add(File(widget.image.path));
     // TODO: implement initState
     super.initState();
@@ -58,14 +64,15 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
     super.dispose();
   }
 
+  void _getEspecies() async {
+    final response = await ObservationServices().getEspecies(context);
+    if (!response.error) {
+      listEspecies = response.data;
+    }
+    setState(() {});
+  }
 
-
-
-
-
-  
-
-_getTypesAlerts() async {
+  void _getSenderos() async {
     final response = await AlertsServices().getTypeAlerts(context);
     if (!response.error) {
       typeAlertsModel = response.data;
@@ -86,10 +93,8 @@ _getTypesAlerts() async {
     setState(() {});
   }
 
-
-
   _readMetaData() async {
-    final fileBytes =  File(widget.image.path).readAsBytesSync();
+    final fileBytes = File(widget.image.path).readAsBytesSync();
     final data = await readExifFromBytes(fileBytes);
     if (data.isEmpty) {
       GlobalHelper.logger.w('no existe la data');
@@ -99,7 +104,6 @@ _getTypesAlerts() async {
   }
 
   _takePick(Responsive responsive) async {
-    // image = await picker.pickImage(source: ImageSource.camera);
     final selectSourcekey = GlobalHelper.genKey();
     fp.showAlert(
         key: selectSourcekey,
@@ -168,8 +172,6 @@ _getTypesAlerts() async {
         ));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
@@ -198,7 +200,7 @@ _getTypesAlerts() async {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 const TextTitleWidget(
+                const TextTitleWidget(
                   title: 'Nombre Especie',
                 ),
                 const SizedBox(
@@ -233,7 +235,7 @@ _getTypesAlerts() async {
                 const SizedBox(
                   height: 20,
                 ),
-                 const TextTitleWidget(
+                const TextTitleWidget(
                   title: 'Fecha observación',
                 ),
                 const SizedBox(
@@ -273,9 +275,16 @@ _getTypesAlerts() async {
                 const SizedBox(
                   height: 10,
                 ),
-                const TextFormFieldWidget(
-                  hintText: 'Ubicación',
-                ),
+                GpsUbicationWidget(
+                    controller: _gpsController,
+                    onTap: () {
+                      final keyMapAlert = GlobalHelper.genKey();
+                      fp.showAlert(
+                          key: keyMapAlert,
+                          content: AlertGeneric(
+                            
+                            content: GpsSelectUbication(keyToClose: keyMapAlert)));
+                    }),
                 const SizedBox(
                   height: 20,
                 ),
@@ -289,7 +298,7 @@ _getTypesAlerts() async {
                   children: [
                     ...imagenes.map(
                       (e) => Stack(
-                        clipBehavior: Clip.hardEdge,
+                        clipBehavior: Clip.none,
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -303,8 +312,8 @@ _getTypesAlerts() async {
                             ),
                           ),
                           Positioned(
-                              top: 0,
-                              right: 0,
+                              top: -20,
+                              right: -10,
                               child: IconButton(
                                   onPressed: () {
                                     imagenes.removeWhere(
@@ -312,7 +321,10 @@ _getTypesAlerts() async {
                                     );
                                     setState(() {});
                                   },
-                                  icon: Icon(Icons.highlight_remove_rounded))),
+                                  icon: Icon(
+                                    Icons.highlight_remove,
+                                    color: AppTheme.error,
+                                  ))),
                         ],
                       ),
                     ),
@@ -340,9 +352,10 @@ _getTypesAlerts() async {
                           )
                         : SizedBox()
                   ],
-    
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 const TextTitleWidget(
                   title: 'Notas Adicionales',
                 ),
@@ -353,7 +366,7 @@ _getTypesAlerts() async {
                   hintText: 'Agregar una nota...',
                   maxLines: 4,
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Align(

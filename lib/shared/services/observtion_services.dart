@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:observa_gye_app/env/environment.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/especies_model.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/observations_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/models/general_response.dart';
@@ -14,20 +15,22 @@ class ObservationServices {
 
   Future<GeneralResponse> sendObservationReport(BuildContext context,
       List<MultipartFile> files, Map<String, String> fields) async {
-        final urlEndpoint = '$urlService/Observacion/CrearObservacion';
-        try {
-          final response = await interceptorHttp.request(context, 'POST', urlEndpoint, null, multipartFiles: files, multipartFields: fields, requestType: "FORM");
+    final urlEndpoint = '$urlService/Observacion/CrearObservacion';
+    try {
+      final response = await interceptorHttp.request(
+          context, 'POST', urlEndpoint, null,
+          multipartFiles: files, multipartFields: fields, requestType: "FORM");
 
-         if (!response.error) {
+      if (!response.error) {
         return GeneralResponse(
             message: response.message, error: response.error);
       }
       return GeneralResponse(message: response.message, error: response.error);
     } catch (error) {
       GlobalHelper.logger.w('Error al Crear Observacion $error');
-       return GeneralResponse(message: 'Error al crear Observación', error: true);
+      return GeneralResponse(
+          message: 'Error al crear Observación', error: true);
     }
-
   }
 
   Future<GeneralResponse<Observations>> getObservations(BuildContext context,
@@ -50,6 +53,29 @@ class ObservationServices {
       GlobalHelper.logger.w('Error al obtener observaciones $e');
       return GeneralResponse(
           message: 'Error al obtener observaciones', error: true);
+    }
+  }
+
+  Future<GeneralResponse<ListEspecies>> getEspecies(
+      BuildContext context) async {
+    String urlEndpoint = '$urlService/Observacion/ListarEspecies';
+    try {
+      ListEspecies? listEspecies;
+
+      final response =
+          await interceptorHttp.request(context, 'GET', urlEndpoint, null);
+      if (!response.error) {
+        listEspecies = listEspeciesFromJson(jsonEncode(response.data));
+        return GeneralResponse(
+            message: response.message,
+            error: response.error,
+            data: listEspecies);
+      }
+      return GeneralResponse(message: response.message, error: response.error);
+    } catch (e) {
+      GlobalHelper.logger.e('Error al obtener Especies $e');
+      return GeneralResponse(
+          message: 'Error al obtener especies $e', error: true);
     }
   }
 }
