@@ -78,4 +78,27 @@ class ObservationServices {
           message: 'Error al obtener especies $e', error: true);
     }
   }
+
+  Future<GeneralResponse<Observations>> searchObservations(
+      BuildContext context, dynamic body) async {
+    final urlEndpoint = '$urlService/Observacion/buscarObservacion';
+
+    try {
+      Observations? observation;
+      final response =
+          await interceptorHttp.request(context, 'GET', urlEndpoint, body);
+      if (!response.error) {
+        observation = observationsFromJson(jsonEncode(response.data));
+        return GeneralResponse(
+            message: response.message,
+            error: response.error,
+            data: observation);
+      }
+      return GeneralResponse(message: response.message, error: response.error);
+    } catch (e) {
+      GlobalHelper.logger.e('Error al buscar observaciones');
+      return GeneralResponse(
+          message: 'Error al buscar observaciones $e', error: true);
+    }
+  }
 }
