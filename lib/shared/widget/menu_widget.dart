@@ -8,6 +8,7 @@ import 'package:observa_gye_app/modules/secondary_modules/map_observation/page/m
 import 'package:observa_gye_app/modules/secondary_modules/profile/page/profile_page.dart';
 import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
@@ -43,8 +44,9 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
+    final responsive = Responsive(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 90, 0, 20),
+      padding:  EdgeInsets.only(top: responsive.height * 0.05),
       child: Column(
         children: [
           Expanded(
@@ -104,7 +106,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                             keyDismiss: keyObservation,
                           ));
                       await widget.controller.close!();
-                    }),
+                    },
+                    responsive: responsive,),
                 const Divider(),
                 _optionMenu(
                     icon: Icons.warning_rounded,
@@ -118,7 +121,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                             keyDismiss: keyAlerts,
                           ));
                       await widget.controller.close!();
-                    }),
+                    },
+                    responsive: responsive,),
                 const Divider(),
                 _optionMenu(
                   icon: Icons.map_sharp,
@@ -132,7 +136,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                           keyDismiss: keyMapObservation,
                         ));
                     await widget.controller.close!();
-                  },
+                  }, responsive: responsive,
                 ),
                 const Divider(),
                 // _optionMenu(
@@ -180,7 +184,7 @@ class _MenuWidgetState extends State<MenuWidget> {
   _optionMenu(
       {required IconData icon,
       required String titleOption,
-      required Function() onPressed}) {
+      required Function() onPressed, required Responsive responsive}) {
     return TextButton.icon(
       style: TextButton.styleFrom(
           fixedSize: Size(context.screenWidth, 50),
@@ -188,6 +192,7 @@ class _MenuWidgetState extends State<MenuWidget> {
           splashFactory: InkSplash.splashFactory),
       onPressed: onPressed,
       label: TextTitleWidget(
+        size: responsive.dp(2),
         title: titleOption,
         color: AppTheme.white,
         showShadow: false,
@@ -211,6 +216,8 @@ class _MenuWidgetState extends State<MenuWidget> {
           message: 'Estás a punto de cerrar la sesión actual ¿Estás Seguro?',
           confirm: () {
             fp.dismissAlert(key: closeSesionKey);
+            SecureStorage().removeData();
+            fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
             GlobalHelper.navigateToPageRemove(context, '/login');
           },
           cancel: () {

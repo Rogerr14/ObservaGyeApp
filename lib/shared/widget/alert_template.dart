@@ -229,8 +229,8 @@ class ErrorGeneric extends StatelessWidget {
         ButtonGeneralWidget(
           nameButton: 'Aceptar',
           backgroundColor: AppTheme.error,
-          height: 30,
-          width: 120,
+          height: size.height * 0.05,
+          width: size.width * 0.4,
           textColor: AppTheme.white,
           onPressed: (onPress != null)
               ? onPress
@@ -486,18 +486,20 @@ class OkGeneric extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             message,
+            textAlign: TextAlign.center,
             style: const TextStyle(
                 fontSize: 20,
                 color: AppTheme.primaryColor,
-                fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold,
+                ),
           ),
         ),
         SizedBox(height: size.height * 0.03),
         ButtonGeneralWidget(
           nameButton: 'Aceptar',
           backgroundColor: AppTheme.primaryColor,
-          height: 30,
-          width: 120,
+          height: size.height * 0.05,
+          width: size.width * 0.4,
           textColor: AppTheme.white,
           onPressed: (onPress != null)
               ? onPress

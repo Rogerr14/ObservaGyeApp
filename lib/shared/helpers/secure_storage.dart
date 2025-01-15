@@ -29,6 +29,10 @@ class SecureStorage{
     return null;
   }
 
+  void removeData()async{
+    await storage.delete(key: "userData");
+  }
+
 
 
 

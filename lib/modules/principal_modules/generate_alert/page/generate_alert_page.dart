@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -57,7 +58,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   void initState() {
     fp = Provider.of<FunctionalProvider>(context, listen: false);
     // _takePick();
-    imagenes.add(File(widget.image.path));
+    _compressImage(widget.image);
     _readMetaData();
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -103,6 +104,18 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
         });
       },)));
     }
+  }
+
+
+
+
+  _compressImage(XFile file)async{
+      GlobalHelper.logger.e(file.name);
+      final fileCompress = await FlutterImageCompress.compressWithFile(file.path);
+      if(fileCompress != null){
+        final fileImage = File.fromRawPath(fileCompress); 
+        GlobalHelper.logger.w(fileImage.path);
+      }
   }
 
   _getTypesAlerts() async {
@@ -162,11 +175,12 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                             source: ImageSource.camera);
                         if (photo != null) {
                           fp.dismissAlert(key: selectSourcekey);
-                          imagenes.add(File(photo.path));
+                          // imagenes.add(File(photo.path));
+                          _compressImage(photo);
                         }
                         setState(() {});
                       },
-                      icon: Column(
+                      icon: const Column(
                         children: [
                           Icon(
                             Icons.camera_alt_outlined,

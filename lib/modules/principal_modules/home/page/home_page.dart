@@ -24,8 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-      fp =
-                        Provider.of<FunctionalProvider>(context, listen: false);
+      fp = Provider.of<FunctionalProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp)async {
       
     _getHome();
@@ -76,19 +75,24 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 20,
             ),
-            FlutterCarousel(
-              items: homeResponse != null ? homeResponse!.observations.map(
-                (observation) => CardObservationWidget(
-                  observation: observation,
-
-                ),
-              ).toList() : [],
+            SizedBox(
+              height: responsive.height * 0.25,
+              width: responsive.width,
+              child: (homeResponse != null && homeResponse!.observations.isNotEmpty )?FlutterCarousel(
+                items: homeResponse!.observations.map(
+                  (observation) => CardObservationWidget(
+                    observation: observation,
               
-              options: FlutterCarouselOptions(
-                height: responsive.hp(22),
-                showIndicator: false,
-                // slideIndicator: CircularSlideIndicator(),
-              ),
+                  ),
+                ).toList(),
+                
+                options: FlutterCarouselOptions(
+                  // height: responsive.hp(22),
+                  
+                  showIndicator: false,
+                  // slideIndicator: CircularSlideIndicator(),
+                ),
+              ): Center(child: TextTitleWidget(title: 'Sin observaciones actualmente')),
             ),
             const SizedBox(
               height: 20,

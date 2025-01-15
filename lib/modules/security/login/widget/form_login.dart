@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/principal_modules/main_page/page/main_page.dart';
 import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/modules/security/recovery/page/recovery_pswrd.dart';
 import 'package:observa_gye_app/modules/security/register/page/register_page.dart';
@@ -52,8 +53,8 @@ class _FormLoginState extends State<FormLogin> {
       String user_name = '${userModel!.name.split(' ').first} ${userModel!.lastName.split(' ').first}';
      fp.saveUserName(user_name);
      if(fp.alerts.isEmpty){
-
-    GlobalHelper.navigateToPageRemove(context, '/main');
+      Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, MainPage()), (route) => false);
+    // G(context, '/main');
      }
     }
   }
