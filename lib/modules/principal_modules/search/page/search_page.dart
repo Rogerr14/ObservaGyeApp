@@ -63,39 +63,41 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          child: TextFormFieldWidget(
-            controller: searchEspecie,
-            hintText: 'Buscar...',
-            inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'))
-                    ],
-            suffixIcon: IconButton(
-              icon: Icon(
-                Icons.search,
-                size: 30,
-                color: AppTheme.primaryColor,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            child: TextFormFieldWidget(
+              controller: searchEspecie,
+              hintText: 'Buscar...',
+              inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'))
+                      ],
+              suffixIcon: IconButton(
+                icon: Icon(
+                  Icons.search,
+                  size: 30,
+                  color: AppTheme.primaryColor,
+                ),
+                onPressed: () {
+                  if (searchEspecie.text.trim().isNotEmpty) {
+                    _searchObservations();
+                  }
+                },
               ),
-              onPressed: () {
-                if (searchEspecie.text.trim().isNotEmpty) {
-                  _searchObservations();
-                }
-              },
             ),
           ),
-        ),
-
-        if(observations != null)
-              SizedBox(
-                height: responsive.height *0.9,
-                child: ListView.builder(
-                   itemCount: observations!.observaciones.length,
-                  itemBuilder: (context, index) => ListWidgetObservations(observations: observations!.observaciones[index],),),
-              ),
-      ],
+      
+          if(observations != null)
+                SizedBox(
+                  height: responsive.height *0.9,
+                  child: ListView.builder(
+                     itemCount: observations!.observaciones.length,
+                    itemBuilder: (context, index) => ListWidgetObservations(observations: observations!.observaciones[index],),),
+                ),
+        ],
+      ),
     );
   }
 }
