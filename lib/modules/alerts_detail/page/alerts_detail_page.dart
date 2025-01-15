@@ -40,8 +40,8 @@ class _AlertsDetailPageState extends State<AlertsDetailPage> {
 
   _imagenes(){
     if(widget.alerta.imagen1 != '') imagenes.add(widget.alerta.imagen1); 
-    if(widget.alerta.imagen2 != null) imagenes.add(widget.alerta.imagen2); 
-    if(widget.alerta.imagen3 != null) imagenes.add(widget.alerta.imagen3); 
+    if(widget.alerta.imagen2 != '') imagenes.add(widget.alerta.imagen2); 
+    if(widget.alerta.imagen3 != '') imagenes.add(widget.alerta.imagen3); 
   }
 
   @override

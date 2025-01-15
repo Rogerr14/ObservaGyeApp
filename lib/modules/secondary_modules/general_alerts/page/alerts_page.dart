@@ -36,7 +36,7 @@ class _AlertsPageState extends State<AlertsPage> {
   }
 
   _getAlerts() async {
-    final response = await AlertsServices().getAlerts(context);
+    final response = await AlertsServices().getAlerts(context, id_estado: "3");
     if (!response.error) {
       if (response.data!.alertas.isNotEmpty) {
         alertsModel = response.data;
@@ -87,7 +87,7 @@ class _AlertsPageState extends State<AlertsPage> {
             Expanded(
               child: ListView.builder(
                 itemCount: alertsModel!.alertas.length,
-                itemBuilder: (context, index) => ListWidget(alerta: alertsModel!.alertas[index], ),
+                itemBuilder: (context, index) => ListWidget(alerta: alertsModel!.alertas[index],isGeneral: false, ),
               ),
             ),
           ],

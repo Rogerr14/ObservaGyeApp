@@ -10,7 +10,7 @@ class QaEnv extends BaseConfig{
   @override
 
     // String get serviceUrl => 'http://192.168.100.6:2500/api';
-    String get serviceUrl => 'https://inexpensive-repeat-advertise-educational.trycloudflare.com';
+    String get serviceUrl => 'https://duties-senior-tale-crm.trycloudflare.com/api';
     // String get serviceUrl => 'http://192.168.10.113:2500/api';
 
   @override

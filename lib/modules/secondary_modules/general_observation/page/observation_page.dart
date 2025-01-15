@@ -42,7 +42,7 @@ void dispose() {
 
 
 _getObservations() async {
-    final response = await ObservationServices().getObservations(context);
+    final response = await ObservationServices().getObservations(context, estado: true);
     if (!response.error) {
       if (response.data!.observaciones.isNotEmpty) {
         observations = response.data;

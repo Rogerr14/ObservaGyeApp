@@ -41,7 +41,7 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
   }
 
   _getObservations() async {
-    final response = await ObservationServices().getObservations(context);
+    final response = await ObservationServices().getObservations(context, estado: true);
     if (!response.error) {
       if (response.data!.observaciones.isNotEmpty) {
         observations = response.data;

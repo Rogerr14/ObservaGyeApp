@@ -69,7 +69,7 @@ class TiposAlerta {
         idTipoAlerta: json["id_tipo_alerta"],
         tipoAlerta: json["tipo_alerta"],
         nivelPrioridad: json["nivel_prioridad"],
-        iconoAlerta: json["icono_alerta"],
+        iconoAlerta: json["icono_alerta"]??'',
     );
 
     Map<String, dynamic> toJson() => {

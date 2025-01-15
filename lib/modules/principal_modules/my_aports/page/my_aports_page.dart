@@ -51,7 +51,7 @@ class _MyAportsPageState extends State<MyAportsPage>
     userModel = await SecureStorage().getUserData();
     if(userModel != null){
       String user_id = userModel!.idUser;
-    final responseObservation = await ObservationServices().getObservations(context, user_id: user_id);
+    final responseObservation = await ObservationServices().getObservations(context, user_id: user_id,);
     final responseAlerts = await AlertsServices().getAlerts(context, id_user: user_id);
       if(!responseObservation.error){
         observations = responseObservation.data!;
@@ -72,43 +72,61 @@ class _MyAportsPageState extends State<MyAportsPage>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        Container(
-          color: AppTheme.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _TabPage(
-                label: 'Mis Observaciones',
-                isActive: _currentTab == 0,
-                onPress: () {
-                  _setCurrentTab(0);
-                },
-              ),
-              _TabPage(
-                label: 'Mis Alertas',
-                isActive: _currentTab == 1,
-                onPress: () {
-                  _setCurrentTab(1);
-                },
-              ),
-            ],
+    return SizedBox(
+      height: size.height,
+      child: Column(
+        children: [
+          Container(
+            color: AppTheme.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _TabPage(
+                  label: 'Mis Observaciones',
+                  isActive: _currentTab == 0,
+                  onPress: () {
+                    _setCurrentTab(0);
+                  },
+                ),
+                _TabPage(
+                  label: 'Mis Alertas',
+                  isActive: _currentTab == 1,
+                  onPress: () {
+                    _setCurrentTab(1);
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-         SizedBox(
-          height: size.height,
-           child: TabBarView(
-             clipBehavior: Clip.antiAlias,
-             physics: const NeverScrollableScrollPhysics(),
-             controller: _tabController,
-             children: [
-               MyObservationPage(observaciones: observations != null ? observations!.observaciones : [],),
-               MyAlertsPage(alertas: alertsModel != null ? alertsModel!.alertas : [],)
-             ],
+           Flexible(
+            fit: FlexFit.loose,
+             child: TabBarView(
+               clipBehavior: Clip.antiAlias,
+               physics: const NeverScrollableScrollPhysics(),
+               controller: _tabController,
+               children: [
+                   observations != null
+                      ? MyObservationPage(
+                          observaciones: observations!.observaciones,
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child:
+                              TextTitleWidget(title: 'No has creado observaciones'),
+                        ),
+                  alertsModel != null
+                      ? MyAlertsPage(
+                          alertas: alertsModel!.alertas,
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child: TextTitleWidget(title: 'No has creado alertas'),
+                        ),
+               ],
+             ),
            ),
-         ),
-      ],
+        ],
+      ),
     );
   }
 }

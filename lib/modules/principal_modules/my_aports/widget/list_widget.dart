@@ -113,7 +113,7 @@ class _ListWidgetState extends State<ListWidget> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+          child: Center(child: TextSubtitleWidget(subtitle: 'En atención')),
         );
       case 3:
         return Container(
@@ -121,7 +121,7 @@ class _ListWidgetState extends State<ListWidget> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.red, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Cerrada')),
         );
 
       default:
@@ -130,7 +130,7 @@ class _ListWidgetState extends State<ListWidget> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.error, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
+          child: Center(child: TextSubtitleWidget(subtitle: 'Cerrada')),
         );
     }
   }

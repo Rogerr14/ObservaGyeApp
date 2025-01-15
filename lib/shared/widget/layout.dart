@@ -186,7 +186,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                       color: AppTheme.white,
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(50))),
-                  child: SingleChildScrollView(child: contain)),
+                  child: contain),
               bottomNavigationBar: ButtonNavigartorBarItem(
                 iconSelect: iconSelect,
                 fp: fp,

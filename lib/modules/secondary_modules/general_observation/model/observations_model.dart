@@ -81,8 +81,8 @@ class Observaciones {
         coordenadaLatitud: json["coordenada_latitud"],
         estado: json["estado"],
         imagen1: json["imagen_1"],
-        imagen2: json["imagen_2"],
-        imagen3: json["imagen_3"],
+        imagen2: json["imagen_2"] ?? '',
+        imagen3: json["imagen_3"] ?? '',
         fechaCreado: DateTime.parse(json["fecha_creado"]),
     );
 

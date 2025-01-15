@@ -34,12 +34,16 @@ class ObservationServices {
   }
 
   Future<GeneralResponse<Observations>> getObservations(BuildContext context,
-      {String user_id = ''}) async {
+      {String user_id = '', bool? estado}) async {
     final urlEndpoint = '$urlService/Observacion/ListaObservaciones';
     try {
+      GlobalHelper.logger.w('Entra aqui , $estado');
+      final estado_alerta = estado != null ? 
+        estado.toString()
+       : "";
       final response = await interceptorHttp.request(
           context, 'GET', urlEndpoint, null,
-          queryParameters: {"estado": "true", "id_usuario": user_id});
+          queryParameters: {"estado": estado_alerta, "id_usuario": user_id});
       late Observations observations;
       if (!response.error) {
         observations = observationsFromJson(jsonEncode(response.data));
