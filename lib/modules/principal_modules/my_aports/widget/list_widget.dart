@@ -47,6 +47,7 @@ class _ListWidgetState extends State<ListWidget> {
                   child: Image.network(
                     widget.alerta.imagen1,
                     height: responsive.hp(10),
+                    errorBuilder: (context, error, stackTrace) => SizedBox(),
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
                       return SvgPicture.asset(

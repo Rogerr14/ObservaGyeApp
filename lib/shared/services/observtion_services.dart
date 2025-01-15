@@ -86,7 +86,7 @@ class ObservationServices {
     try {
       Observations? observation;
       final response =
-          await interceptorHttp.request(context, 'GET', urlEndpoint, body);
+          await interceptorHttp.request(context, 'POST', urlEndpoint, body);
       if (!response.error) {
         observation = observationsFromJson(jsonEncode(response.data));
         return GeneralResponse(
@@ -96,7 +96,7 @@ class ObservationServices {
       }
       return GeneralResponse(message: response.message, error: response.error);
     } catch (e) {
-      GlobalHelper.logger.e('Error al buscar observaciones');
+      GlobalHelper.logger.e('Error al buscar observaciones $e');
       return GeneralResponse(
           message: 'Error al buscar observaciones $e', error: true);
     }

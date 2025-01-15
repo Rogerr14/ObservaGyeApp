@@ -93,7 +93,7 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
                   ? observations!.observaciones
                       .map(
                         (observaciones) => Marker(
-                            markerId: MarkerId(observaciones.idObservacion),
+                            markerId: MarkerId(observaciones.idObservacion.toString()),
                             position: LatLng(
                               double.parse(observaciones.coordenadaLatitud),
                               double.parse(observaciones.coordenadaLongitud),

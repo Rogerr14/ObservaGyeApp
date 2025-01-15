@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_alerts/widget/list_widget.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/observations_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
+import 'package:observa_gye_app/shared/helpers/responsive.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/services/observtion_services.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
@@ -60,6 +62,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
     return Column(
       children: [
         Padding(
@@ -83,7 +86,15 @@ class _SearchPageState extends State<SearchPage> {
               },
             ),
           ),
-        )
+        ),
+
+        if(observations != null)
+              SizedBox(
+                height: responsive.height *0.9,
+                child: ListView.builder(
+                   itemCount: observations!.observaciones.length,
+                  itemBuilder: (context, index) => ListWidgetObservations(observations: observations!.observaciones[index],),),
+              ),
       ],
     );
   }

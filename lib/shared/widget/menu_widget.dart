@@ -135,21 +135,21 @@ class _MenuWidgetState extends State<MenuWidget> {
                   },
                 ),
                 const Divider(),
-                _optionMenu(
-                  icon: Icons.settings,
-                  titleOption: 'CONFIGURACION',
-                  onPressed: () async {
-                    final keySettingsApp = GlobalHelper.genKey();
-                    fp.addPage(
-                        key: keySettingsApp,
-                        content: ObservationPage(
-                          key: keySettingsApp,
-                          keyDismiss: keySettingsApp,
-                        ));
-                    await widget.controller.close!();
-                  },
-                ),
-                const Divider(),
+                // _optionMenu(
+                //   icon: Icons.settings,
+                //   titleOption: 'CONFIGURACION',
+                //   onPressed: () async {
+                //     final keySettingsApp = GlobalHelper.genKey();
+                //     fp.addPage(
+                //         key: keySettingsApp,
+                //         content: ObservationPage(
+                //           key: keySettingsApp,
+                //           keyDismiss: keySettingsApp,
+                //         ));
+                //     await widget.controller.close!();
+                //   },
+                // ),
+                // const Divider(),
               ],
             ),
           ),
