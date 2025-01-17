@@ -30,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 Container(
                     width: size.width,
-                    height: size.height * 0.8,
+                    height: size.height ,
                     decoration: const BoxDecoration(
                         color: AppTheme.white,
                         borderRadius:

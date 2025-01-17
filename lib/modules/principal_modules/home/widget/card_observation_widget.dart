@@ -28,68 +28,72 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
     final size = MediaQuery.of(context).size;
-    return Card(
+    return SizedBox(
+      height: 120,
+      child: Card(
         color: AppTheme.grayShadow,
         elevation: 1,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(color: AppTheme.primaryColor, width: 0.5)),
+              borderRadius: BorderRadius.circular(20),
+              side: const BorderSide(color: AppTheme.primaryColor, width: 0.5)),
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: responsive.wp(5), vertical: responsive.hp(2)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextTitleWidget(
-                        title: widget.observation.nombreComun,
-                        size: responsive.wp(4.5),
-                      ),
-                      TextTitleWidget(
-                        title: widget.observation.nombreCientifico,
-                        size: responsive.wp(4.4),
-                      ),
-                      TextSubtitleWidget(
-                        subtitle: DateFormat('yyyy-MM-dd')
-                            .format(widget.observation.fechaObservacion),
-                        size: responsive.wp(4),
-                      ),
-                      
-                    ],
-                  ),
-                  FilledButtonWidget(
-                    text: 'Ver más',
-                    width: responsive.wp(25),
-                    height: responsive.hp(3),
-                    onPressed: (){
-                      final keyObservationPage = GlobalHelper.genKey();
-                      final fp = Provider.of<FunctionalProvider>(context, listen: false);
-                    fp.addPage(
-                        key: keyObservationPage,
-                        content:
-                            ObservationDetailPage(
-                              key: keyObservationPage,
-                              keyPage: keyObservationPage,
-                              observation: widget.observation,));
-                    },
-                  )
-                ],
-              ),
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    height: responsive.hp(40),
-                    width: responsive.wp(30),
-                    widget.observation.imagen1,
-                    fit: BoxFit.cover,
-                  ))
-            ],
+            padding:  EdgeInsets.symmetric(horizontal: responsive.wp(5)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextTitleWidget(
+                          title: widget.observation.nombreComun,
+                          size: responsive.wp(4.5),
+                        ),
+                        TextTitleWidget(
+                          title: widget.observation.nombreCientifico,
+                          size: responsive.wp(4.4),
+                        ),
+                        TextSubtitleWidget(
+                          subtitle: DateFormat('yyyy-MM-dd')
+                              .format(widget.observation.fechaObservacion),
+                          size: responsive.wp(4),
+                        ),
+                        
+                      ],
+                    ),
+                    FilledButtonWidget(
+                      text: 'Ver más',
+                      width: responsive.wp(30),
+                      height: responsive.hp(5),
+                      onPressed: (){
+                        final keyObservationPage = GlobalHelper.genKey();
+                        final fp = Provider.of<FunctionalProvider>(context, listen: false);
+                      fp.addPage(
+                          key: keyObservationPage,
+                          content:
+                              ObservationDetailPage(
+                                key: keyObservationPage,
+                                keyPage: keyObservationPage,
+                                observation: widget.observation,));
+                      },
+                    )
+                  ],
+                ),
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      height: responsive.hp(20),
+                      width: responsive.wp(30),
+                      widget.observation.imagen1,
+                      fit: BoxFit.cover,
+                    ))
+              ],
+            ),
           ),
-        ));
+      ),
+    );
   }
 }

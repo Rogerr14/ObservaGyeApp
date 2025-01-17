@@ -105,7 +105,7 @@ class _MyAportsPageState extends State<MyAportsPage>
                physics: const NeverScrollableScrollPhysics(),
                controller: _tabController,
                children: [
-                   observations != null
+                   (observations != null && observations!.observaciones.isNotEmpty)
                       ? MyObservationPage(
                           observaciones: observations!.observaciones,
                         )
@@ -114,7 +114,7 @@ class _MyAportsPageState extends State<MyAportsPage>
                           child:
                               TextTitleWidget(title: 'No has creado observaciones'),
                         ),
-                  alertsModel != null
+                  (alertsModel != null && alertsModel!.alertas.isNotEmpty)
                       ? MyAlertsPage(
                           alertas: alertsModel!.alertas,
                         )

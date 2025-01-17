@@ -74,12 +74,13 @@ class GlobalHelper {
   static navigateToPageRemove(BuildContext context, String routeName) {
     final route = AppRoutes.routes[routeName];
     final page = (route != null) ? route.call(context) : const PageNotFound();
+    
     Navigator.pushAndRemoveUntil(
       context,
       PageRouteBuilder(
-        fullscreenDialog: true,
-         reverseTransitionDuration: const Duration(milliseconds: 500),
-        transitionDuration: const Duration(milliseconds: 700),
+        // fullscreenDialog: true,
+         reverseTransitionDuration: const Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 900),
         pageBuilder: (context, animation, _) => 
         FadeTransition(
           opacity: animation,
