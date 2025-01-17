@@ -15,7 +15,7 @@ class AlertsServices {
 
   Future<GeneralResponse<TypeAlertsModel>> getTypeAlerts(
       BuildContext context) async {
-    final url = '$urlService/Alerta/TipoAlertas';
+    final url = '$urlService/Alerta/tipo_alertas';
     try {
       late TypeAlertsModel typeAlertsModel;
       final response = await interceptorHttp.request(context, 'GET', url, null);
