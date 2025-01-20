@@ -3,6 +3,7 @@
 //     final listEspecies = listEspeciesFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:ffi';
 
 ListEspecies listEspeciesFromJson(String str) => ListEspecies.fromJson(json.decode(str));
 
@@ -25,7 +26,7 @@ class ListEspecies {
 }
 
 class Especy {
-    String idEspecie;
+    int idEspecie;
     String nombreComun;
     String nombreCientifico;
     NombreCategoria nombreCategoria;

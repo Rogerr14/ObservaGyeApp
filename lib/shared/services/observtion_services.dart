@@ -61,13 +61,13 @@ class ObservationServices {
   }
 
   Future<GeneralResponse<ListEspecies>> getEspecies(
-      BuildContext context) async {
-    String urlEndpoint = '$urlService/Observacion/ListarEspecies';
+      BuildContext context, dynamic body) async {
+    String urlEndpoint = '$urlService/Observacion/searchEspecies';
     try {
       ListEspecies? listEspecies;
 
       final response =
-          await interceptorHttp.request(context, 'GET', urlEndpoint, null);
+          await interceptorHttp.request(context, 'POST', urlEndpoint, body, showLoading: false);
       if (!response.error) {
         listEspecies = listEspeciesFromJson(jsonEncode(response.data));
         return GeneralResponse(

@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/especy_widget.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/select_especie.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/especies_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
@@ -32,24 +35,28 @@ class GenerateObservationPage extends StatefulWidget {
 }
 
 class _GenerateObservationPageState extends State<GenerateObservationPage> {
+  late FunctionalProvider fp;
+
   TextEditingController _controllerdateTime = TextEditingController();
   TextEditingController _gpsController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
-  List<File> imagenes = [];
+
   String selectSendero = '';
-  ImagePicker imagePicker = ImagePicker();
-  TypeAlertsModel? typeAlertsModel;
-  late FunctionalProvider fp;
+
+  List<File> imagenes = [];
   List<DropdownMenuItem<String>> senderos = [];
-  ListEspecies? listEspecies;
+
+  ImagePicker imagePicker = ImagePicker();
+  Especy? especie;
+  TypeAlertsModel? typeAlertsModel;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         _getSenderos();
-        _getEspecies();
+        // _getEspecies();
       },
     );
     fp = Provider.of<FunctionalProvider>(context, listen: false);
@@ -64,12 +71,8 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
     super.dispose();
   }
 
-  void _getEspecies() async {
-    final response = await ObservationServices().getEspecies(context);
-    if (!response.error) {
-      listEspecies = response.data;
-    }
-    setState(() {});
+  _selectEspecie(Especy especie){
+    
   }
 
   void _getSenderos() async {
@@ -91,16 +94,6 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
       }
     }
     setState(() {});
-  }
-
-  _readMetaData() async {
-    final fileBytes = File(widget.image.path).readAsBytesSync();
-    final data = await readExifFromBytes(fileBytes);
-    if (data.isEmpty) {
-      GlobalHelper.logger.w('no existe la data');
-    } else {
-      GlobalHelper.logger.i(data);
-    }
   }
 
   _takePick(Responsive responsive) async {
@@ -207,9 +200,25 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const TextFormFieldWidget(
-                    hintText: 'Nombre de la especie',
-                  ),
+                  InkWell(
+                      onTap: () {
+                        final keyEspeciesSelect = GlobalHelper.genKey();
+                        fp.showAlert(
+                            key: keyEspeciesSelect,
+                            content: AlertGeneric(
+                              content: SelectEspecie(
+                                especy: especie,
+                                keyDismiss: keyEspeciesSelect,
+                              ),
+
+                            ),
+                            closeAlert: true);
+                        setState(() {});
+                      },
+                      child: EspecyWidget(
+                        especies: especie,
+                        titleAlt: 'Seleccione una especie',
+                      )),
                   const SizedBox(
                     height: 20,
                   ),
@@ -246,9 +255,9 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                     controller: _controllerdateTime,
                     onTap: () {
                       final keyCalendar = GlobalHelper.genKey();
-                      final fp =
-                          Provider.of<FunctionalProvider>(context, listen: false);
-      
+                      final fp = Provider.of<FunctionalProvider>(context,
+                          listen: false);
+
                       fp.showAlert(
                         key: keyCalendar,
                         content: AlertGeneric(
@@ -283,8 +292,8 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                         fp.showAlert(
                             key: keyMapAlert,
                             content: AlertGeneric(
-                              
-                              content: GpsSelectUbication(keyToClose: keyMapAlert)));
+                                content: GpsSelectUbication(
+                                    keyToClose: keyMapAlert)));
                       }),
                   const SizedBox(
                     height: 20,
@@ -302,7 +311,8 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                           clipBehavior: Clip.none,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.file(

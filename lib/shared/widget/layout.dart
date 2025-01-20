@@ -196,7 +196,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
           ),
         ),
         if (widget.requiredStack) const PageModal(),
-        if (widget.requiredStack) const AlertModal()
+        if (widget.requiredStack)    AlertModal()
       ],
     );
   }
