@@ -11,9 +11,9 @@ import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectEspecie extends StatefulWidget {
-  Especy? especy;
+  
   final GlobalKey<State<StatefulWidget>> keyDismiss;
-  SelectEspecie({super.key, this.especy, required this.keyDismiss});
+  SelectEspecie({super.key, required this.keyDismiss});
 
   @override
   State<SelectEspecie> createState() => _SelectEspecieState();
@@ -67,22 +67,24 @@ class _SelectEspecieState extends State<SelectEspecie> {
             const SizedBox(
               height: 10,
             ),
-            SizedBox(
-              height: responsive.height * 0.15,
-              child: especies.isNotEmpty
-                  ? Column(
-                      children: especies
-                          .map(
-                            (e) => InkWell(
+            especies.isNotEmpty
+                ? Column(
+                    children: especies
+                        .map(
+                          (e) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: InkWell(
                                 onTap: () {
-                                  widget.especy = Especy(
+                               final especieSeleccionada = Especy(
                                       idEspecie: e.idEspecie,
                                       nombreComun: e.nombreComun,
                                       nombreCientifico: e.nombreCientifico,
                                       nombreCategoria: e.nombreCategoria,
                                       imagen: e.imagen);
+                                      
                                       final fp = Provider.of<FunctionalProvider>(context,listen: false);
                                       fp.dismissAlert(key: widget.keyDismiss );
+                                      fp.setEspecie(especieSeleccionada);
                                       setState(() {
                                         
                                       });
@@ -90,11 +92,11 @@ class _SelectEspecieState extends State<SelectEspecie> {
                                 child: EspecyWidget(
                                   especies: e,
                                 )),
-                          )
-                          .toList(),
-                    )
-                  : EspecyWidget(titleAlt: (_especie.text.trim().isEmpty ? 'Seleccione una especie': _especie.text),),
-            )
+                          ),
+                        )
+                        .toList(),
+                  )
+                : EspecyWidget(titleAlt: (_especie.text.trim().isEmpty ? 'Seleccione una especie': _especie.text),)
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_observation/services/select_especie_data.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/especy_widget.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/select_especie.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/especies_model.dart';
@@ -51,6 +53,9 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   Especy? especie;
   TypeAlertsModel? typeAlertsModel;
 
+  SelectEspecyForm selectEspecie = SelectEspecyForm();
+
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -59,7 +64,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
         // _getEspecies();
       },
     );
-    fp = Provider.of<FunctionalProvider>(context, listen: false);
+    fp = Provider.of<FunctionalProvider>(context);
     imagenes.add(File(widget.image.path));
     // TODO: implement initState
     super.initState();
@@ -207,16 +212,16 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                             key: keyEspeciesSelect,
                             content: AlertGeneric(
                               content: SelectEspecie(
-                                especy: especie,
                                 keyDismiss: keyEspeciesSelect,
                               ),
 
                             ),
                             closeAlert: true);
-                        setState(() {});
+                        setState(() {
+                        });
                       },
                       child: EspecyWidget(
-                        especies: especie,
+                        especies: fp.getEspecie(),
                         titleAlt: 'Seleccione una especie',
                       )),
                   const SizedBox(

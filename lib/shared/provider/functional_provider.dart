@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/especies_model.dart';
 import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/secure_storage.dart';
@@ -10,6 +11,8 @@ class FunctionalProvider extends ChangeNotifier {
   List<Widget> alerts = [];
 String nameUser = '';
 
+  Especy? especy;
+
   
   saveUserName(String value){
     nameUser = value;
@@ -18,6 +21,15 @@ String nameUser = '';
 
   String getUserName(){
     return nameUser;
+  }
+
+  setEspecie(Especy especie){
+    especy = especie;
+    notifyListeners();
+  }
+
+  Especy? getEspecie(){
+    return especy;
   }
 
 
