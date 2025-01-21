@@ -30,8 +30,7 @@ class InterceptorHttp {
   }) async {
     // final urlService = Environment().config?.serviceUrl ?? "no url";
 
-    String url =
-        "$endPoint?${Uri(queryParameters: queryParameters).query}";
+    String url = "$endPoint?${Uri(queryParameters: queryParameters).query}";
 
     GlobalHelper.logger.t('URL $method: $url');
     body != null
@@ -69,7 +68,7 @@ class InterceptorHttp {
 
       //? Envio de TOKEN
       // AuthResponseModel? userData = await UserDataStorage().getUserData();
-        UserModel? userData = await SecureStorage().getUserData();
+      UserModel? userData = await SecureStorage().getUserData();
       // String tokenSesion = '';
       String tokenSesion = (userData != null) ? userData.token : '';
       // String tokenInformation = "";
@@ -102,11 +101,11 @@ class InterceptorHttp {
                       headers: headers,
                       body: body != null ? json.encode(body) : null)
                   .timeout(const Duration(seconds: 60));
-                GlobalHelper.logger.w(response.body);
+              GlobalHelper.logger.w(response.body);
               break;
             case "GET":
               response = await http.get(uri, headers: headers);
-                GlobalHelper.logger.w(response.body);
+              GlobalHelper.logger.w(response.body);
               break;
             case "PUT":
               response = await http.put(uri,
@@ -130,6 +129,9 @@ class InterceptorHttp {
         case "FORM":
           final httpClient = getHttpClient();
           final request = await httpClient.postUrl(Uri.parse(url));
+          GlobalHelper.logger.w("Headers: $headers");
+GlobalHelper.logger.w("Multipart fields: $multipartFields");
+
 
           int byteCount = 0;
           var requestMultipart = http.MultipartRequest(method, Uri.parse(url));
@@ -182,9 +184,13 @@ class InterceptorHttp {
 
           final httpResponse = await request.close();
           var statusCode = httpResponse.statusCode;
-
+          
           responseStatusCode = statusCode;
           if (statusCode ~/ 100 != 2) {
+            String serverErrorResponse = await utf8.decoder.bind(httpResponse).join();
+  GlobalHelper.logger.w('Error response body: $serverErrorResponse');
+            GlobalHelper.logger.w(
+                'Error uploading file, Status code: ${httpResponse.statusCode}');
             throw Exception(
                 'Error uploading file, Status code: ${httpResponse.statusCode}');
           } else {
@@ -203,8 +209,7 @@ class InterceptorHttp {
           //final keySesion = GlobalHelper.genKey();
           // GlobalHelper.logger.w(responseDecoded["data"]);
           if (responseDecoded["data"] != null) {
-          generalResponse.data = responseDecoded["data"];
-            
+            generalResponse.data = responseDecoded["data"];
           }
           generalResponse.error = false;
           generalResponse.message = responseDecoded["mensaje"];
@@ -276,6 +281,7 @@ class InterceptorHttp {
           "Verifique su conexión a internet y vuelva a intentar.";
       fp.dismissAlert(key: keyLoading);
     } on Exception catch (e, stacktrace) {
+      GlobalHelper.logger.e("Error en request: $e");
       GlobalHelper.logger.e("Error en request: $stacktrace");
       //debugPrint("Error en request -> ${stacktrace.toString()}");
       generalResponse.error = true;

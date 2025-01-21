@@ -33,7 +33,7 @@ class _SelectEspecieState extends State<SelectEspecie> {
     if (!response.error) {
       listEspecies = response.data;
       especies = listEspecies!.especies;
-      setState(() {});
+  
     }
   }
 
@@ -53,7 +53,7 @@ class _SelectEspecieState extends State<SelectEspecie> {
             TextFormFieldWidget(
               controller: _especie,
               hintText: 'Buscar Especies',
-              onChanged: (value) {
+              onFieldSubmitted: (value) {
                 if (value.trim().isNotEmpty && value.trim().length >= 3) {
                   _getEspecies();
                 } else {

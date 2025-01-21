@@ -9,10 +9,10 @@ ObservationModelBody observationModelBodyFromJson(String str) => ObservationMode
 String observationModelBodyToJson(ObservationModelBody data) => json.encode(data.toJson());
 
 class ObservationModelBody {
-    int idEspecie;
+    int? idEspecie;
     int idSendero;
     String descripcion;
-    String fechaObservacion;
+    DateTime fechaObservacion;
     double coordenadaLongitud;
     double coordenadaLatitud;
     bool estado;
@@ -31,7 +31,7 @@ class ObservationModelBody {
         idEspecie: json["id_especie"],
         idSendero: json["id_sendero"],
         descripcion: json["descripcion"],
-        fechaObservacion: json["fecha_observacion"],
+        fechaObservacion:  DateTime.parse(json["fecha_observacion"]),
         coordenadaLongitud: json["coordenada_longitud"]?.toDouble(),
         coordenadaLatitud: json["coordenada_latitud"]?.toDouble(),
         estado: json["estado"],
@@ -41,7 +41,7 @@ class ObservationModelBody {
         "id_especie": idEspecie,
         "id_sendero": idSendero,
         "descripcion": descripcion,
-        "fecha_observacion": fechaObservacion,
+        "fecha_observacion": "${fechaObservacion.year.toString().padLeft(4, '0')}-${fechaObservacion.month.toString().padLeft(2, '0')}-${fechaObservacion.day.toString().padLeft(2, '0')}",
         "coordenada_longitud": coordenadaLongitud,
         "coordenada_latitud": coordenadaLatitud,
         "estado": estado,

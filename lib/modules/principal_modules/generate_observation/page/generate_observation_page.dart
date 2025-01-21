@@ -5,10 +5,13 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
+import 'package:observa_gye_app/modules/principal_modules/generate_observation/model/observation_model_body.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/services/select_especie_data.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/especy_widget.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/select_especie.dart';
@@ -41,6 +44,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
 
   TextEditingController _controllerdateTime = TextEditingController();
   TextEditingController _gpsController = TextEditingController();
+  TextEditingController _noteController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
 
@@ -55,7 +59,6 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
 
   SelectEspecyForm selectEspecie = SelectEspecyForm();
 
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -64,7 +67,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
         // _getEspecies();
       },
     );
-    fp = Provider.of<FunctionalProvider>(context);
+    fp = Provider.of<FunctionalProvider>(context, listen: false);
     imagenes.add(File(widget.image.path));
     // TODO: implement initState
     super.initState();
@@ -76,12 +79,53 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
     super.dispose();
   }
 
-  _selectEspecie(Especy especie){
+  void _generateObservation() async {
+    especie = fp.getEspecie();
+    ObservationModelBody observation = ObservationModelBody(
+        idEspecie: especie?.idEspecie,
+        idSendero: int.parse(selectSendero),
+        descripcion: _noteController.text,
+        fechaObservacion:  DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+        ),
+        coordenadaLongitud: 0.0,
+        coordenadaLatitud: 0.0,
+        estado: false);
+    GlobalHelper.logger.w(jsonEncode(observation));
+    final List<MultipartFile> imagenesSend = await Future.wait(imagenes.map(
+      (imagen) async {
+        return await MultipartFile.fromPath('imagenes', imagen.path,
+            contentType: MediaType('image', 'jpg'));
+      },
+    ).toList());
     
+    final response = await ObservationServices().sendObservationReport(
+        context, imagenesSend, {"observacion": jsonEncode(observation)});
+    if (!response.error) {
+      final keyOkAlert = GlobalHelper.genKey();
+      fp.showAlert(
+          key: keyOkAlert,
+          content: AlertGeneric(
+              content: OkGeneric(
+            message: response.message,
+            keyToClose: keyOkAlert,
+            onPress: () {
+              fp.dismissAlert(key: keyOkAlert);
+              fp.setIconBottomNavigationBarItem(
+                  ButtonNavigatorBarItem.iconMenuHome);
+              GlobalHelper.navigateToPageRemove(context, '/main');
+              setState(() {});
+            },
+          )));
+    }
   }
 
   void _getSenderos() async {
-    final response = await AlertsServices().getTypeAlerts(context);
+    final response = await AlertsServices().getTypeAlerts(
+      context,
+    );
     if (!response.error) {
       typeAlertsModel = response.data;
       if (typeAlertsModel != null) {
@@ -214,11 +258,9 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                               content: SelectEspecie(
                                 keyDismiss: keyEspeciesSelect,
                               ),
-
                             ),
                             closeAlert: true);
-                        setState(() {
-                        });
+                        setState(() {});
                       },
                       child: EspecyWidget(
                         especies: fp.getEspecie(),
@@ -378,9 +420,10 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const TextFormFieldWidget(
+                  TextFormFieldWidget(
                     hintText: 'Agregar una nota...',
                     maxLines: 4,
+                    controller: _noteController,
                   ),
                   const SizedBox(
                     height: 10,
@@ -388,7 +431,9 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                   Align(
                       alignment: Alignment.center,
                       child: FilledButtonWidget(
-                        onPressed: () {},
+                        onPressed: () {
+                          _generateObservation();
+                        },
                         text: 'Enviar',
                         height: responsive.hp(5),
                         width: responsive.wp(35),

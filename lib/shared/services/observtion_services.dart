@@ -17,9 +17,11 @@ class ObservationServices {
       List<MultipartFile> files, Map<String, String> fields) async {
     final urlEndpoint = '$urlService/Observacion/CrearObservacion';
     try {
+      GlobalHelper.logger.w(jsonEncode(fields));
+      GlobalHelper.logger.w(files);
       final response = await interceptorHttp.request(
           context, 'POST', urlEndpoint, null,
-          multipartFiles: files, multipartFields: fields, requestType: "FORM");
+          multipartFiles: files, multipartFields: fields, requestType: 'FORM');
 
       if (!response.error) {
         return GeneralResponse(

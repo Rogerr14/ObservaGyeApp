@@ -58,7 +58,8 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   void initState() {
     fp = Provider.of<FunctionalProvider>(context, listen: false);
     // _takePick();
-    _compressImage(widget.image);
+    imagenes.add(File(widget.image.path));
+    // _compressImage(widget.image);
     _readMetaData();
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -70,8 +71,6 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   }
 
   _generateAlert() async {
-
-    
     AlertData alerta = AlertData(
         idTipoAlerta: int.parse(selectAlert),
         idSendero: int.parse(selectSendero),
@@ -85,38 +84,40 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
         ));
     GlobalHelper.logger.i(jsonEncode(alerta));
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
-    final List<MultipartFile> imagenesSend = await Future.wait( imagenes.map(
+    final List<MultipartFile> imagenesSend = await Future.wait(imagenes.map(
       (imagen) async {
-        return await MultipartFile.fromPath('imagenes', imagen.path, contentType: MediaType('image', 'jpg') );
+        return await MultipartFile.fromPath('imagenes', imagen.path,
+            contentType: MediaType('image', 'jpg'));
       },
     ).toList());
-    final response =
-        await AlertsServices().sendAlertReport(context, imagenesSend, {"alerta": jsonEncode(alerta)});
+    final response = await AlertsServices()
+        .sendAlertReport(context, imagenesSend, {"alerta": jsonEncode(alerta)});
     if (!response.error) {
       final keyOkAlert = GlobalHelper.genKey();
-      fp.showAlert(key: keyOkAlert, content: AlertGeneric(content: 
-      OkGeneric(message: response.message, keyToClose: keyOkAlert, onPress: (){
-        fp.dismissAlert(key: keyOkAlert);
-        fp.setIconBottomNavigationBarItem(ButtonNavigatorBarItem.iconMenuHome);
-        GlobalHelper.navigateToPageRemove(context, '/main');
-        setState(() {
-          
-        });
-      },)));
+      fp.showAlert(
+          key: keyOkAlert,
+          content: AlertGeneric(
+              content: OkGeneric(
+            message: response.message,
+            keyToClose: keyOkAlert,
+            onPress: () {
+              fp.dismissAlert(key: keyOkAlert);
+              fp.setIconBottomNavigationBarItem(
+                  ButtonNavigatorBarItem.iconMenuHome);
+              GlobalHelper.navigateToPageRemove(context, '/main');
+              setState(() {});
+            },
+          )));
     }
   }
 
-
-
-
-  _compressImage(XFile file)async{
-      GlobalHelper.logger.e(file.name);
-      final fileCompress = await FlutterImageCompress.compressWithFile(file.path);
-      if(fileCompress != null){
-        final fileImage = File.fromRawPath(fileCompress); 
-        GlobalHelper.logger.w(fileImage.path);
-      }
-  }
+  // _compressImage(XFile file) async {
+  //   final fileCompress = await FlutterImageCompress.compressWithFile(file.path);
+  //   if (fileCompress != null) {
+  //     final fileImage = File;
+  //     GlobalHelper.logger.w(fileImage.path);
+  //   }
+  // }
 
   _getTypesAlerts() async {
     final response = await AlertsServices().getTypeAlerts(context);
@@ -176,7 +177,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                         if (photo != null) {
                           fp.dismissAlert(key: selectSourcekey);
                           // imagenes.add(File(photo.path));
-                          _compressImage(photo);
+                          // _compressImage(photo);
                         }
                         setState(() {});
                       },
@@ -315,9 +316,9 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                       controller: _controllerdateTime,
                       onTap: () {
                         final keyCalendar = GlobalHelper.genKey();
-                        final fp =
-                            Provider.of<FunctionalProvider>(context, listen: false);
-        
+                        final fp = Provider.of<FunctionalProvider>(context,
+                            listen: false);
+
                         fp.showAlert(
                           key: keyCalendar,
                           content: AlertGeneric(
@@ -374,7 +375,8 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                             clipBehavior: Clip.none,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.file(
