@@ -11,7 +11,6 @@ import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectEspecie extends StatefulWidget {
-  
   final GlobalKey<State<StatefulWidget>> keyDismiss;
   SelectEspecie({super.key, required this.keyDismiss});
 
@@ -33,7 +32,7 @@ class _SelectEspecieState extends State<SelectEspecie> {
     if (!response.error) {
       listEspecies = response.data;
       especies = listEspecies!.especies;
-  
+      setState(() {});
     }
   }
 
@@ -41,7 +40,7 @@ class _SelectEspecieState extends State<SelectEspecie> {
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
     return Container(
-      height: responsive.height *0.5,
+      height: responsive.height * 0.5,
       decoration: BoxDecoration(
           color: AppTheme.white, borderRadius: BorderRadius.circular(20)),
       child: Padding(
@@ -75,19 +74,19 @@ class _SelectEspecieState extends State<SelectEspecie> {
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: InkWell(
                                 onTap: () {
-                               final especieSeleccionada = Especy(
+                                  final especieSeleccionada = Especy(
                                       idEspecie: e.idEspecie,
                                       nombreComun: e.nombreComun,
                                       nombreCientifico: e.nombreCientifico,
                                       nombreCategoria: e.nombreCategoria,
                                       imagen: e.imagen);
-                                      
-                                      final fp = Provider.of<FunctionalProvider>(context,listen: false);
-                                      fp.dismissAlert(key: widget.keyDismiss );
-                                      fp.setEspecie(especieSeleccionada);
-                                      setState(() {
-                                        
-                                      });
+
+                                  final fp = Provider.of<FunctionalProvider>(
+                                      context,
+                                      listen: false);
+                                  fp.dismissAlert(key: widget.keyDismiss);
+                                  fp.setEspecie(especieSeleccionada);
+                                  setState(() {});
                                 },
                                 child: EspecyWidget(
                                   especies: e,
@@ -96,7 +95,17 @@ class _SelectEspecieState extends State<SelectEspecie> {
                         )
                         .toList(),
                   )
-                : EspecyWidget(titleAlt: (_especie.text.trim().isEmpty ? 'Seleccione una especie': _especie.text),)
+                : InkWell(
+                  onTap: () {
+                    if(_especie.text.trim().isEmpty){
+                      
+                    }
+                  },
+                    child: EspecyWidget(
+                    titleAlt: (_especie.text.trim().isEmpty
+                        ? 'Seleccione una especie'
+                        : _especie.text),
+                  ))
           ],
         ),
       ),

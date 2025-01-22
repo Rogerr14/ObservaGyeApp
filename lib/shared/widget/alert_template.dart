@@ -4,11 +4,13 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:location/location.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/button_general_widget.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/text_button_widget.dart';
+import 'package:observa_gye_app/shared/widget/text_widget.dart';
 // import 'package:flutter_svg/svg.dart';
 
 import 'package:provider/provider.dart';
@@ -250,60 +252,77 @@ class ErrorGeneric extends StatelessWidget {
 class GpsSelectUbication extends StatefulWidget {
   final void Function()? onPress;
   final GlobalKey keyToClose;
-
-  const GpsSelectUbication({super.key, this.onPress, required this.keyToClose});
+  final Function(LatLng latLng) onSelectPosition;
+  Set<Marker> markers;
+  GpsSelectUbication({
+    super.key,
+    this.onPress,
+    required this.keyToClose,
+    required this.onSelectPosition,
+    this.markers = const {},
+  });
 
   @override
   State<GpsSelectUbication> createState() => _GpsSelectUbicationState();
 }
 
 class _GpsSelectUbicationState extends State<GpsSelectUbication> {
-  final Set<Marker> _markers = {};
-  LatLng _lastMapPosition = _center;
-  static const LatLng _center =
-      const LatLng(-2.1832355790582962, -80.01632771534288);
-  void _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
+  CameraPosition localizationMap = const CameraPosition(
+    target: LatLng(
+      -2.1832355790582962,
+      -80.01632771534288,
+    ),
+    zoom: 14,
+  );
 
-  void _onAddMarkerButtonPressed() {
-    setState(() {
-      _markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
-        markerId: MarkerId(_lastMapPosition.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    });
-  }
 
-  CameraPosition location = const CameraPosition(
-      target: LatLng(-2.1832355790582962, -80.01632771534288), zoom: 14.4746);
+  // Location location = Location();
+  bool permiseEnable = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
+          height: size.height * 0.015,
+        ),
+        TextTitleWidget(title: 'Seleccione la ubicacion de la alerta'),
+        Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           width: size.width * 0.8,
           height: size.height * 0.6,
-          child: GoogleMap(
-            initialCameraPosition: location,
-            markers: _markers,
-            onCameraMove: _onCameraMove,
+          child: Stack(
+            children: [
+              GoogleMap(
+                mapType: MapType.satellite,
+                markers: widget.markers,
+                onTap: widget.onSelectPosition,
+                initialCameraPosition: localizationMap,
+                myLocationEnabled: true,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: FilledButtonWidget(
+                  onPressed: () async{
+                    // permiseEnable = await location.serviceEnabled();
+                    // if(!permiseEnable){
+                      // final ubication = await location.getLocation();
+                      // if(ubication.latitude != null && ubication.longitude != null){
+                      // widget.markers = {Marker(markerId: MarkerId('1'), position: LatLng(ubication.latitude!, ubication.longitude!))};
+                        
+                      // }
+                    // }
+                  },
+                  text: 'Usar mi ubicación',
+                  width: 40,
+                  color: AppTheme.secondaryColor,
+                  colorText: AppTheme.primaryColor,
+                ),
+              ),
+            ],
           ),
         ),
-        FloatingActionButton(
-                      onPressed: _onAddMarkerButtonPressed,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      backgroundColor: Colors.green,
-                      child: const Icon(Icons.add_location, size: 36.0),
-                    ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -488,10 +507,10 @@ class OkGeneric extends StatelessWidget {
             message,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 20,
-                color: AppTheme.primaryColor,
-                fontWeight: FontWeight.bold,
-                ),
+              fontSize: 20,
+              color: AppTheme.primaryColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         SizedBox(height: size.height * 0.03),

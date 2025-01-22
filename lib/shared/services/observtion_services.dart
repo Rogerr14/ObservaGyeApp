@@ -64,7 +64,7 @@ class ObservationServices {
 
   Future<GeneralResponse<ListEspecies>> getEspecies(
       BuildContext context, dynamic body) async {
-    String urlEndpoint = '$urlService/Observacion/searchEspecies';
+    String urlEndpoint = '$urlService/Especie/searchEspecies';
     try {
       ListEspecies? listEspecies;
 

@@ -5,6 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +21,7 @@ import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/date_time_picker_widget.dart';
 import 'package:observa_gye_app/shared/widget/drop_down_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
+import 'package:observa_gye_app/shared/widget/gps_ubication_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -39,18 +41,26 @@ class GenerateAlertage extends StatefulWidget {
 class _GenerateAlertageState extends State<GenerateAlertage> {
   // XFile? image;
   late FunctionalProvider fp;
-  final ImagePicker picker = ImagePicker();
-  String selectAlert = '';
-  String selectSendero = '';
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay? selectedTime;
-  final TextEditingController _controllerdateTime = TextEditingController();
-  final TextEditingController _latitudUbication = TextEditingController();
-  final TextEditingController _descriptionAlert = TextEditingController();
-  List<File> imagenes = [];
   ImagePicker imagePicker = ImagePicker();
   TypeAlertsModel? typeAlertsModel;
+  Marker marker = Marker(markerId: MarkerId(''));
 
+  final TextEditingController _controllerdateTime = TextEditingController();
+  final TextEditingController _descriptionAlert = TextEditingController();
+  final TextEditingController _gpsController = TextEditingController();
+
+  String selectAlert = '';
+  String selectSendero = '';
+  String latitud = '';
+  String longitud = '';
+
+  
+
+
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay? selectedTime;
+
+  List<File> imagenes = [];
   List<DropdownMenuItem<String>> alertType = [];
   List<DropdownMenuItem<String>> senderos = [];
 
@@ -346,19 +356,23 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: TextFormFieldWidget(
-                        hintText: 'Ubicación',
-                        enabled: false,
-                        controller: _latitudUbication,
-                        suffixIcon: const Icon(
-                          Icons.public_rounded,
-                          size: 24,
-                          color: AppTheme.primaryColor,
-                        ),
-                      ),
-                    ),
+                    GpsUbicationWidget(
+                        controller: _gpsController,
+                        onTap: () {
+                          final keyMapAlert = GlobalHelper.genKey();
+                          fp.showAlert(
+                            key: keyMapAlert,
+                            content: AlertGeneric(
+                              content: GpsSelectUbication(
+                                keyToClose: keyMapAlert,
+                                onSelectPosition: (latLng){
+                                  
+                                },
+                                markers: {},
+                              ),
+                            ),
+                          );
+                        }),
                     const SizedBox(
                       height: 20,
                     ),

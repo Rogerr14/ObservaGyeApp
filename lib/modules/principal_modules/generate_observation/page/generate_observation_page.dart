@@ -85,7 +85,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
         idEspecie: especie?.idEspecie,
         idSendero: int.parse(selectSendero),
         descripcion: _noteController.text,
-        fechaObservacion:  DateTime(
+        fechaObservacion: DateTime(
           selectedDate.year,
           selectedDate.month,
           selectedDate.day,
@@ -100,7 +100,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
             contentType: MediaType('image', 'jpg'));
       },
     ).toList());
-    
+
     final response = await ObservationServices().sendObservationReport(
         context, imagenesSend, {"observacion": jsonEncode(observation)});
     if (!response.error) {
@@ -337,10 +337,17 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                       onTap: () {
                         final keyMapAlert = GlobalHelper.genKey();
                         fp.showAlert(
-                            key: keyMapAlert,
-                            content: AlertGeneric(
-                                content: GpsSelectUbication(
-                                    keyToClose: keyMapAlert)));
+                          key: keyMapAlert,
+                          content: AlertGeneric(
+                            content: GpsSelectUbication(
+                              keyToClose: keyMapAlert,
+                              onSelectPosition: (latLng){
+
+                              },
+                              markers: {},
+                            ),
+                          ),
+                        );
                       }),
                   const SizedBox(
                     height: 20,

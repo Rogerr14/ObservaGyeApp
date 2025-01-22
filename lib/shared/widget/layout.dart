@@ -209,7 +209,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
         contain = const HomePage();
         break;
       case ButtonNavigatorBarItem.iconAlert:
-        image = await picker.pickImage(source: ImageSource.camera);
+        image = await picker.pickImage(source: ImageSource.camera, requestFullMetadata: true);
         GlobalHelper.logger.w(image != null);
         if (image != null) {
           contain = GenerateAlertage(image: image!,);
