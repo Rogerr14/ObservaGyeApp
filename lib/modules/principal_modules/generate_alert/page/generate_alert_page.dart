@@ -12,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/alert_data.dart';
+import 'package:observa_gye_app/modules/principal_modules/home/page/home_page.dart';
+import 'package:observa_gye_app/modules/principal_modules/main_page/page/main_page.dart';
 import 'package:observa_gye_app/shared/services/alerts_services.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_alert/model/type_alerts_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
@@ -22,6 +24,7 @@ import 'package:observa_gye_app/shared/widget/date_time_picker_widget.dart';
 import 'package:observa_gye_app/shared/widget/drop_down_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
 import 'package:observa_gye_app/shared/widget/gps_ubication_widget.dart';
+import 'package:observa_gye_app/shared/widget/layout.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +46,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   late FunctionalProvider fp;
   ImagePicker imagePicker = ImagePicker();
   TypeAlertsModel? typeAlertsModel;
-  Marker marker = Marker(markerId: MarkerId(''));
+  Set<Marker> marker = {};
 
   final TextEditingController _controllerdateTime = TextEditingController();
   final TextEditingController _descriptionAlert = TextEditingController();
@@ -51,11 +54,8 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
 
   String selectAlert = '';
   String selectSendero = '';
-  String latitud = '';
-  String longitud = '';
-
-  
-
+  double latitud = 0.0;
+  double longitud = 0.0;
 
   DateTime selectedDate = DateTime.now();
   TimeOfDay? selectedTime;
@@ -84,8 +84,8 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
     AlertData alerta = AlertData(
         idTipoAlerta: int.parse(selectAlert),
         idSendero: int.parse(selectSendero),
-        coordenadaLongitud: 0.0,
-        coordenadaLatitud: 0.0,
+        coordenadaLongitud: longitud,
+        coordenadaLatitud: latitud,
         descripcion: _descriptionAlert.text,
         fechaCreado: DateTime(
           selectedDate.year,
@@ -114,7 +114,11 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
               fp.dismissAlert(key: keyOkAlert);
               fp.setIconBottomNavigationBarItem(
                   ButtonNavigatorBarItem.iconMenuHome);
-              GlobalHelper.navigateToPageRemove(context, '/main');
+                  if(fp.alerts.isEmpty){
+                    
+                    Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, MainPage()), (route) => false);
+
+                  }
               setState(() {});
             },
           )));
@@ -236,6 +240,12 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
           dismissable: true,
           keyToClose: selectSourcekey,
         ));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -364,11 +374,15 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                             key: keyMapAlert,
                             content: AlertGeneric(
                               content: GpsSelectUbication(
-                                keyToClose: keyMapAlert,
-                                onSelectPosition: (latLng){
-                                  
+                                keyDismiss: keyMapAlert,
+                                markers: marker,
+                                selectPosition: (latLong) {
+                                  _gpsController.text =
+                                      '${latLong.latitude}, ${latLong.latitude}';
+                                  latitud = latLong.latitude;
+                                  longitud = latLong.latitude;
+                                  setState(() {});
                                 },
-                                markers: {},
                               ),
                             ),
                           );

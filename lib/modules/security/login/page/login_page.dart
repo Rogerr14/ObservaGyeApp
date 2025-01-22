@@ -18,18 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  _login() async {
-    // SecurityService securityService = SecurityService();
-    // final body = {
-    // "correo": emailController.text,
-    // "password": passwordController.text
-    // };
 
-    // final response = await securityService.login(context, body);
-    // if(!response.error){
-    GlobalHelper.navigateToPageRemove(context, '/main');
-    // }
-  }
 
   @override
   Widget build(BuildContext context) {

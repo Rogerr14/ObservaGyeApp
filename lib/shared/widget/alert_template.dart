@@ -4,8 +4,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 // import 'package:location/location.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
+import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/button_general_widget.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
@@ -250,35 +252,28 @@ class ErrorGeneric extends StatelessWidget {
 }
 
 class GpsSelectUbication extends StatefulWidget {
+  final GlobalKey keyDismiss;
   final void Function()? onPress;
-  final GlobalKey keyToClose;
-  final Function(LatLng latLng) onSelectPosition;
+  final void Function(LatLng) selectPosition;
   Set<Marker> markers;
-  GpsSelectUbication({
-    super.key,
-    this.onPress,
-    required this.keyToClose,
-    required this.onSelectPosition,
-    this.markers = const {},
-  });
+  CameraPosition? position;
+
+  GpsSelectUbication(
+      {super.key,
+      required this.keyDismiss,
+      this.onPress,
+      required this.markers,
+      this.position,
+      required this.selectPosition});
 
   @override
   State<GpsSelectUbication> createState() => _GpsSelectUbicationState();
 }
 
 class _GpsSelectUbicationState extends State<GpsSelectUbication> {
-  CameraPosition localizationMap = const CameraPosition(
-    target: LatLng(
-      -2.1832355790582962,
-      -80.01632771534288,
-    ),
-    zoom: 14,
-  );
-
-
-  // Location location = Location();
-  bool permiseEnable = false;
-
+  GoogleMapController? controllerMap;
+  CameraPosition position =
+      CameraPosition(target: LatLng(-2.1854182, -80.0177638), zoom: 14.5);
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -295,24 +290,56 @@ class _GpsSelectUbicationState extends State<GpsSelectUbication> {
           child: Stack(
             children: [
               GoogleMap(
+                onMapCreated: (controller) => controllerMap,
                 mapType: MapType.satellite,
                 markers: widget.markers,
-                onTap: widget.onSelectPosition,
-                initialCameraPosition: localizationMap,
+                onTap: (latLong) {
+                  widget.selectPosition(latLong);
+                  widget.markers = {
+                    Marker(
+                        markerId: MarkerId(
+                          'Observacion',
+                        ),
+                        position: latLong)
+                  };
+
+                  setState(() {});
+                },
+                initialCameraPosition: position,
                 myLocationEnabled: true,
               ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: FilledButtonWidget(
-                  onPressed: () async{
-                    // permiseEnable = await location.serviceEnabled();
-                    // if(!permiseEnable){
-                      // final ubication = await location.getLocation();
-                      // if(ubication.latitude != null && ubication.longitude != null){
-                      // widget.markers = {Marker(markerId: MarkerId('1'), position: LatLng(ubication.latitude!, ubication.longitude!))};
+                  onPressed: () async {
+                    Location location = Location();
+
+                    await location.requestPermission();
+                    final permiseEnable = await location.serviceEnabled();
+                    if (permiseEnable) {
+                      final ubication = await location.getLocation();
+                      GlobalHelper.logger.w(ubication);
+                      if (ubication.latitude != null &&
+                          ubication.longitude != null) {
+                        GlobalHelper.logger.w(permiseEnable);
+
+                        widget.selectPosition(
+                            LatLng(ubication.latitude!, ubication.longitude!));
+                        widget.markers = {
+                          Marker(
+                              markerId: MarkerId(
+                                'Observacion',
+                              ),
+                              position: LatLng(
+                                  ubication.latitude!, ubication.longitude!))
+                        };
+                        position = CameraPosition(
+                            target: LatLng(
+                                ubication.latitude!, ubication.longitude!));
                         
-                      // }
-                    // }
+                        setState(() {});
+                      }
+                    }
                   },
                   text: 'Usar mi ubicación',
                   width: 40,
@@ -331,7 +358,7 @@ class _GpsSelectUbicationState extends State<GpsSelectUbication> {
                   () {
                     final fp =
                         Provider.of<FunctionalProvider>(context, listen: false);
-                    fp.dismissAlert(key: widget.keyToClose);
+                    fp.dismissAlert(key: widget.keyDismiss);
                   },
               child: const Text(
                 'Aceptar',

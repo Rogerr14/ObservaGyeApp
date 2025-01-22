@@ -48,7 +48,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        _selectWidgetPage();
+        selectWidgetPage();
         setState(() {});
       },
     );
@@ -90,7 +90,6 @@ class _LayoutWidgetState extends State<LayoutWidget> {
           resizeToAvoidBottomInset: false,
           backgroundColor: AppTheme.primaryColor,
           body: ZoomDrawer(
-            
             controller: _drawerController,
             menuBackgroundColor: AppTheme.primaryColor,
             angle: 0,
@@ -190,18 +189,18 @@ class _LayoutWidgetState extends State<LayoutWidget> {
               bottomNavigationBar: ButtonNavigartorBarItem(
                 iconSelect: iconSelect,
                 fp: fp,
-                selecPage: _selectWidgetPage,
+                selecPage: selectWidgetPage,
               ),
             ),
           ),
         ),
         if (widget.requiredStack) const PageModal(),
-        if (widget.requiredStack)    AlertModal()
+        if (widget.requiredStack) AlertModal()
       ],
     );
   }
 
-  _selectWidgetPage() async {
+  selectWidgetPage() async {
     switch (fp.buttonNavigatorBarItem) {
       case ButtonNavigatorBarItem.iconMenuHome:
         // fp.clearAllAlert();
@@ -209,18 +208,20 @@ class _LayoutWidgetState extends State<LayoutWidget> {
         contain = const HomePage();
         break;
       case ButtonNavigatorBarItem.iconAlert:
-        image = await picker.pickImage(source: ImageSource.camera, requestFullMetadata: true);
+        image = await picker.pickImage(
+          source: ImageSource.camera,
+        );
         GlobalHelper.logger.w(image != null);
         if (image != null) {
-          contain = GenerateAlertage(image: image!,);
+          contain = GenerateAlertage(
+            image: image!,
+          );
         } else {
           fp.setIconBottomNavigationBarItem(
               ButtonNavigatorBarItem.iconMenuHome);
           contain = const HomePage();
         }
-        setState(() {
-          
-        });
+        setState(() {});
         break;
       case ButtonNavigatorBarItem.iconSearch:
         contain = SearchPage();
@@ -231,15 +232,15 @@ class _LayoutWidgetState extends State<LayoutWidget> {
       case ButtonNavigatorBarItem.iconObservation:
         image = await picker.pickImage(source: ImageSource.camera);
         if (image != null) {
-          contain =  GenerateObservationPage(image: image!,);
+          contain = GenerateObservationPage(
+            image: image!,
+          );
         } else {
           contain = const HomePage();
           fp.setIconBottomNavigationBarItem(
               ButtonNavigatorBarItem.iconMenuHome);
         }
-        setState(() {
-          
-        });
+        setState(() {});
         break;
       default:
         contain = HomePage();

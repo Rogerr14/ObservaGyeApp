@@ -5,6 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,6 +16,7 @@ import 'package:observa_gye_app/modules/principal_modules/generate_observation/m
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/services/select_especie_data.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/especy_widget.dart';
 import 'package:observa_gye_app/modules/principal_modules/generate_observation/widget/select_especie.dart';
+import 'package:observa_gye_app/modules/principal_modules/main_page/page/main_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/especies_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/helpers/responsive.dart';
@@ -49,6 +51,9 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   TimeOfDay? selectedTime;
 
   String selectSendero = '';
+  double latitud = 0.0;
+  double longitud = 0.0;
+
 
   List<File> imagenes = [];
   List<DropdownMenuItem<String>> senderos = [];
@@ -58,6 +63,8 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   TypeAlertsModel? typeAlertsModel;
 
   SelectEspecyForm selectEspecie = SelectEspecyForm();
+
+  Set<Marker> marker = {};
 
   @override
   void initState() {
@@ -90,9 +97,9 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
           selectedDate.month,
           selectedDate.day,
         ),
-        coordenadaLongitud: 0.0,
-        coordenadaLatitud: 0.0,
-        estado: false);
+        coordenadaLongitud: longitud,
+        coordenadaLatitud: latitud,
+        estado: true);
     GlobalHelper.logger.w(jsonEncode(observation));
     final List<MultipartFile> imagenesSend = await Future.wait(imagenes.map(
       (imagen) async {
@@ -115,7 +122,12 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
               fp.dismissAlert(key: keyOkAlert);
               fp.setIconBottomNavigationBarItem(
                   ButtonNavigatorBarItem.iconMenuHome);
-              GlobalHelper.navigateToPageRemove(context, '/main');
+              
+               if(fp.alerts.isEmpty){
+                    
+                    Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, MainPage()), (route) => false);
+
+                  }
               setState(() {});
             },
           )));
@@ -332,23 +344,27 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  GpsUbicationWidget(
-                      controller: _gpsController,
-                      onTap: () {
-                        final keyMapAlert = GlobalHelper.genKey();
-                        fp.showAlert(
-                          key: keyMapAlert,
-                          content: AlertGeneric(
-                            content: GpsSelectUbication(
-                              keyToClose: keyMapAlert,
-                              onSelectPosition: (latLng){
-
-                              },
-                              markers: {},
+                   GpsUbicationWidget(
+                        controller: _gpsController,
+                        onTap: () {
+                          final keyMapAlert = GlobalHelper.genKey();
+                          fp.showAlert(
+                            key: keyMapAlert,
+                            content: AlertGeneric(
+                              content: GpsSelectUbication(
+                                keyDismiss: keyMapAlert,
+                                markers: marker,
+                                selectPosition: (latLong) {
+                                  _gpsController.text =
+                                      '${latLong.latitude}, ${latLong.longitude}';
+                                      latitud = latLong.latitude;
+                                  longitud = latLong.latitude;
+                                  setState(() {});
+                                },
+                              ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
                   const SizedBox(
                     height: 20,
                   ),
