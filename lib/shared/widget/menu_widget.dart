@@ -192,7 +192,7 @@ class _MenuWidgetState extends State<MenuWidget> {
           splashFactory: InkSplash.splashFactory),
       onPressed: onPressed,
       label: TextTitleWidget(
-        size: responsive.dp(2),
+        size: responsive.dp(1.5),
         title: titleOption,
         color: AppTheme.white,
         showShadow: false,

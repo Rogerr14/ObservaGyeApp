@@ -83,6 +83,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   @override
   void dispose() {
     // TODO: implement dispose
+    fp.setEspecie(null);
     super.dispose();
   }
 
@@ -269,13 +270,19 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                             content: AlertGeneric(
                               content: SelectEspecie(
                                 keyDismiss: keyEspeciesSelect,
+                                onPress: (especy){
+                                  especie = especy;
+                                  setState(() {
+                                    
+                                  });
+                                },
                               ),
                             ),
                             closeAlert: true);
                         setState(() {});
                       },
                       child: EspecyWidget(
-                        especies: fp.getEspecie(),
+                        especies: especie,
                         titleAlt: 'Seleccione una especie',
                       )),
                   const SizedBox(

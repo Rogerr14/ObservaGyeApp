@@ -23,7 +23,7 @@ String nameUser = '';
     return nameUser;
   }
 
-  setEspecie(Especy especie){
+  setEspecie(Especy? especie){
     especy = especie;
     notifyListeners();
   }

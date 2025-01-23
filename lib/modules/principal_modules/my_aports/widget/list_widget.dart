@@ -46,15 +46,12 @@ class _ListWidgetState extends State<ListWidget> {
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
                     widget.alerta.imagen1,
-                    height: responsive.hp(10),
-                    errorBuilder: (context, error, stackTrace) => SizedBox(),
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return SvgPicture.asset(
-                        AppTheme.iconFireAlert,
-                        height: responsive.hp(10),
-                      );
+                    height: responsive.height *0.1,
+                    frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                      
+                      return child;
                     },
+                    
                   ),
                 ),
                 SizedBox(

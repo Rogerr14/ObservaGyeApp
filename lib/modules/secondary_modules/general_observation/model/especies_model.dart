@@ -26,18 +26,20 @@ class ListEspecies {
 }
 
 class Especy {
-    int idEspecie;
+    int? idEspecie;
     String nombreComun;
     String nombreCientifico;
-    NombreCategoria nombreCategoria;
+    NombreCategoria? nombreCategoria;
     String imagen;
+    String nombreTemporal;
 
     Especy({
-        required this.idEspecie,
-        required this.nombreComun,
-        required this.nombreCientifico,
-        required this.nombreCategoria,
-        required this.imagen,
+         this.idEspecie,
+         this.nombreComun = '',
+         this.nombreCientifico = '',
+         this.nombreCategoria,
+         this.imagen = '',
+        this.nombreTemporal = ''
     });
 
     factory Especy.fromJson(Map<String, dynamic> json) => Especy(

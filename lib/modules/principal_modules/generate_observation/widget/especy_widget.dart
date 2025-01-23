@@ -38,7 +38,7 @@ class _EspecyWidgetState extends State<EspecyWidget> {
                   width: responsive.width * 0.15,
                   child:
                       (widget.especies != null && widget.especies!.imagen != '')
-                          ? Image.network(widget.especies!.imagen)
+                          ? Image.network(widget.especies!.imagen!)
                           : Center(
                               child: Icon(Icons.image),
                             ),
@@ -53,7 +53,7 @@ class _EspecyWidgetState extends State<EspecyWidget> {
                 children: [
                   TextTitleWidget(
                     title: widget.especies != null
-                        ? widget.especies!.nombreComun
+                        ? widget.especies!.nombreTemporal != '' ? widget.especies!.nombreTemporal:  widget.especies!.nombreComun
                         : widget.titleAlt,
                     showShadow: false,
                   ),

@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 
 class SelectEspecie extends StatefulWidget {
   final GlobalKey<State<StatefulWidget>> keyDismiss;
-  SelectEspecie({super.key, required this.keyDismiss});
+  final Function(Especy) onPress;
+  SelectEspecie({super.key, required this.keyDismiss, required this.onPress,});
 
   @override
   State<SelectEspecie> createState() => _SelectEspecieState();
@@ -34,6 +35,17 @@ class _SelectEspecieState extends State<SelectEspecie> {
       especies = listEspecies!.especies;
       setState(() {});
     }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -81,11 +93,10 @@ class _SelectEspecieState extends State<SelectEspecie> {
                                       nombreCategoria: e.nombreCategoria,
                                       imagen: e.imagen);
 
-                                  final fp = Provider.of<FunctionalProvider>(
-                                      context,
-                                      listen: false);
+                                  widget.onPress(especieSeleccionada);
+                                  final fp = Provider.of<FunctionalProvider>(context, listen: false);
                                   fp.dismissAlert(key: widget.keyDismiss);
-                                  fp.setEspecie(especieSeleccionada);
+                                  GlobalHelper.logger.w('hola');
                                   setState(() {});
                                 },
                                 child: EspecyWidget(
@@ -96,10 +107,17 @@ class _SelectEspecieState extends State<SelectEspecie> {
                         .toList(),
                   )
                 : InkWell(
-                  onTap: () {
-                    if(_especie.text.trim().isEmpty){
-                      
-                    }
+                  onTap:(_especie.text.trim().isEmpty) ? null : () {
+                    
+                       final especieSeleccionada = Especy(
+                                      nombreTemporal: _especie.text
+                                      );
+
+                                  widget.onPress(especieSeleccionada);
+                                  final fp = Provider.of<FunctionalProvider>(context, listen: false);
+                                  fp.dismissAlert(key: widget.keyDismiss);
+                                  GlobalHelper.logger.w('hola');
+                                  setState(() {});
                   },
                     child: EspecyWidget(
                     titleAlt: (_especie.text.trim().isEmpty
