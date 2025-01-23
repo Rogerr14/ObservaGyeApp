@@ -83,12 +83,12 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    fp.setEspecie(null);
+    
     super.dispose();
   }
 
   void _generateObservation() async {
-    especie = fp.getEspecie();
+    especie = especie;
     ObservationModelBody observation = ObservationModelBody(
         idEspecie: especie?.idEspecie,
         idSendero: int.parse(selectSendero),
@@ -100,7 +100,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
         ),
         coordenadaLongitud: longitud,
         coordenadaLatitud: latitud,
-        estado: true);
+        estado: false);
     GlobalHelper.logger.w(jsonEncode(observation));
     final List<MultipartFile> imagenesSend = await Future.wait(imagenes.map(
       (imagen) async {
@@ -462,7 +462,10 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                       alignment: Alignment.center,
                       child: FilledButtonWidget(
                         onPressed: () {
+                          if(imagenes.isNotEmpty && especie !=null ){
                           _generateObservation();
+
+                          }
                         },
                         text: 'Enviar',
                         height: responsive.hp(5),
