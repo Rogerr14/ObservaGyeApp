@@ -73,7 +73,7 @@ class Alerta {
         imagen2: json["imagen_2"]??'',
         imagen3: json["imagen_3"]??'',
         descripcion: json["descripcion"],
-        fechaCreado: DateTime.parse(json["fecha_creado"]),
+        fechaCreado: DateTime.parse(json["fecha_creado"]).toLocal(),
         idEstado: json["id_estado"],
     );
 

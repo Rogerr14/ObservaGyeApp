@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
         // requiredStack: false,
 
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
           height: size.height * 0.35,
@@ -61,28 +62,30 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        Container(
-          width: size.width,
-          // height: size.height,
-          decoration: const BoxDecoration(
-            color: AppTheme.white,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(40),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: size.width,
+            decoration: const BoxDecoration(
+              color: AppTheme.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(40),
+              ),
             ),
-          ),
-          child:  const Padding(
-            padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextTitleWidget(
-                    title: 'Iniciar Sesión',
-                    size: 30,
+            child:  const Padding(
+              padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextTitleWidget(
+                      title: 'Iniciar Sesión',
+                      size: 30,
+                    ),
                   ),
-                ),
-                FormLogin()
-              ],
+                  FormLogin()
+                ],
+              ),
             ),
           ),
         )

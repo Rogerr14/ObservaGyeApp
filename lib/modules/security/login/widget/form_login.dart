@@ -140,20 +140,20 @@ class _FormLoginState extends State<FormLogin> {
             SizedBox(
               height: size.height * 0.02,
             ),
-            TextButtonWidget(
-              text: 'Olvidé mi contraseña',
-              fontSize: 15,
-              onPressed: () {
-                final recoveryPswrdKey = GlobalHelper.genKey();
-                fp.addPage(
-                  key: recoveryPswrdKey,
-                  content: RecoveryPswrdPage(
-                    key: recoveryPswrdKey,
-                    keyDismiss: recoveryPswrdKey,
-                  ),
-                );
-              },
-            ),
+            // TextButtonWidget(
+            //   text: 'Olvidé mi contraseña',
+            //   fontSize: 15,
+            //   onPressed: () {
+            //     final recoveryPswrdKey = GlobalHelper.genKey();
+            //     fp.addPage(
+            //       key: recoveryPswrdKey,
+            //       content: RecoveryPswrdPage(
+            //         key: recoveryPswrdKey,
+            //         keyDismiss: recoveryPswrdKey,
+            //       ),
+            //     );
+            //   },
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
