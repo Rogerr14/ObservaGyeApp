@@ -25,6 +25,7 @@ class _SearchPageState extends State<SearchPage> {
   late FunctionalProvider fp;
   @override
   void initState() {
+    
     fp = Provider.of<FunctionalProvider>(context, listen: false);
 
     super.initState();
@@ -36,6 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _searchObservations() async {
+    
     final body = {"especie": searchEspecie.text.trim().toLowerCase()};
     final response =
         await ObservationServices().searchObservations(context, body);
@@ -68,23 +70,30 @@ class _SearchPageState extends State<SearchPage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: TextFormFieldWidget(
+            onChanged: (val){
+              setState(() {
+                
+              });
+            },
             controller: searchEspecie,
             hintText: 'Buscar...',
             inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'))
                     ],
-            suffixIcon: IconButton(
+            suffixIcon: searchEspecie.text.trim().isNotEmpty ?
+            IconButton(
               icon: Icon(
                 Icons.search,
                 size: 30,
                 color: AppTheme.primaryColor,
               ),
+              
               onPressed: () {
                 if (searchEspecie.text.trim().isNotEmpty) {
                   _searchObservations();
                 }
               },
-            ),
+            ):  SizedBox(),
           ),
         ),
     

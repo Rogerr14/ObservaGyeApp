@@ -186,7 +186,7 @@ class _AlertsDetailPageState extends State<AlertsDetailPage> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+          child: Center(child: TextSubtitleWidget(subtitle: 'En atención')),
         );
       case 3:
         return Container(

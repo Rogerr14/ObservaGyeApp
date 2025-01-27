@@ -24,6 +24,7 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
   final Completer<GoogleMapController> _controller = Completer();
   Observations? observations;
   late FunctionalProvider fp;
+  Set<Marker> marker = {};
   @override
   void initState() {
     fp = Provider.of<FunctionalProvider>(context, listen: false);
@@ -45,7 +46,33 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
     if (!response.error) {
       if (response.data!.observaciones.isNotEmpty) {
         observations = response.data;
+        marker =  observations!.observaciones
+                      .map(
+                        (observaciones) => Marker(
+                          draggable: true,
+                          flat: true,
+                            markerId: MarkerId(observaciones.idObservacion.toString()),
+                            position: LatLng(
+                              double.parse(observaciones.coordenadaLatitud),
+                              double.parse(observaciones.coordenadaLongitud),
+                            ),
+                            onTap: () {
+                              final keyObservationDetail =
+                                  GlobalHelper.genKey();
+                              fp.addPage(
+                                  key: keyObservationDetail,
+                                  content: ObservationDetailPage(
+                                    observation: observaciones,
+                                    
+                                    keyPage: keyObservationDetail,
+                                    key: keyObservationDetail,
+                                  ));
+                            }),
+                      )
+                      .toSet();
+        GlobalHelper.logger.i(marker);
         setState(() {});
+
       } else {
         final keyAlertsEmpity = GlobalHelper.genKey();
         fp.showAlert(
@@ -68,7 +95,7 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
       target: LatLng(-2.1832355790582962, -80.01632771534288), zoom: 14.4746);
   @override
   Widget build(BuildContext context) {
-    final fp = Provider.of<FunctionalProvider>(context, listen: false);
+    // final fp = Provider.of<FunctionalProvider>(context, listen: false);
     return LayoutPageGeneric(
       keyDismiss: widget.keyDismiss,
       nameInterceptor: 'MapObservation',
@@ -89,30 +116,7 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
           ),
           Flexible(
             child: GoogleMap(
-              markers: observations != null
-                  ? observations!.observaciones
-                      .map(
-                        (observaciones) => Marker(
-                            markerId: MarkerId(observaciones.idObservacion.toString()),
-                            position: LatLng(
-                              double.parse(observaciones.coordenadaLatitud),
-                              double.parse(observaciones.coordenadaLongitud),
-                            ),
-                            onTap: () {
-                              final keyObservationDetail =
-                                  GlobalHelper.genKey();
-                              fp.addPage(
-                                  key: keyObservationDetail,
-                                  content: ObservationDetailPage(
-                                    observation: observaciones,
-                                    
-                                    keyPage: keyObservationDetail,
-                                    key: keyObservationDetail,
-                                  ));
-                            }),
-                      )
-                      .toSet()
-                  : {},
+              markers: marker,
               // markers: {
               //   Marker(
               //       markerId: const MarkerId('Mall del Sol'),

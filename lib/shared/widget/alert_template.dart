@@ -308,45 +308,45 @@ class _GpsSelectUbicationState extends State<GpsSelectUbication> {
                 initialCameraPosition: position,
                 myLocationEnabled: true,
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: FilledButtonWidget(
-                  onPressed: () async {
-                    Location location = Location();
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: FilledButtonWidget(
+              //     onPressed: () async {
+              //       Location location = Location();
 
-                    await location.requestPermission();
-                    final permiseEnable = await location.serviceEnabled();
-                    if (permiseEnable) {
-                      final ubication = await location.getLocation();
-                      GlobalHelper.logger.w(ubication);
-                      if (ubication.latitude != null &&
-                          ubication.longitude != null) {
-                        GlobalHelper.logger.w(permiseEnable);
+              //       await location.requestPermission();
+              //       final permiseEnable = await location.serviceEnabled();
+              //           GlobalHelper.logger.w(permiseEnable);
+              //       if (permiseEnable) {
+              //         final ubication = await location.getLocation();
+              //         GlobalHelper.logger.w(ubication);
+              //         if (ubication.latitude != null &&
+              //             ubication.longitude != null) {
 
-                        widget.selectPosition(
-                            LatLng(ubication.latitude!, ubication.longitude!));
-                        widget.markers = {
-                          Marker(
-                              markerId: MarkerId(
-                                'Observacion',
-                              ),
-                              position: LatLng(
-                                  ubication.latitude!, ubication.longitude!))
-                        };
-                        position = CameraPosition(
-                            target: LatLng(
-                                ubication.latitude!, ubication.longitude!));
+              //           widget.selectPosition(
+              //               LatLng(ubication.latitude!, ubication.longitude!));
+              //           widget.markers = {
+              //             Marker(
+              //                 markerId: MarkerId(
+              //                   'Observacion',
+              //                 ),
+              //                 position: LatLng(
+              //                     ubication.latitude!, ubication.longitude!))
+              //           };
+              //           position = CameraPosition(
+              //               target: LatLng(
+              //                   ubication.latitude!, ubication.longitude!));
                         
-                        setState(() {});
-                      }
-                    }
-                  },
-                  text: 'Usar mi ubicación',
-                  width: 40,
-                  color: AppTheme.secondaryColor,
-                  colorText: AppTheme.primaryColor,
-                ),
-              ),
+              //           setState(() {});
+              //         }
+              //       }
+              //     },
+              //     text: 'Usar mi ubicación',
+              //     width: 40,
+              //     color: AppTheme.secondaryColor,
+              //     colorText: AppTheme.primaryColor,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -598,7 +598,7 @@ class NoExistInformation extends StatelessWidget {
               children: <TextSpan>[
                 isNamePage == true
                     ? TextSpan(
-                        text: ' $namePage.',
+                        text: '$namePage.',
                         style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

@@ -42,8 +42,8 @@ class _FormLoginState extends State<FormLogin> {
   _login() async {
     SecurityService securityService = SecurityService();
     final body = {
-    "correo": _emailController.text,
-    "password": _passwordController.text
+    "correo": _emailController.text.trim(),
+    "password": _passwordController.text.trim()
     };
 
     final response = await securityService.login(context, body);

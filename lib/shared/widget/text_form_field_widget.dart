@@ -32,36 +32,37 @@ class TextFormFieldWidget extends StatelessWidget {
     this.onFieldSubmitted,
     this.onEditingComplete,
     this.onSaved, 
-    this.fontSizeHint = 17,
+    this.fontSizeHint = 17, this.maxLength,
   });
 
+  final int? maxLines;
+  final int? maxLength;
+  final TextInputType? keyboardType;
+  final TextAlign textAlign;
+  final TextEditingController? controller;
+  final String? hintText;
+  final String? Function(String?)? validator;
+  final String? initialValue;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputAction? textInputAction;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final Color? fillColor;
   final double maxHeigth;
   final double maxWidth;
   final double fontSizeHint;
-  final TextInputType? keyboardType;
-  final TextAlign textAlign;
-  final String? hintText;
-  final TextEditingController? controller;
-  final String? Function(String?)? validator;
-  final List<TextInputFormatter>? inputFormatters;
-  final TextInputAction? textInputAction;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final bool obscureText;
-  final Color? fillColor;
-  final FontWeight? fontWeightHintText;
-  final int? maxLines;
-  final bool? showShading;
   final double? borderWith;
+  final FontWeight? fontWeightHintText;
   final FocusNode? focusNode;
-  final bool? enabled;
+  final bool obscureText;
   final bool? readOnly;
+  final bool? showShading;
+  final bool? enabled;
   final void Function()? onTap;
-  final void Function(String)? onChanged;
-  final String? initialValue;
-  final void Function(String)? onFieldSubmitted;
-  final void Function()? onEditingComplete;
   final void Function(String?)? onSaved;
+  final void Function(String)? onChanged;
+  final void Function()? onEditingComplete;
+  final void Function(String)? onFieldSubmitted;
   //final String? Function(String?)? validator;
 
   @override
@@ -78,6 +79,7 @@ class TextFormFieldWidget extends StatelessWidget {
       enabled: enabled,
       focusNode: focusNode,
       maxLines: maxLines,
+      maxLength: maxLength,
       obscuringCharacter: '*',
       obscureText: obscureText,
       style:  TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w700, fontSize: fontSizeHint),

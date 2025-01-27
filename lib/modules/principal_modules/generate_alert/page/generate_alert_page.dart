@@ -43,6 +43,7 @@ class GenerateAlertage extends StatefulWidget {
 
 class _GenerateAlertageState extends State<GenerateAlertage> {
   // XFile? image;
+  final _keyStateAlert = GlobalKey<FormState>();
   late FunctionalProvider fp;
   ImagePicker imagePicker = ImagePicker();
   TypeAlertsModel? typeAlertsModel;
@@ -190,7 +191,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                             source: ImageSource.camera);
                         if (photo != null) {
                           fp.dismissAlert(key: selectSourcekey);
-                          // imagenes.add(File(photo.path));
+                          imagenes.add(File(photo.path));
                           // _compressImage(photo);
                         }
                         setState(() {});
@@ -251,244 +252,269 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
-    return SizedBox(
-      height: responsive.height,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: TextTitleWidget(
-                    title: 'Agregar Alerta',
-                    size: 20,
+    return Form(
+      key: _keyStateAlert,
+      child: SizedBox(
+        height: responsive.height,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: TextTitleWidget(
+                      title: 'Agregar Alerta',
+                      size: 20,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const TextTitleWidget(
-                      title: 'Tipo de Alerta',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    DropDownButtonWidget(
-                      hint: 'Seleccione la alerta...',
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Seleccione una opcion';
-                        }
-                        return null;
-                      },
-                      items: alertType,
-                      onChanged: (value) {
-                        selectAlert = value!;
-                        GlobalHelper.logger.w(value);
-                        setState(() {});
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextTitleWidget(
-                      title: 'Sendero',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    DropDownButtonWidget(
-                      hint: 'Seleccione un sendero...',
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Seleccione una opcion';
-                        }
-                        return null;
-                      },
-                      items: senderos,
-                      onChanged: (value) {
-                        selectSendero = value!;
-                        setState(() {});
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextTitleWidget(
-                      title: 'Fecha de alerta',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    DateTimePickerWidget(
-                      controller: _controllerdateTime,
-                      onTap: () {
-                        final keyCalendar = GlobalHelper.genKey();
-                        final fp = Provider.of<FunctionalProvider>(context,
-                            listen: false);
-
-                        fp.showAlert(
-                          key: keyCalendar,
-                          content: AlertGeneric(
-                              content: CustomDatePickerAlert(
-                            keyToClose: keyCalendar,
-                            initialDate: selectedDate,
-                            lastDate: DateTime.now(),
-                            onDateSelected: (date) {
-                              selectedDate = date;
-                              final formattedDate =
-                                  DateFormat('dd/MM/yyyy').format(date);
-                              _controllerdateTime.text = formattedDate;
-                              setState(() {});
-                            },
-                          )),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextTitleWidget(
-                      title: 'Ubicación Geográfica',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GpsUbicationWidget(
-                        controller: _gpsController,
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TextTitleWidget(
+                        title: 'Tipo de Alerta',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      DropDownButtonWidget(
+                        hint: 'Seleccione la alerta...',
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Seleccione una opcion';
+                          }
+                          return null;
+                        },
+                        items: alertType,
+                        onChanged: (value) {
+                          selectAlert = value!;
+                          GlobalHelper.logger.w(value);
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const TextTitleWidget(
+                        title: 'Sendero',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      DropDownButtonWidget(
+                        hint: 'Seleccione un sendero...',
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Seleccione una opcion';
+                          }
+                          return null;
+                        },
+                        items: senderos,
+                        onChanged: (value) {
+                          selectSendero = value!;
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const TextTitleWidget(
+                        title: 'Fecha de alerta',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      DateTimePickerWidget(
+                        controller: _controllerdateTime,
                         onTap: () {
-                          final keyMapAlert = GlobalHelper.genKey();
+                          final keyCalendar = GlobalHelper.genKey();
+                          final fp = Provider.of<FunctionalProvider>(context,
+                              listen: false);
+                          final formattedDate =
+                                    DateFormat('dd/MM/yyyy').format(selectedDate);
+                                _controllerdateTime.text = formattedDate;
                           fp.showAlert(
-                            key: keyMapAlert,
+                            key: keyCalendar,
                             content: AlertGeneric(
-                              content: GpsSelectUbication(
-                                keyDismiss: keyMapAlert,
-                                markers: marker,
-                                selectPosition: (latLong) {
-                                  _gpsController.text =
-                                      '${latLong.latitude}, ${latLong.latitude}';
-                                  latitud = latLong.latitude;
-                                  longitud = latLong.latitude;
-                                  setState(() {});
-                                },
-                              ),
-                            ),
+                                content: CustomDatePickerAlert(
+                              keyToClose: keyCalendar,
+                              initialDate: selectedDate,
+                              lastDate: DateTime.now(),
+                              onDateSelected: (date) {
+                                selectedDate = date;
+                                final formattedDate =
+                                    DateFormat('dd/MM/yyyy').format(date);
+                                _controllerdateTime.text = formattedDate;
+                                setState(() {});
+                              },
+                            )),
                           );
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextTitleWidget(
-                      title: 'Foto de Alerta',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        ...imagenes.map(
-                          (e) => Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.file(
-                                    e,
-                                    height: responsive.hp(10),
-                                    // width: responsive.wp(2),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: -20,
-                                right: -10,
-                                child: IconButton(
-                                  onPressed: () {
-                                    imagenes.removeWhere(
-                                      (element) => element == e,
-                                    );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const TextTitleWidget(
+                        title: 'Ubicación Geográfica',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GpsUbicationWidget(
+                          controller: _gpsController,
+                          onTap: () {
+                            final keyMapAlert = GlobalHelper.genKey();
+                            fp.showAlert(
+                              key: keyMapAlert,
+                              content: AlertGeneric(
+                                content: GpsSelectUbication(
+                                  keyDismiss: keyMapAlert,
+                                  markers: marker,
+                                  selectPosition: (latLong) {
+                                    _gpsController.text =
+                                        '${latLong.latitude}, ${latLong.latitude}';
+                                    latitud = latLong.latitude;
+                                    longitud = latLong.latitude;
                                     setState(() {});
                                   },
-                                  icon: const Icon(
-                                    Icons.highlight_remove_rounded,
-                                    color: AppTheme.error,
-                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        (imagenes.length != 3)
-                            ? InkWell(
-                                onTap: () {
-                                  _takePick(responsive);
-                                },
-                                child: DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: Radius.circular(10),
-                                  // padding: EdgeInsets.all(6),
-                                  child: SizedBox(
-                                    height: responsive.hp(10),
-                                    width: responsive.wp(15),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.add_a_photo,
-                                        color: AppTheme.primaryColor,
-                                        size: 24,
-                                      ),
+                            );
+                          }),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const TextTitleWidget(
+                        title: 'Foto de Alerta',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          ...imagenes.map(
+                            (e) => Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      e,
+                                      height: responsive.hp(10),
+                                      // width: responsive.wp(2),
                                     ),
                                   ),
                                 ),
-                              )
-                            : SizedBox()
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextTitleWidget(
-                      title: 'Notas Adicionales',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormFieldWidget(
-                      hintText: 'Agregar una nota...',
-                      maxLines: 4,
-                      controller: _descriptionAlert,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: FilledButtonWidget(
-                          onPressed: () {
-                            _generateAlert();
-                          },
-                          text: 'Enviar',
-                          height: responsive.hp(5),
-                          width: responsive.wp(35),
-                        ))
-                  ],
-                ),
-              )
-            ],
+                                Positioned(
+                                  top: -20,
+                                  right: -10,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      imagenes.removeWhere(
+                                        (element) => element == e,
+                                      );
+                                      setState(() {});
+                                    },
+                                    icon: const Icon(
+                                      Icons.highlight_remove_rounded,
+                                      color: AppTheme.error,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          (imagenes.length != 3)
+                              ? InkWell(
+                                  onTap: () {
+                                    _takePick(responsive);
+                                  },
+                                  child: DottedBorder(
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(10),
+                                    // padding: EdgeInsets.all(6),
+                                    child: SizedBox(
+                                      height: responsive.hp(10),
+                                      width: responsive.wp(15),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.add_a_photo,
+                                          color: AppTheme.primaryColor,
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox()
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const TextTitleWidget(
+                        title: 'Notas Adicionales',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormFieldWidget(
+                        hintText: 'Agregar una nota...',
+                        maxLines: 4,
+                        controller: _descriptionAlert,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Align(
+                          alignment: Alignment.center,
+                          child: FilledButtonWidget(
+                            onPressed: () {
+                              if(_keyStateAlert.currentState!.validate()){
+                                 if (imagenes.isEmpty ) {
+                                final keyNoPhoroAlert = GlobalHelper.genKey();
+                                fp.showAlert(
+                                  key: keyNoPhoroAlert,
+                                  content: AlertGeneric(
+                                    content: NoExistInformation(
+                                      message: (imagenes.isEmpty)
+                                          ? 'Debe enviar al menos una imagen'
+                                          : 'Seleccone una especie, por favor.',
+                                      function: () {
+                                        fp.dismissAlert(key: keyNoPhoroAlert);
+                                      },
+                                    ),
+                                    keyToClose: keyNoPhoroAlert,
+                                  ),
+                                );
+                              } else {
+
+                              _generateAlert();}
+                              }
+                            },
+                            text: 'Enviar',
+                            height: responsive.hp(5),
+                            width: responsive.wp(35),
+                          ))
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

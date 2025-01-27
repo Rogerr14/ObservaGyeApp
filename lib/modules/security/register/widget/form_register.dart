@@ -32,9 +32,9 @@ class _FormRegisterState extends State<FormRegister> {
   "id_rol": 2,
   "nombres": _nameController.text.toUpperCase(),
   "apellidos" : _lastNameController.text.toUpperCase(),
-  "correo": _emailController.text,
-  "password": _passwordController.text,
-  "telefono":_phoneController.text
+  "correo": _emailController.text.trim(),
+  "password": _passwordController.text.trim(),
+  "telefono":_phoneController.text.trim()
   };
 
   final response = await securityService.createAccount(context, body);

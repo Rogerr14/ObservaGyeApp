@@ -22,6 +22,7 @@ class InterceptorHttp {
     String endPoint,
     dynamic body, {
     bool showLoading = true,
+    bool isSearchBar =false,
     Map<String, dynamic>? queryParameters,
     List<http.MultipartFile>? multipartFiles,
     Map<String, String>? multipartFields,
@@ -296,6 +297,8 @@ GlobalHelper.logger.w("Multipart fields: $multipartFields");
       }
     } else {
       //debugPrint("Key de error del Interceptor: $keyError");
+      if(!isSearchBar){
+
       final keyError = GlobalHelper.genKey();
 
       fp.showAlert(
@@ -310,6 +313,7 @@ GlobalHelper.logger.w("Multipart fields: $multipartFields");
           ),
         ),
       );
+      }
     }
 
     return generalResponse;

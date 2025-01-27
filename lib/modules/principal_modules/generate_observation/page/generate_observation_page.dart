@@ -43,7 +43,7 @@ class GenerateObservationPage extends StatefulWidget {
 
 class _GenerateObservationPageState extends State<GenerateObservationPage> {
   late FunctionalProvider fp;
-
+  final _keyStateAlert = GlobalKey<FormState>();
   TextEditingController _controllerdateTime = TextEditingController();
   TextEditingController _gpsController = TextEditingController();
   TextEditingController _noteController = TextEditingController();
@@ -53,7 +53,6 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   String selectSendero = '';
   double latitud = 0.0;
   double longitud = 0.0;
-
 
   List<File> imagenes = [];
   List<DropdownMenuItem<String>> senderos = [];
@@ -83,7 +82,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    
+
     super.dispose();
   }
 
@@ -123,12 +122,13 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
               fp.dismissAlert(key: keyOkAlert);
               fp.setIconBottomNavigationBarItem(
                   ButtonNavigatorBarItem.iconMenuHome);
-              
-               if(fp.alerts.isEmpty){
-                    
-                    Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, MainPage()), (route) => false);
 
-                  }
+              if (fp.alerts.isEmpty) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    GlobalHelper.navigationFadeIn(context, MainPage()),
+                    (route) => false);
+              }
               setState(() {});
             },
           )));
@@ -230,128 +230,130 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: TextTitleWidget(
-                  title: 'Agregar Observación',
-                  size: 20,
+    return Form(
+      key: _keyStateAlert,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: TextTitleWidget(
+                    title: 'Agregar Observación',
+                    size: 20,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const TextTitleWidget(
-                    title: 'Nombre Especie',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                      onTap: () {
-                        final keyEspeciesSelect = GlobalHelper.genKey();
-                        fp.showAlert(
-                            key: keyEspeciesSelect,
-                            content: AlertGeneric(
-                              content: SelectEspecie(
-                                keyDismiss: keyEspeciesSelect,
-                                onPress: (especy){
-                                  especie = especy;
-                                  setState(() {
-                                    
-                                  });
-                                },
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const TextTitleWidget(
+                      title: 'Nombre Especie',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          final keyEspeciesSelect = GlobalHelper.genKey();
+                          fp.showAlert(
+                              key: keyEspeciesSelect,
+                              content: AlertGeneric(
+                                content: SelectEspecie(
+                                  keyDismiss: keyEspeciesSelect,
+                                  onPress: (especy) {
+                                    especie = especy;
+                                    setState(() {});
+                                  },
+                                ),
                               ),
-                            ),
-                            closeAlert: true);
+                              closeAlert: true);
+                          setState(() {});
+                        },
+                        child: EspecyWidget(
+                          especies: especie,
+                          titleAlt: 'Seleccione una especie',
+                        )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const TextTitleWidget(
+                      title: 'Sendero',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DropDownButtonWidget(
+                      hint: 'Seleccione un sendero...',
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Seleccione una opcion';
+                        }
+                        return null;
+                      },
+                      items: senderos,
+                      onChanged: (value) {
+                        selectSendero = value!;
                         setState(() {});
                       },
-                      child: EspecyWidget(
-                        especies: especie,
-                        titleAlt: 'Seleccione una especie',
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const TextTitleWidget(
-                    title: 'Sendero',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DropDownButtonWidget(
-                    hint: 'Seleccione un sendero...',
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Seleccione una opcion';
-                      }
-                      return null;
-                    },
-                    items: senderos,
-                    onChanged: (value) {
-                      selectSendero = value!;
-                      setState(() {});
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const TextTitleWidget(
-                    title: 'Fecha observación',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DateTimePickerWidget(
-                    controller: _controllerdateTime,
-                    onTap: () {
-                      final keyCalendar = GlobalHelper.genKey();
-                      final fp = Provider.of<FunctionalProvider>(context,
-                          listen: false);
-
-                      fp.showAlert(
-                        key: keyCalendar,
-                        content: AlertGeneric(
-                            content: CustomDatePickerAlert(
-                          keyToClose: keyCalendar,
-                          initialDate: selectedDate,
-                          lastDate: DateTime.now(),
-                          onDateSelected: (date) {
-                            selectedDate = date;
-                            final formattedDate =
-                                DateFormat('dd/MM/yyyy').format(date);
-                            _controllerdateTime.text = formattedDate;
-                            setState(() {});
-                          },
-                        )),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const TextTitleWidget(
-                    title: 'Ubicación Geográfica',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                   GpsUbicationWidget(
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const TextTitleWidget(
+                      title: 'Fecha observación',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DateTimePickerWidget(
+                      controller: _controllerdateTime,
+                      onTap: () {
+                        final keyCalendar = GlobalHelper.genKey();
+                        final fp = Provider.of<FunctionalProvider>(context,
+                            listen: false);
+                        final formattedDate =
+                            DateFormat('dd/MM/yyyy').format(selectedDate);
+                        _controllerdateTime.text = formattedDate;
+                        fp.showAlert(
+                          key: keyCalendar,
+                          content: AlertGeneric(
+                              content: CustomDatePickerAlert(
+                            keyToClose: keyCalendar,
+                            initialDate: selectedDate,
+                            lastDate: DateTime.now(),
+                            onDateSelected: (date) {
+                              selectedDate = date;
+                              final formattedDate =
+                                  DateFormat('dd/MM/yyyy').format(date);
+                              _controllerdateTime.text = formattedDate;
+                              setState(() {});
+                            },
+                          )),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const TextTitleWidget(
+                      title: 'Ubicación Geográfica',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GpsUbicationWidget(
                         controller: _gpsController,
                         onTap: () {
                           final keyMapAlert = GlobalHelper.genKey();
@@ -364,7 +366,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                                 selectPosition: (latLong) {
                                   _gpsController.text =
                                       '${latLong.latitude}, ${latLong.longitude}';
-                                      latitud = latLong.latitude;
+                                  latitud = latLong.latitude;
                                   longitud = latLong.latitude;
                                   setState(() {});
                                 },
@@ -372,109 +374,127 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                             ),
                           );
                         }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const TextTitleWidget(
-                    title: 'Foto de Alerta',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      ...imagenes.map(
-                        (e) => Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.file(
-                                  e,
-                                  height: responsive.hp(10),
-                                  // width: responsive.wp(2),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                                top: -20,
-                                right: -10,
-                                child: IconButton(
-                                    onPressed: () {
-                                      imagenes.removeWhere(
-                                        (element) => element == e,
-                                      );
-                                      setState(() {});
-                                    },
-                                    icon: Icon(
-                                      Icons.highlight_remove,
-                                      color: AppTheme.error,
-                                    ))),
-                          ],
-                        ),
-                      ),
-                      (imagenes.length != 3)
-                          ? InkWell(
-                              onTap: () {
-                                _takePick(responsive);
-                              },
-                              child: DottedBorder(
-                                borderType: BorderType.RRect,
-                                radius: Radius.circular(10),
-                                // padding: EdgeInsets.all(6),
-                                child: SizedBox(
-                                  height: responsive.hp(10),
-                                  width: responsive.wp(15),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.add_a_photo,
-                                      color: AppTheme.primaryColor,
-                                      size: 24,
-                                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const TextTitleWidget(
+                      title: 'Foto de Alerta',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        ...imagenes.map(
+                          (e) => Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    e,
+                                    height: responsive.hp(10),
+                                    // width: responsive.wp(2),
                                   ),
                                 ),
                               ),
-                            )
-                          : SizedBox()
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const TextTitleWidget(
-                    title: 'Notas Adicionales',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormFieldWidget(
-                    hintText: 'Agregar una nota...',
-                    maxLines: 4,
-                    controller: _noteController,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                      alignment: Alignment.center,
-                      child: FilledButtonWidget(
-                        onPressed: () {
-                          if(imagenes.isNotEmpty && especie !=null ){
-                          _generateObservation();
-
-                          }
-                        },
-                        text: 'Enviar',
-                        height: responsive.hp(5),
-                        width: responsive.wp(35),
-                      ))
-                ],
-              ),
-            )
-          ],
+                              Positioned(
+                                  top: -20,
+                                  right: -10,
+                                  child: IconButton(
+                                      onPressed: () {
+                                        imagenes.removeWhere(
+                                          (element) => element == e,
+                                        );
+                                        setState(() {});
+                                      },
+                                      icon: Icon(
+                                        Icons.highlight_remove,
+                                        color: AppTheme.error,
+                                      ))),
+                            ],
+                          ),
+                        ),
+                        (imagenes.length != 3)
+                            ? InkWell(
+                                onTap: () {
+                                  _takePick(responsive);
+                                },
+                                child: DottedBorder(
+                                  borderType: BorderType.RRect,
+                                  radius: Radius.circular(10),
+                                  // padding: EdgeInsets.all(6),
+                                  child: SizedBox(
+                                    height: responsive.hp(10),
+                                    width: responsive.wp(15),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.add_a_photo,
+                                        color: AppTheme.primaryColor,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox()
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const TextTitleWidget(
+                      title: 'Notas Adicionales',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormFieldWidget(
+                      hintText: 'Agregar una nota...',
+                      maxLines: 4,
+                      controller: _noteController,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                        alignment: Alignment.center,
+                        child: FilledButtonWidget(
+                          onPressed: () {
+                            if (_keyStateAlert.currentState!.validate()) {
+                              if (imagenes.isEmpty || especie == null) {
+                                final keyNoPhoroAlert = GlobalHelper.genKey();
+                                fp.showAlert(
+                                  key: keyNoPhoroAlert,
+                                  content: AlertGeneric(
+                                    content: NoExistInformation(
+                                      message: (imagenes.isEmpty)
+                                          ? 'Debe enviar al menos una imagen.'
+                                          : 'Seleccone una especie, por favor.',
+                                      function: () {
+                                        fp.dismissAlert(key: keyNoPhoroAlert);
+                                      },
+                                    ),
+                                    keyToClose: keyNoPhoroAlert,
+                                  ),
+                                );
+                              } else {
+                                _generateObservation();
+                              }
+                            }
+                          },
+                          text: 'Enviar',
+                          height: responsive.hp(5),
+                          width: responsive.wp(35),
+                        ))
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -26,7 +26,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool editable = false;
+  // bool editable = false;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
@@ -89,15 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
       keyDismiss: widget.keyDismiss,
       requiredStack: false,
       nameInterceptor: 'ProfilePage',
-      iconSuffix: IconButton(
-          onPressed: () {
-            if(_editable){
-              _editUser();
-            }
-            _editable = !_editable;
-            setState(() {});
-          },
-          icon: TextTitleWidget(title: !_editable ? 'Editar' : 'Guardar')),
       child: userModel == null
           ? SizedBox()
           : SingleChildScrollView(
@@ -132,8 +123,23 @@ class _ProfilePageState extends State<ProfilePage> {
                         size: responsive.wp(5.5),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20,
+                    ),
+                    
+                     Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButtonWidget(text: _editable ? 'Guardar' : 'Editar', onPressed: (){
+                        
+                        if(_editable){
+                          _editUser();
+                        }
+                          _editable = !_editable;
+                        setState(() {
+                          
+                        });
+                         
+                      },color: AppTheme.primaryColor, ),
                     ),
                     const Align(
                       alignment: Alignment.centerLeft,

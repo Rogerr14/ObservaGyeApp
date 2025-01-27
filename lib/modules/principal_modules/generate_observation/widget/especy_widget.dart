@@ -47,23 +47,27 @@ class _EspecyWidgetState extends State<EspecyWidget> {
               SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextTitleWidget(
-                    title: widget.especies != null
-                        ? widget.especies!.nombreTemporal != '' ? widget.especies!.nombreTemporal:  widget.especies!.nombreComun
-                        : widget.titleAlt,
-                    showShadow: false,
-                  ),
-                  Visibility(
-                    visible: widget.especies != null,
-                    child: TextTitleWidget(
-                      title: widget.especies?.nombreCientifico ?? '',
+              Container(
+                
+                width: responsive.width * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextTitleWidget(
+                      title: widget.especies != null
+                          ? widget.especies!.nombreTemporal != '' ? widget.especies!.nombreTemporal:  widget.especies!.nombreComun
+                          : widget.titleAlt,
+                      showShadow: false,
                     ),
-                  ),
-                ],
+                    Visibility(
+                      visible: widget.especies != null,
+                      child: TextTitleWidget(
+                        title: widget.especies?.nombreCientifico ?? '',
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

@@ -87,7 +87,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
       children: [
         Scaffold(
           // extendBodyBehindAppBar: true,
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           backgroundColor: AppTheme.primaryColor,
           body: ZoomDrawer(
             controller: _drawerController,
