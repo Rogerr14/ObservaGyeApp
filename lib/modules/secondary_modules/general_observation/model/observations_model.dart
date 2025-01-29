@@ -26,10 +26,11 @@ class Observations {
 
 class Observaciones {
     String idObservacion;
-    String idEspecie;
-    String nombreComun;
-    String nombreCientifico;
-    String nombreCategoria;
+    String? idEspecie;
+    String? nombreTemporal;
+    String? nombreComun;
+    String? nombreCientifico;
+    String? nombreCategoria;
     String idUsuario;
     String usuario;
     String idSendero;
@@ -40,13 +41,14 @@ class Observaciones {
     String coordenadaLatitud;
     bool estado;
     String imagen1;
-    String imagen2;
-    String imagen3;
+    dynamic imagen2;
+    dynamic imagen3;
     DateTime fechaCreado;
 
     Observaciones({
         required this.idObservacion,
         required this.idEspecie,
+        required this.nombreTemporal,
         required this.nombreComun,
         required this.nombreCientifico,
         required this.nombreCategoria,
@@ -68,6 +70,7 @@ class Observaciones {
     factory Observaciones.fromJson(Map<String, dynamic> json) => Observaciones(
         idObservacion: json["id_observacion"],
         idEspecie: json["id_especie"],
+        nombreTemporal: json["nombre_temporal"],
         nombreComun: json["nombre_comun"],
         nombreCientifico: json["nombre_cientifico"],
         nombreCategoria: json["nombre_categoria"],
@@ -81,14 +84,15 @@ class Observaciones {
         coordenadaLatitud: json["coordenada_latitud"],
         estado: json["estado"],
         imagen1: json["imagen_1"],
-        imagen2: json["imagen_2"] ?? '',
-        imagen3: json["imagen_3"] ?? '',
+        imagen2: json["imagen_2"],
+        imagen3: json["imagen_3"],
         fechaCreado: DateTime.parse(json["fecha_creado"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id_observacion": idObservacion,
         "id_especie": idEspecie,
+        "nombre_temporal": nombreTemporal,
         "nombre_comun": nombreComun,
         "nombre_cientifico": nombreCientifico,
         "nombre_categoria": nombreCategoria,

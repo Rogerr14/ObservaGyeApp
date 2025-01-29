@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:observa_gye_app/env/environment.dart';
 import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/modules/security/login/page/login_page.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';

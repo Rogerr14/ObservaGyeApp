@@ -42,8 +42,8 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
   
   _imagenes(){
     if(widget.observation.imagen1 != '') imagenes.add(widget.observation.imagen1); 
-    if(widget.observation.imagen2 != '') imagenes.add(widget.observation.imagen2); 
-    if(widget.observation.imagen3 != '') imagenes.add(widget.observation.imagen3); 
+    if(widget.observation.imagen2 != null) imagenes.add(widget.observation.imagen2); 
+    if(widget.observation.imagen3 != null) imagenes.add(widget.observation.imagen3); 
   }
 
 
@@ -62,12 +62,15 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextTitleWidget(
-                title: widget.observation.nombreComun,
+                title: widget.observation.nombreComun ?? widget.observation.nombreTemporal ?? '',
                 size: 20,
               ),
-              TextTitleWidget(
-                title: widget.observation.nombreCientifico,
-                size: 20,
+              Visibility(
+                visible: widget.observation.nombreTemporal == null,
+                child: TextTitleWidget(
+                  title: widget.observation.nombreCientifico?? '',
+                  size: 20,
+                ),
               ),
               Visibility(
                           visible: !widget.isGeneral,

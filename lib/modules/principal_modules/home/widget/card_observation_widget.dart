@@ -49,11 +49,11 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextTitleWidget(
-                          title: widget.observation.nombreComun,
+                          title: widget.observation.nombreComun!,
                           size: responsive.wp(4.5),
                         ),
                         TextTitleWidget(
-                          title: widget.observation.nombreCientifico,
+                          title: widget.observation.nombreCientifico!,
                           size: responsive.wp(4.4),
                         ),
                         TextSubtitleWidget(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/404/pages/page_404.dart';
 import 'package:observa_gye_app/modules/principal_modules/main_page/page/main_page.dart';
@@ -111,8 +110,8 @@ class _SplashPageState extends State<SplashPage> {
             
              
             child: Hero(
-              tag: 'Logo  ',
-              child: SvgPicture.asset(AppTheme.logoApp)),
+              tag: 'Logo',
+              child: Image.asset(AppTheme.logoApp)),
             
             ),
         ),

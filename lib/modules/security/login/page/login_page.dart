@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/security/login/widget/form_login.dart';
@@ -33,9 +34,9 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(
           height: size.height * 0.35,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            SvgPicture.asset(
+            Image.asset(
               AppTheme.logoApp,
-              height: size.height * 0.06,
+              height: size.height * 0.07,
             ),
             const SizedBox(
               height: 10,

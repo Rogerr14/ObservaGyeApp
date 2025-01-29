@@ -92,6 +92,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
         idEspecie: especie?.idEspecie,
         idSendero: int.parse(selectSendero),
         descripcion: _noteController.text,
+        nombreTemporal: especie?.nombreTemporal,
         fechaObservacion: DateTime(
           selectedDate.year,
           selectedDate.month,

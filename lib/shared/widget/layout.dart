@@ -168,11 +168,10 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                   icon: const Icon(Icons.menu),
                 ),
                 backgroundColor: AppTheme.white,
-                title: SvgPicture.asset(
+                title: Image.asset(
                   AppTheme.logoApp,
-                  colorFilter: const ColorFilter.mode(
-                      AppTheme.primaryColor, BlendMode.srcIn),
-                  height: size.height * 0.035,
+                  height: size.height * 0.05,
+                  // width: size.width *2,
                 ),
                 centerTitle: true,
               ),

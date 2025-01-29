@@ -16,7 +16,8 @@ class AppTheme {
   static const Color red = Color(0xFFee6055);
 
   //image routes
-  static const String logoApp = 'assets/Observa_logo.svg';
+  static const String logoApp = 'assets/observa_logo.png';
+  static const String logoAppBar = 'assets/observa_logo_bottom.png';
   static const String ilustrationSplash = 'assets/ilustration_splash.png';
   static const String plantSvg = "assets/hoja.png";
   static const String citizenScienceImage = "assets/citizen_science.png";

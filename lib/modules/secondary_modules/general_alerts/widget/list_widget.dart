@@ -55,7 +55,7 @@ class _ListWidgetObservationsState extends State<ListWidgetObservations> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextTitleWidget(
-                        title: widget.observations.nombreComun,
+                        title: widget.observations.nombreComun ?? widget.observations.nombreTemporal!,
                         showShadow: false,
                       ),
                       TextSubtitleWidget(subtitle: widget.observations.fechaObservacion.toString()),

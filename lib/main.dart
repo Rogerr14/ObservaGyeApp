@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  String environment =  const String.fromEnvironment('ENVIRONMENT', defaultValue: Environment.qa);
+  String environment =  const String.fromEnvironment('ENVIRONMENT', defaultValue: Environment.prod);
   Environment().initConfig(environment);
   initializeDateFormatting('es');
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

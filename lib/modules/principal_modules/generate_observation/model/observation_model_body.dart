@@ -11,6 +11,7 @@ String observationModelBodyToJson(ObservationModelBody data) => json.encode(data
 class ObservationModelBody {
     int? idEspecie;
     int idSendero;
+    String? nombreTemporal;
     String descripcion;
     DateTime fechaObservacion;
     double coordenadaLongitud;
@@ -25,11 +26,13 @@ class ObservationModelBody {
         required this.coordenadaLongitud,
         required this.coordenadaLatitud,
         required this.estado,
+        this.nombreTemporal
     });
 
     factory ObservationModelBody.fromJson(Map<String, dynamic> json) => ObservationModelBody(
         idEspecie: json["id_especie"],
         idSendero: json["id_sendero"],
+        nombreTemporal: json["nombre_temporal"],
         descripcion: json["descripcion"],
         fechaObservacion:  DateTime.parse(json["fecha_observacion"]),
         coordenadaLongitud: json["coordenada_longitud"]?.toDouble(),
@@ -40,6 +43,7 @@ class ObservationModelBody {
     Map<String, dynamic> toJson() => {
         "id_especie": idEspecie,
         "id_sendero": idSendero,
+        "nombre_temporal": nombreTemporal,
         "descripcion": descripcion,
         "fecha_observacion": "${fechaObservacion.year.toString().padLeft(4, '0')}-${fechaObservacion.month.toString().padLeft(2, '0')}-${fechaObservacion.day.toString().padLeft(2, '0')}",
         "coordenada_longitud": coordenadaLongitud,
