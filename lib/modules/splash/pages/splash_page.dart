@@ -104,7 +104,7 @@ class _SplashPageState extends State<SplashPage> {
         resizeToAvoidBottomInset: true,
         body: Center(
           child: Container(
-            width: size.width,
+            width: size.width * 0.8,
             height: size.height,
             alignment: FractionalOffset.center,
             

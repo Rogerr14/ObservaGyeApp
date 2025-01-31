@@ -383,9 +383,16 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                                   markers: marker,
                                   selectPosition: (latLong) {
                                     _gpsController.text =
-                                        '${latLong.latitude}, ${latLong.latitude}';
+                                        '${latLong.latitude}, ${latLong.longitude}';
                                     latitud = latLong.latitude;
-                                    longitud = latLong.latitude;
+                                    longitud = latLong.longitude;
+                                     marker = {
+                    Marker(
+                        markerId: MarkerId(
+                          'Observacion',
+                        ),
+                        position: latLong)
+                  };
                                     setState(() {});
                                   },
                                 ),

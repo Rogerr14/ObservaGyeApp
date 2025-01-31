@@ -169,7 +169,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
                 ),
                 backgroundColor: AppTheme.white,
                 title: Image.asset(
-                  AppTheme.logoApp,
+                  AppTheme.logoAppBar,
                   height: size.height * 0.05,
                   // width: size.width *2,
                 ),

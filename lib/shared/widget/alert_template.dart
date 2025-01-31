@@ -295,13 +295,7 @@ class _GpsSelectUbicationState extends State<GpsSelectUbication> {
                 markers: widget.markers,
                 onTap: (latLong) {
                   widget.selectPosition(latLong);
-                  widget.markers = {
-                    Marker(
-                        markerId: MarkerId(
-                          'Observacion',
-                        ),
-                        position: latLong)
-                  };
+                 
 
                   setState(() {});
                 },

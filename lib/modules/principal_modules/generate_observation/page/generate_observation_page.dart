@@ -369,6 +369,14 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                                       '${latLong.latitude}, ${latLong.longitude}';
                                   latitud = latLong.latitude;
                                   longitud = latLong.latitude;
+                                  marker = {
+                                    Marker(
+                                        markerId: MarkerId(
+                                          'Observacion',
+                                        ),
+                                        position: latLong)
+                                  };
+
                                   setState(() {});
                                 },
                               ),

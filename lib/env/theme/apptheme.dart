@@ -17,6 +17,7 @@ class AppTheme {
 
   //image routes
   static const String logoApp = 'assets/observa_logo.png';
+  // static const String logoAppBarr = 'assets/observa_logo.png';
   static const String logoAppBar = 'assets/observa_logo_bottom.png';
   static const String ilustrationSplash = 'assets/ilustration_splash.png';
   static const String plantSvg = "assets/hoja.png";
