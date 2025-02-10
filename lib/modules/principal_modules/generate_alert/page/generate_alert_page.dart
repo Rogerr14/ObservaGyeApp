@@ -75,6 +75,8 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
+        final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+        _controllerdateTime.text = formattedDate;
         _getTypesAlerts();
       },
     );
@@ -115,11 +117,12 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
               fp.dismissAlert(key: keyOkAlert);
               fp.setIconBottomNavigationBarItem(
                   ButtonNavigatorBarItem.iconMenuHome);
-                  if(fp.alerts.isEmpty){
-                    
-                    Navigator.pushAndRemoveUntil(context, GlobalHelper.navigationFadeIn(context, MainPage()), (route) => false);
-
-                  }
+              if (fp.alerts.isEmpty) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    GlobalHelper.navigationFadeIn(context, MainPage()),
+                    (route) => false);
+              }
               setState(() {});
             },
           )));
@@ -341,9 +344,7 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                           final keyCalendar = GlobalHelper.genKey();
                           final fp = Provider.of<FunctionalProvider>(context,
                               listen: false);
-                          final formattedDate =
-                                    DateFormat('dd/MM/yyyy').format(selectedDate);
-                                _controllerdateTime.text = formattedDate;
+
                           fp.showAlert(
                             key: keyCalendar,
                             content: AlertGeneric(
@@ -372,33 +373,36 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                         height: 10,
                       ),
                       GpsUbicationWidget(
-                          controller: _gpsController,
-                          onTap: () {
-                            final keyMapAlert = GlobalHelper.genKey();
-                            fp.showAlert(
-                              key: keyMapAlert,
-                              content: AlertGeneric(
-                                content: GpsSelectUbication(
-                                  keyDismiss: keyMapAlert,
-                                  markers: marker,
-                                  selectPosition: (latLong) {
+                        controller: _gpsController,
+                        onTap: () {
+                          final keyMapAlert = GlobalHelper.genKey();
+                          fp.showAlert(
+                            key: keyMapAlert,
+                            content: AlertGeneric(
+                              content: GpsSelectUbication(
+                                keyDismiss: keyMapAlert,
+                                markers: marker,
+                                selectPosition: (latLong) {
+                                  setState(() {
                                     _gpsController.text =
                                         '${latLong.latitude}, ${latLong.longitude}';
                                     latitud = latLong.latitude;
                                     longitud = latLong.longitude;
-                                     marker = {
-                    Marker(
-                        markerId: MarkerId(
-                          'Observacion',
-                        ),
-                        position: latLong)
-                  };
-                                    setState(() {});
-                                  },
-                                ),
+
+                                    // Actualizar el marcador en la pantalla principal
+                                    marker = {
+                                      Marker(
+                                        markerId: MarkerId('Observacion'),
+                                        position: latLong,
+                                      ),
+                                    };
+                                  });
+                                },
                               ),
-                            );
-                          }),
+                            ),
+                          );
+                        },
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -415,8 +419,8 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                               clipBehavior: Clip.none,
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.file(
@@ -491,26 +495,26 @@ class _GenerateAlertageState extends State<GenerateAlertage> {
                           alignment: Alignment.center,
                           child: FilledButtonWidget(
                             onPressed: () {
-                              if(_keyStateAlert.currentState!.validate()){
-                                 if (imagenes.isEmpty ) {
-                                final keyNoPhoroAlert = GlobalHelper.genKey();
-                                fp.showAlert(
-                                  key: keyNoPhoroAlert,
-                                  content: AlertGeneric(
-                                    content: NoExistInformation(
-                                      message: (imagenes.isEmpty)
-                                          ? 'Debe enviar al menos una imagen'
-                                          : 'Seleccone una especie, por favor.',
-                                      function: () {
-                                        fp.dismissAlert(key: keyNoPhoroAlert);
-                                      },
+                              if (_keyStateAlert.currentState!.validate()) {
+                                if (imagenes.isEmpty) {
+                                  final keyNoPhoroAlert = GlobalHelper.genKey();
+                                  fp.showAlert(
+                                    key: keyNoPhoroAlert,
+                                    content: AlertGeneric(
+                                      content: NoExistInformation(
+                                        message: (imagenes.isEmpty)
+                                            ? 'Debe enviar al menos una imagen'
+                                            : 'Seleccone una especie, por favor.',
+                                        function: () {
+                                          fp.dismissAlert(key: keyNoPhoroAlert);
+                                        },
+                                      ),
+                                      keyToClose: keyNoPhoroAlert,
                                     ),
-                                    keyToClose: keyNoPhoroAlert,
-                                  ),
-                                );
-                              } else {
-
-                              _generateAlert();}
+                                  );
+                                } else {
+                                  _generateAlert();
+                                }
                               }
                             },
                             text: 'Enviar',

@@ -36,59 +36,57 @@ class _ListWidgetState extends State<ListWidget> {
               key: keyAlertDetailPage,
             ));
       },
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    widget.alerta.imagen1,
-                    height: responsive.height *0.1,
-                    frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                      
-                      return child;
-                    },
+      child: Card(
+        color: AppTheme.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  widget.alerta.imagen1,
+                  height: responsive.height *0.1,
+                  frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                     
-                  ),
+                    return child;
+                  },
+                  
                 ),
-                SizedBox(
-                  width: 10,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextTitleWidget(
+                      title: widget.alerta.tipoAlerta,
+                      showShadow: false,
+                    ),
+                    TextSubtitleWidget(
+                        subtitle: widget.alerta.fechaCreado.toString()),
+                    Visibility(
+                        visible: !widget.isGeneral,
+                        child: _statePublish(
+                            int.parse(widget.alerta.idEstado), responsive)),
+                    Visibility(
+                        visible: widget.isGeneral,
+                        child: TextSubtitleWidget(
+                          subtitle: widget.alerta.usuario,
+                        ))
+                  ],
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextTitleWidget(
-                        title: widget.alerta.tipoAlerta,
-                        showShadow: false,
-                      ),
-                      TextSubtitleWidget(
-                          subtitle: widget.alerta.fechaCreado.toString()),
-                      Visibility(
-                          visible: !widget.isGeneral,
-                          child: _statePublish(
-                              int.parse(widget.alerta.idEstado), responsive)),
-                      Visibility(
-                          visible: widget.isGeneral,
-                          child: TextSubtitleWidget(
-                            subtitle: widget.alerta.usuario,
-                          ))
-                    ],
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  size: 24,
-                  color: AppTheme.primaryColor,
-                )
-              ],
-            ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
+                size: 24,
+                color: AppTheme.primaryColor,
+              )
+            ],
           ),
-          Divider()
-        ],
+        ),
       ),
     );
   }

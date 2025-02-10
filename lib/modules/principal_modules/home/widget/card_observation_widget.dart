@@ -50,11 +50,12 @@ class _CardObservationWidgetState extends State<CardObservationWidget> {
                       children: [
                         TextTitleWidget(
                           title: widget.observation.nombreComun!,
-                          size: responsive.wp(4.5),
+                          size: responsive.dp(1.98),
                         ),
+                        
                         TextTitleWidget(
                           title: widget.observation.nombreCientifico!,
-                          size: responsive.wp(4.4),
+                          size: responsive.dp(1.6),
                         ),
                         TextSubtitleWidget(
                           subtitle: DateFormat('yyyy-MM-dd')

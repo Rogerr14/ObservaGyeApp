@@ -36,16 +36,17 @@ class ObservationServices {
   }
 
   Future<GeneralResponse<Observations>> getObservations(BuildContext context,
-      {String user_id = '', bool? estado}) async {
+      {String user_id = '', int? estado}) async {
     final urlEndpoint = '$urlService/Observacion/ListaObservaciones';
     try {
       GlobalHelper.logger.w('Entra aqui , $estado');
-      final estado_alerta = estado != null ? 
-        estado.toString()
-       : "";
+      // final estado_alerta = estado != null ? 
+      //   estado.toString()
+      //  : "";
+      final query =  estado != null ?  {"estado": estado.toString(), "id_usuario": user_id} : {"id_usuario": user_id};
       final response = await interceptorHttp.request(
           context, 'GET', urlEndpoint, null,
-          queryParameters: {"estado": estado_alerta, "id_usuario": user_id});
+          queryParameters:query);
       late Observations observations;
       if (!response.error) {
         observations = observationsFromJson(jsonEncode(response.data));

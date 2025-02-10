@@ -71,6 +71,8 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
       (timeStamp) {
         _getSenderos();
         // _getEspecies();
+        final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+        _controllerdateTime.text = formattedDate;
       },
     );
     fp = Provider.of<FunctionalProvider>(context, listen: false);
@@ -324,9 +326,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                         final keyCalendar = GlobalHelper.genKey();
                         final fp = Provider.of<FunctionalProvider>(context,
                             listen: false);
-                        final formattedDate =
-                            DateFormat('dd/MM/yyyy').format(selectedDate);
-                        _controllerdateTime.text = formattedDate;
+
                         fp.showAlert(
                           key: keyCalendar,
                           content: AlertGeneric(
@@ -355,34 +355,36 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                       height: 10,
                     ),
                     GpsUbicationWidget(
-                        controller: _gpsController,
-                        onTap: () {
-                          final keyMapAlert = GlobalHelper.genKey();
-                          fp.showAlert(
-                            key: keyMapAlert,
-                            content: AlertGeneric(
-                              content: GpsSelectUbication(
-                                keyDismiss: keyMapAlert,
-                                markers: marker,
-                                selectPosition: (latLong) {
+                      controller: _gpsController,
+                      onTap: () {
+                        final keyMapAlert = GlobalHelper.genKey();
+                        fp.showAlert(
+                          key: keyMapAlert,
+                          content: AlertGeneric(
+                            content: GpsSelectUbication(
+                              keyDismiss: keyMapAlert,
+                              markers: marker,
+                              selectPosition: (latLong) {
+                                setState(() {
                                   _gpsController.text =
                                       '${latLong.latitude}, ${latLong.longitude}';
                                   latitud = latLong.latitude;
-                                  longitud = latLong.latitude;
+                                  longitud = latLong.longitude;
+
+                                  // Actualizar el marcador en la pantalla principal
                                   marker = {
                                     Marker(
-                                        markerId: MarkerId(
-                                          'Observacion',
-                                        ),
-                                        position: latLong)
+                                      markerId: MarkerId('Observacion'),
+                                      position: latLong,
+                                    ),
                                   };
-
-                                  setState(() {});
-                                },
-                              ),
+                                });
+                              },
                             ),
-                          );
-                        }),
+                          ),
+                        );
+                      },
+                    ),
                     const SizedBox(
                       height: 20,
                     ),

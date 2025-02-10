@@ -274,15 +274,66 @@ class _GpsSelectUbicationState extends State<GpsSelectUbication> {
   GoogleMapController? controllerMap;
   CameraPosition position =
       CameraPosition(target: LatLng(-2.1854182, -80.0177638), zoom: 14.5);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.markers.isNotEmpty) {
+      final marker = widget.markers.first.position;
+      position = CameraPosition(target: marker, zoom: 14.5);
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    Location location = Location();
+
+    // Solicitar permisos
+    bool serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        GlobalHelper.logger.w("El servicio de ubicación está deshabilitado.");
+        return;
+      }
+    }
+
+    PermissionStatus permissionGranted = await location.requestPermission();
+    if (permissionGranted != PermissionStatus.granted) {
+      GlobalHelper.logger.w("Permiso de ubicación no concedido.");
+      return;
+    }
+
+    // Obtener ubicación actual
+    LocationData ubication = await location.getLocation();
+    if (ubication.latitude != null && ubication.longitude != null) {
+      LatLng newPosition = LatLng(ubication.latitude!, ubication.longitude!);
+
+      // Actualizar la interfaz con la nueva ubicación
+      setState(() {
+        position = CameraPosition(target: newPosition, zoom: 14);
+        widget.markers = {
+          Marker(
+            markerId: MarkerId('Observacion'),
+            position: newPosition,
+          ),
+        };
+      });
+
+      // Mover la cámara
+      controllerMap?.animateCamera(CameraUpdate.newLatLngZoom(newPosition, 14));
+
+      // Enviar la nueva posición al callback
+      widget.selectPosition(newPosition);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Column(
       children: [
-        SizedBox(
-          height: size.height * 0.015,
-        ),
-        TextTitleWidget(title: 'Seleccione la ubicacion de la alerta'),
+        SizedBox(height: size.height * 0.015),
+        TextTitleWidget(title: 'Seleccione la ubicación de la alerta'),
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           width: size.width * 0.8,
@@ -290,57 +341,42 @@ class _GpsSelectUbicationState extends State<GpsSelectUbication> {
           child: Stack(
             children: [
               GoogleMap(
-                onMapCreated: (controller) => controllerMap,
+                onMapCreated: (controller) {
+                  controllerMap = controller;
+                  // Mover la cámara a la última posición
+                  controller.animateCamera(CameraUpdate.newCameraPosition(position));
+                },
                 mapType: MapType.satellite,
                 markers: widget.markers,
                 onTap: (latLong) {
-                  widget.selectPosition(latLong);
-                 
+                  setState(() {
+                    widget.markers = {
+                      Marker(
+                        markerId: MarkerId('Observacion'),
+                        position: latLong,
+                      ),
+                    };
+                  });
 
-                  setState(() {});
+                  // Mover la cámara
+                  controllerMap?.animateCamera(CameraUpdate.newLatLngZoom(latLong, 14));
+
+                  // Notificar la nueva ubicación
+                  widget.selectPosition(latLong);
                 },
                 initialCameraPosition: position,
                 myLocationEnabled: true,
               ),
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //   child: FilledButtonWidget(
-              //     onPressed: () async {
-              //       Location location = Location();
-
-              //       await location.requestPermission();
-              //       final permiseEnable = await location.serviceEnabled();
-              //           GlobalHelper.logger.w(permiseEnable);
-              //       if (permiseEnable) {
-              //         final ubication = await location.getLocation();
-              //         GlobalHelper.logger.w(ubication);
-              //         if (ubication.latitude != null &&
-              //             ubication.longitude != null) {
-
-              //           widget.selectPosition(
-              //               LatLng(ubication.latitude!, ubication.longitude!));
-              //           widget.markers = {
-              //             Marker(
-              //                 markerId: MarkerId(
-              //                   'Observacion',
-              //                 ),
-              //                 position: LatLng(
-              //                     ubication.latitude!, ubication.longitude!))
-              //           };
-              //           position = CameraPosition(
-              //               target: LatLng(
-              //                   ubication.latitude!, ubication.longitude!));
-                        
-              //           setState(() {});
-              //         }
-              //       }
-              //     },
-              //     text: 'Usar mi ubicación',
-              //     width: 40,
-              //     color: AppTheme.secondaryColor,
-              //     colorText: AppTheme.primaryColor,
-              //   ),
-              // ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: FilledButtonWidget(
+                  onPressed: _getCurrentLocation,
+                  text: 'Usar mi ubicación',
+                  width: 40,
+                  color: AppTheme.secondaryColor,
+                  colorText: AppTheme.primaryColor,
+                ),
+              ),
             ],
           ),
         ),

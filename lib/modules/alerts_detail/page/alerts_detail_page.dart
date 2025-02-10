@@ -13,7 +13,7 @@ class AlertsDetailPage extends StatefulWidget {
   final Alerta alerta;
   final GlobalKey<State<StatefulWidget>> keyPage;
   final bool isGeneral;
-  const AlertsDetailPage({super.key, required this.keyPage, required this.isGeneral, required this.alerta});
+  const AlertsDetailPage({super.key, required this.keyPage,  this.isGeneral = true, required this.alerta});
 
   @override
   State<AlertsDetailPage> createState() => _AlertsDetailPageState();

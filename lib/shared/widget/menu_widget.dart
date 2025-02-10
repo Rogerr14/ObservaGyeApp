@@ -5,6 +5,7 @@ import 'package:observa_gye_app/modules/principal_modules/generate_observation/p
 import 'package:observa_gye_app/modules/secondary_modules/general_alerts/page/alerts_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/page/observation_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/map_observation/page/maps_observation_page.dart';
+import 'package:observa_gye_app/modules/secondary_modules/maps_alerts/page/maps_alerts_page.dart';
 import 'package:observa_gye_app/modules/secondary_modules/profile/page/profile_page.dart';
 import 'package:observa_gye_app/modules/security/login/model/user_model.dart';
 import 'package:observa_gye_app/shared/helpers/global_helper.dart';
@@ -96,7 +97,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 const Divider(),
                 _optionMenu(
                     icon: Icons.remove_red_eye_sharp,
-                    titleOption: 'OBSERVACIONES GENERALES',
+                    titleOption: 'Observaciones generales',
                     onPressed: () async {
                       final keyObservation = GlobalHelper.genKey();
                       fp.addPage(
@@ -111,7 +112,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 const Divider(),
                 _optionMenu(
                     icon: Icons.warning_rounded,
-                    titleOption: 'ALERTAS GENERALES',
+                    titleOption: 'Alertas generales',
                     onPressed: () async {
                       final keyAlerts = GlobalHelper.genKey();
                       fp.addPage(
@@ -126,7 +127,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 const Divider(),
                 _optionMenu(
                   icon: Icons.map_sharp,
-                  titleOption: 'MAPA DE OBSERVACIONES',
+                  titleOption: 'Mapa de Observaciones',
                   onPressed: () async {
                     final keyMapObservation = GlobalHelper.genKey();
                     fp.addPage(
@@ -139,21 +140,22 @@ class _MenuWidgetState extends State<MenuWidget> {
                   }, responsive: responsive,
                 ),
                 const Divider(),
-                // _optionMenu(
-                //   icon: Icons.settings,
-                //   titleOption: 'CONFIGURACION',
-                //   onPressed: () async {
-                //     final keySettingsApp = GlobalHelper.genKey();
-                //     fp.addPage(
-                //         key: keySettingsApp,
-                //         content: ObservationPage(
-                //           key: keySettingsApp,
-                //           keyDismiss: keySettingsApp,
-                //         ));
-                //     await widget.controller.close!();
-                //   },
-                // ),
-                // const Divider(),
+                _optionMenu(
+                  responsive: responsive,
+                  icon: Icons.map_sharp,
+                  titleOption: 'Mapa de alertas',
+                  onPressed: () async {
+                    final keyMapAlerts = GlobalHelper.genKey();
+                    fp.addPage(
+                        key: keyMapAlerts,
+                        content: MapsAlertsPage(
+                          key: keyMapAlerts,
+                          keyDismiss: keyMapAlerts,
+                        ));
+                    await widget.controller.close!();
+                  },
+                ),
+                const Divider(),
               ],
             ),
           ),

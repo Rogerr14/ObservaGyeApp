@@ -10,6 +10,7 @@ import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/services/observtion_services.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
+import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
@@ -67,6 +68,7 @@ class _SearchPageState extends State<SearchPage> {
     final responsive = Responsive(context);
     return Column(
       children: [
+        TextTitleWidget(title: 'Buscar Especies'),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: TextFormFieldWidget(
@@ -76,7 +78,7 @@ class _SearchPageState extends State<SearchPage> {
               });
             },
             controller: searchEspecie,
-            hintText: 'Buscar...',
+            hintText: 'Buscar nombre de especies',
             inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'))
                     ],

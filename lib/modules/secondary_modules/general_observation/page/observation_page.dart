@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/principal_modules/my_aports/widget/list_widget.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_alerts/widget/list_widget.dart';
 import 'package:observa_gye_app/modules/secondary_modules/general_observation/model/observations_model.dart';
@@ -9,6 +11,7 @@ import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/card_lista_widget.dart';
 import 'package:observa_gye_app/shared/widget/layout.dart';
 import 'package:observa_gye_app/shared/widget/layout_generic.dart';
+import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +26,7 @@ class ObservationPage extends StatefulWidget {
 class _ObservationPageState extends State<ObservationPage> {
 late FunctionalProvider fp;
 Observations? observations;
+TextEditingController searchEspecie = TextEditingController();
 
 @override
 void initState() {
@@ -42,7 +46,7 @@ void dispose() {
 
 
 _getObservations() async {
-    final response = await ObservationServices().getObservations(context, estado: true);
+    final response = await ObservationServices().getObservations(context, estado: 2);
     if (!response.error) {
       if (response.data!.observaciones.isNotEmpty) {
         observations = response.data;
@@ -57,6 +61,33 @@ _getObservations() async {
               function: () {
                 fp.dismissAlert(key: keyAlertsEmpity);
                 fp.dismissPage(key: widget.keyDismiss);
+              },
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+
+  _searchObservations() async {
+    
+    final body = {"especie": searchEspecie.text.trim().toLowerCase()};
+    final response =
+        await ObservationServices().searchObservations(context, body);
+    if (!response.error) {
+      if (response.data!.observaciones.isNotEmpty) {
+        observations = response.data;
+        setState(() {});
+      } else {
+        final keyAlertsEmpity = GlobalHelper.genKey();
+        fp.showAlert(
+          key: keyAlertsEmpity,
+          content: AlertGeneric(
+            content: NoExistInformation(
+              message: 'No existen observaciones',
+              function: () {
+                fp.dismissAlert(key: keyAlertsEmpity);
               },
             ),
           ),
@@ -83,13 +114,43 @@ _getObservations() async {
                 child: TextTitleWidget(title: 'Observaciones', size: 20,),
               ),
             ),
-            SizedBox(height: 30,),
             // ListView(
             //   padding: EdgeInsets.all(8),
             //   children: [
             //     CardListaWidget(ulrImagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Psittacus_erithacus_qtl1.jpg/1200px-Psittacus_erithacus_qtl1.jpg', title: 'jola', subtitle: 'ss', onPressed: (){}),
             //   ],
             // )
+            Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child: TextFormFieldWidget(
+            onChanged: (val){
+              setState(() {
+                
+              });
+            },
+            controller: searchEspecie,
+            hintText: 'Buscar nombre de especies',
+            inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'))
+                    ],
+            suffixIcon: searchEspecie.text.trim().isNotEmpty ?
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                size: 30,
+                color: AppTheme.primaryColor,
+              ),
+              
+              onPressed: () {
+                if (searchEspecie.text.trim().isNotEmpty) {
+                  _searchObservations();
+                }
+              },
+            ):  SizedBox(),
+          ),
+        ),
+            SizedBox(height: 30,),
+    
             if(observations != null)
               Expanded(
                 child: ListView.builder(

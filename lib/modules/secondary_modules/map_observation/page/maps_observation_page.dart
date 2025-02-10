@@ -42,13 +42,14 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
   }
 
   _getObservations() async {
-    final response = await ObservationServices().getObservations(context, estado: true);
+    final response = await ObservationServices().getObservations(context, estado: 2);
     if (!response.error) {
       if (response.data!.observaciones.isNotEmpty) {
         observations = response.data;
         marker =  observations!.observaciones
                       .map(
                         (observaciones) => Marker(
+                          // icon: ,
                           draggable: true,
                           flat: true,
                             markerId: MarkerId(observaciones.idObservacion.toString()),
@@ -117,25 +118,6 @@ class _MapsObservationPageState extends State<MapsObservationPage> {
           Flexible(
             child: GoogleMap(
               markers: marker,
-              // markers: {
-              //   Marker(
-              //       markerId: const MarkerId('Mall del Sol'),
-              //       position:
-              //           const LatLng(-2.181162165689552, -80.01526236854193),
-              //       infoWindow: const InfoWindow(
-              //           title: 'Loro titi', snippet: 'Loro titi'),
-              //       onTap: () {
-              //         final keyalert = GlobalHelper.genKey();
-              //         fp.showAlert(
-              //             key: keyalert,
-              //             content: AlertGeneric(
-              //               content: Container(),
-              //               dismissable: true,
-              //               keyToClose: keyalert,
-              //             ),
-              //             closeAlert: true);
-              //       }),
-              // },
               mapType: MapType.normal,
               initialCameraPosition: location,
               onMapCreated: (GoogleMapController controller) {

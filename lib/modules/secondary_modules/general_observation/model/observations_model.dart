@@ -26,11 +26,11 @@ class Observations {
 
 class Observaciones {
     String idObservacion;
-    String? idEspecie;
-    String? nombreTemporal;
-    String? nombreComun;
-    String? nombreCientifico;
-    String? nombreCategoria;
+    String idEspecie;
+    dynamic nombreTemporal;
+    String nombreComun;
+    String nombreCientifico;
+    String nombreCategoria;
     String idUsuario;
     String usuario;
     String idSendero;
@@ -39,7 +39,8 @@ class Observaciones {
     DateTime fechaObservacion;
     String coordenadaLongitud;
     String coordenadaLatitud;
-    bool estado;
+    String idEstado;
+    String nombreEstado;
     String imagen1;
     dynamic imagen2;
     dynamic imagen3;
@@ -60,7 +61,8 @@ class Observaciones {
         required this.fechaObservacion,
         required this.coordenadaLongitud,
         required this.coordenadaLatitud,
-        required this.estado,
+        required this.idEstado,
+        required this.nombreEstado,
         required this.imagen1,
         required this.imagen2,
         required this.imagen3,
@@ -82,7 +84,8 @@ class Observaciones {
         fechaObservacion: DateTime.parse(json["fecha_observacion"]),
         coordenadaLongitud: json["coordenada_longitud"],
         coordenadaLatitud: json["coordenada_latitud"],
-        estado: json["estado"],
+        idEstado: json["id_estado"],
+        nombreEstado: json["nombre_estado"],
         imagen1: json["imagen_1"],
         imagen2: json["imagen_2"],
         imagen3: json["imagen_3"],
@@ -104,7 +107,8 @@ class Observaciones {
         "fecha_observacion": fechaObservacion.toIso8601String(),
         "coordenada_longitud": coordenadaLongitud,
         "coordenada_latitud": coordenadaLatitud,
-        "estado": estado,
+        "id_estado": idEstado,
+        "nombre_estado": nombreEstado,
         "imagen_1": imagen1,
         "imagen_2": imagen2,
         "imagen_3": imagen3,
