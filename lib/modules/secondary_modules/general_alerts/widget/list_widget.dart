@@ -94,7 +94,7 @@ class _ListWidgetObservationsState extends State<ListWidgetObservations> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.yellow, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Enviado')),
+          child: Center(child: TextSubtitleWidget(subtitle: widget.observations.nombreEstado)),
         );
 
       case "2":
@@ -103,7 +103,7 @@ class _ListWidgetObservationsState extends State<ListWidgetObservations> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobada')),
+          child: Center(child: TextSubtitleWidget(subtitle:  widget.observations.nombreEstado)),
         );
       
        case "3":
@@ -112,7 +112,7 @@ class _ListWidgetObservationsState extends State<ListWidgetObservations> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.red, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazada')),
+          child: Center(child: TextSubtitleWidget(subtitle:  widget.observations.nombreEstado)),
         );
       default:
         return Container(

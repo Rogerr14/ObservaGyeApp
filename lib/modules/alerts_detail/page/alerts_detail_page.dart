@@ -177,7 +177,7 @@ class _AlertsDetailPageState extends State<AlertsDetailPage> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.yellow, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Enviado')),
+          child: Center(child: TextSubtitleWidget(subtitle: widget.alerta.nombreEstado)),
         );
 
       case 2:
@@ -186,7 +186,7 @@ class _AlertsDetailPageState extends State<AlertsDetailPage> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'En atención')),
+          child: Center(child: TextSubtitleWidget(subtitle: widget.alerta.nombreEstado)),
         );
       case 3:
         return Container(
@@ -194,7 +194,7 @@ class _AlertsDetailPageState extends State<AlertsDetailPage> {
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.red, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
+          child: Center(child: TextSubtitleWidget(subtitle: widget.alerta.nombreEstado)),
         );
 
       default:

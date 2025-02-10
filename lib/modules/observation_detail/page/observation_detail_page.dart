@@ -74,7 +74,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
               ),
               Visibility(
                           visible: !widget.isGeneral,
-                          child: _statePublish(0, responsive)),
+                          child: _statePublish(widget.observation.idEstado, responsive)),
               const SizedBox(
                 height: 20,
               ),
@@ -181,32 +181,32 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
     );
   }
 
-   _statePublish(int status, Responsive responsive) {
+   _statePublish(String status, Responsive responsive) {
     switch (status) {
-      case 0:
+      case "1":
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.yellow, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Enviado')),
+          child: Center(child: TextSubtitleWidget(subtitle: widget.observation.nombreEstado)),
         );
 
-      case 1:
+      case "2":
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.green, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Aprobado')),
+          child: Center(child: TextSubtitleWidget(subtitle:widget.observation.nombreEstado)),
         );
-      case 2:
+      case "3":
         return Container(
           width: responsive.wp(25),
           height: responsive.hp(3),
           decoration: BoxDecoration(
               color: AppTheme.red, borderRadius: BorderRadius.circular(5)),
-          child: Center(child: TextSubtitleWidget(subtitle: 'Rechazado')),
+          child: Center(child: TextSubtitleWidget(subtitle: widget.observation.nombreEstado)),
         );
 
       default:
