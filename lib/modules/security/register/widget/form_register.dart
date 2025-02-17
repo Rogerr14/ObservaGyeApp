@@ -6,6 +6,7 @@ import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/provider/functional_provider.dart';
 import 'package:observa_gye_app/shared/widget/alert_template.dart';
 import 'package:observa_gye_app/shared/widget/filled_button.dart';
+import 'package:observa_gye_app/shared/widget/terms_and_conditions_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_button_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_form_field_widget.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
@@ -23,29 +24,34 @@ class _FormRegisterState extends State<FormRegister> {
   final _formRegisterKey = GlobalKey<FormState>();
   bool visibityPassword = false;
 
-
-
-  _registerUser()async{
+  _registerUser() async {
     final fp = Provider.of<FunctionalProvider>(context, listen: false);
-   SecurityService securityService = SecurityService();
-   final body = {
-  "id_rol": 2,
-  "nombres": _nameController.text.toUpperCase(),
-  "apellidos" : _lastNameController.text.toUpperCase(),
-  "correo": _emailController.text.trim(),
-  "password": _passwordController.text.trim(),
-  "telefono":_phoneController.text.trim()
-  };
+    SecurityService securityService = SecurityService();
+    final body = {
+      "id_rol": 2,
+      "nombres": _nameController.text.toUpperCase(),
+      "apellidos": _lastNameController.text.toUpperCase(),
+      "correo": _emailController.text.trim(),
+      "password": _passwordController.text.trim(),
+      "telefono": _phoneController.text.trim()
+    };
 
-  final response = await securityService.createAccount(context, body);
-  if(!response.error){
-    final alertCreateAccountKey = GlobalHelper.genKey();
-    fp.showAlert(key: alertCreateAccountKey, content: AlertGeneric(content: OkGeneric(message: response.message,  keyToClose: alertCreateAccountKey, onPress: (){
-      fp.dismissAlert(key: alertCreateAccountKey);
-      fp.dismissPage(key: widget.keyPage);
-    },)));
+    final response = await securityService.createAccount(context, body);
+    if (!response.error) {
+      final alertCreateAccountKey = GlobalHelper.genKey();
+      fp.showAlert(
+          key: alertCreateAccountKey,
+          content: AlertGeneric(
+              content: OkGeneric(
+            message: response.message,
+            keyToClose: alertCreateAccountKey,
+            onPress: () {
+              fp.dismissAlert(key: alertCreateAccountKey);
+              fp.dismissPage(key: widget.keyPage);
+            },
+          )));
+    }
   }
-}
 
   //Controllers
   final TextEditingController _nameController = TextEditingController();
@@ -229,6 +235,25 @@ class _FormRegisterState extends State<FormRegister> {
                       }
                     },
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextButtonWidget(
+                    text: 'Términos y Condiciones',
+                    onPressed: () {
+                      final keyAlertTermsAndConditions = GlobalHelper.genKey();
+                      fp.showAlert(
+                        key: keyAlertTermsAndConditions,
+                        content: AlertGeneric(
+                          dismissable: true,
+                          keyToClose: keyAlertTermsAndConditions,
+                          content: TermsAndConditionsWidget(
+                            keyDismiss: keyAlertTermsAndConditions,
+                          )
+                        ),
+                      );
+                    },
+                  )
                 ],
               ),
             )

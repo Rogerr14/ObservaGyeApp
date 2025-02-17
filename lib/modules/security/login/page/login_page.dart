@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:observa_gye_app/env/theme/apptheme.dart';
 import 'package:observa_gye_app/modules/security/login/widget/form_login.dart';
-import 'package:observa_gye_app/shared/helpers/global_helper.dart';
 import 'package:observa_gye_app/shared/widget/layout_auth.dart';
 import 'package:observa_gye_app/shared/widget/text_widget.dart';
 
