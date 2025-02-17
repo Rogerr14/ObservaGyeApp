@@ -408,7 +408,8 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
                                   child: Image.file(
                                     e,
                                     height: responsive.hp(10),
-                                    // width: responsive.wp(2),
+                                      width: responsive.wp(15),
+                                      fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
