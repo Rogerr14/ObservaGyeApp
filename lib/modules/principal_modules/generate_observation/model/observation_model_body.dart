@@ -16,7 +16,7 @@ class ObservationModelBody {
     DateTime fechaObservacion;
     double coordenadaLongitud;
     double coordenadaLatitud;
-    bool estado;
+    int idEstado; // Cambiado de bool a int
 
     ObservationModelBody({
         required this.idEspecie,
@@ -25,7 +25,7 @@ class ObservationModelBody {
         required this.fechaObservacion,
         required this.coordenadaLongitud,
         required this.coordenadaLatitud,
-        required this.estado,
+        required this.idEstado, // Cambiado de bool a int
         this.nombreTemporal
     });
 
@@ -34,10 +34,10 @@ class ObservationModelBody {
         idSendero: json["id_sendero"],
         nombreTemporal: json["nombre_temporal"],
         descripcion: json["descripcion"],
-        fechaObservacion:  DateTime.parse(json["fecha_observacion"]),
+        fechaObservacion: DateTime.parse(json["fecha_observacion"]),
         coordenadaLongitud: json["coordenada_longitud"]?.toDouble(),
         coordenadaLatitud: json["coordenada_latitud"]?.toDouble(),
-        estado: json["estado"],
+        idEstado: json["id_estado"], // Cambiado de bool a int
     );
 
     Map<String, dynamic> toJson() => {
@@ -48,6 +48,6 @@ class ObservationModelBody {
         "fecha_observacion": "${fechaObservacion.year.toString().padLeft(4, '0')}-${fechaObservacion.month.toString().padLeft(2, '0')}-${fechaObservacion.day.toString().padLeft(2, '0')}",
         "coordenada_longitud": coordenadaLongitud,
         "coordenada_latitud": coordenadaLatitud,
-        "estado": estado,
+        "id_estado": idEstado, // Cambiado de bool a int
     };
 }

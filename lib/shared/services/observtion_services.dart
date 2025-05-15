@@ -43,7 +43,7 @@ class ObservationServices {
       // final estado_alerta = estado != null ? 
       //   estado.toString()
       //  : "";
-      final query =  estado != null ?  {"estado": estado.toString(), "id_usuario": user_id} : {"id_usuario": user_id};
+      final query =  estado != null ?  {"id_estado": estado.toString(), "id_usuario": user_id} : {"id_usuario": user_id};
       final response = await interceptorHttp.request(
           context, 'GET', urlEndpoint, null,
           queryParameters:query);

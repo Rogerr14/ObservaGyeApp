@@ -7,7 +7,7 @@ class ProdEnv extends BaseConfig{
   String get appName => 'ObservaGye';
 
   @override
-  String get serviceUrl => 'https://titulacionproyectobackend.onrender.com/api';
+  String get serviceUrl => 'https://observagye2.onrender.com/api';
 
   @override
   Color get primaryColor => const Color(0xFF0D47A1);

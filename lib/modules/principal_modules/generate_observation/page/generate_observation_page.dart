@@ -102,7 +102,7 @@ class _GenerateObservationPageState extends State<GenerateObservationPage> {
         ),
         coordenadaLongitud: longitud,
         coordenadaLatitud: latitud,
-        estado: false);
+        idEstado: 1);
     GlobalHelper.logger.w(jsonEncode(observation));
     final List<MultipartFile> imagenesSend = await Future.wait(imagenes.map(
       (imagen) async {
